@@ -9,15 +9,15 @@ import lintfordpickle.harvest.data.editor.EditorLayersData;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneTextureLayer;
 import lintfordpickle.harvest.renderers.scene.NoiseLayerShader;
-import net.lintfordLib.editor.controllers.EditorBrushController;
-import net.lintfordLib.editor.data.EditorLayerBrush;
+import net.lintfordlib.assets.ResourceManager;
+import net.lintfordlib.controllers.editor.EditorBrushController;
 import net.lintfordlib.core.LintfordCore;
-import net.lintfordlib.core.ResourceManager;
 import net.lintfordlib.core.debug.Debug;
-import net.lintfordlib.core.graphics.ColorConstants;
 import net.lintfordlib.core.graphics.geometry.FullScreenTexturedQuad;
+import net.lintfordlib.core.rendering.RenderPass;
+import net.lintfordlib.data.editor.EditorLayerBrush;
 import net.lintfordlib.renderers.BaseRenderer;
-import net.lintfordlib.renderers.RendererManager;
+import net.lintfordlib.renderers.RendererManagerBase;
 
 public class EditorTextureLayerRenderer extends BaseRenderer {
 
@@ -73,7 +73,7 @@ public class EditorTextureLayerRenderer extends BaseRenderer {
 	// Constructor
 	// ---------------------------------------------
 
-	public EditorTextureLayerRenderer(RendererManager rendererManager, int entityGroupID) {
+	public EditorTextureLayerRenderer(RendererManagerBase rendererManager, int entityGroupID) {
 		super(rendererManager, RENDERER_NAME, entityGroupID);
 
 		mTexturedQuad = new FullScreenTexturedQuad();
@@ -88,11 +88,11 @@ public class EditorTextureLayerRenderer extends BaseRenderer {
 	public void initialize(LintfordCore core) {
 		final var lControllerManager = core.controllerManager();
 
-		mSceneController = (EditorSceneController) lControllerManager.getControllerByNameRequired(EditorSceneController.CONTROLLER_NAME, entityGroupID());
-		mEditorBrushController = (EditorBrushController) lControllerManager.getControllerByNameRequired(EditorBrushController.CONTROLLER_NAME, mEntityGroupUid);
-		mEditorLayerController = (EditorLayerController) lControllerManager.getControllerByNameRequired(EditorLayerController.CONTROLLER_NAME, entityGroupID());
+		mSceneController = (EditorSceneController) lControllerManager.getControllerByNameRequired(EditorSceneController.CONTROLLER_NAME, entityGroupUid());
+		mEditorBrushController = (EditorBrushController) lControllerManager.getControllerByNameRequired(EditorBrushController.CONTROLLER_NAME, entityGroupUid());
+		mEditorLayerController = (EditorLayerController) lControllerManager.getControllerByNameRequired(EditorLayerController.CONTROLLER_NAME, entityGroupUid());
 
-		mEditorTextureLayerController = (EditorTextureLayerController) lControllerManager.getControllerByNameRequired(EditorTextureLayerController.CONTROLLER_NAME, entityGroupID());
+		mEditorTextureLayerController = (EditorTextureLayerController) lControllerManager.getControllerByNameRequired(EditorTextureLayerController.CONTROLLER_NAME, entityGroupUid());
 	}
 
 	@Override
@@ -229,7 +229,7 @@ public class EditorTextureLayerRenderer extends BaseRenderer {
 	}
 
 	@Override
-	public void draw(LintfordCore core) {
+	public void draw(LintfordCore core, RenderPass renderPass) {
 		final var lLayers = mEditorTextureLayerController.textureLayers();
 		final var lNumLayers = lLayers.size();
 		for (int i = 0; i < lNumLayers; i++) {
@@ -245,14 +245,14 @@ public class EditorTextureLayerRenderer extends BaseRenderer {
 	}
 
 	protected void drawTextureLayer(LintfordCore core, SceneTextureLayer layer) {
-		final var lSpriteBatch = mRendererManager.uiSpriteBatch();
+		final var spriteBatch = core.sharedResources().uiSpriteBatch();
 
 		final var aabb_c = core.gameCamera().boundingRectangle();
 		final var cameraPositionX = aabb_c.centerX();
 		final var cameraPositionY = aabb_c.centerY();
 
 		if (layer.textureStatus == SceneTextureLayer.TEXTURE_UNLOADED) {
-			layer.texture = mResourceManager.textureManager().loadTexture(layer.textureName(), layer.textureFilepath(), entityGroupID());
+			layer.texture = mResourceManager.textureManager().loadTexture(layer.textureName(), layer.textureFilepath(), entityGroupUid());
 			layer.textureStatus = SceneTextureLayer.TEXTURE_LOADED;
 			if (mResourceManager.textureManager().textureNotFound().equals(layer.texture)) {
 				layer.texture = null;
@@ -266,22 +266,23 @@ public class EditorTextureLayerRenderer extends BaseRenderer {
 		}
 
 		if (layer.texture != null) {
-			final var lCamOffsetX = -layer.centerX - cameraPositionX * layer.translationSpeedModX;
-			final var lCamOffsetY = -layer.centerY - cameraPositionY * layer.translationSpeedModY;
+			final var camOffsetX = -layer.centerX - cameraPositionX * layer.translationSpeedModX;
+			final var camOffsetY = -layer.centerY - cameraPositionY * layer.translationSpeedModY;
 
-			final var lSrcX = lCamOffsetX;
-			final var lSrcY = lCamOffsetY;
-			final var lSrcW = layer.texture.getTextureWidth();
-			final var lSrcH = layer.texture.getTextureHeight();
+			final var srcX = camOffsetX;
+			final var srcY = camOffsetY;
+			final var srcW = layer.texture.getTextureWidth();
+			final var srcH = layer.texture.getTextureHeight();
 
-			final var lDstX = layer.centerX - layer.width * .5f;
-			final var lDstY = layer.centerY - layer.height * .5f;
-			final var lDstWidth = layer.width;
-			final var lDstHeight = layer.height;
+			final var dstX = layer.centerX - layer.width * .5f;
+			final var dstY = layer.centerY - layer.height * .5f;
+			final var dstWidth = layer.width;
+			final var dstHeight = layer.height;
 
-			lSpriteBatch.begin(core.gameCamera());
-			lSpriteBatch.draw(layer.texture, lSrcX, lSrcY, lSrcW, lSrcH, lDstX, lDstY, lDstWidth, lDstHeight, -.01f, ColorConstants.WHITE);
-			lSpriteBatch.end();
+			spriteBatch.setColorWhite();
+			spriteBatch.begin(core.gameCamera());
+			spriteBatch.draw(layer.texture, srcX, srcY, srcW, srcH, dstX, dstY, dstWidth, dstHeight, .01f);
+			spriteBatch.end();
 			return;
 		}
 

@@ -2,7 +2,7 @@ package lintfordpickle.harvest.controllers.replays;
 
 import lintfordpickle.harvest.data.players.ReplayManager;
 import net.lintfordlib.controllers.BaseController;
-import net.lintfordlib.controllers.core.ControllerManager;
+import net.lintfordlib.controllers.ControllerManager;
 import net.lintfordlib.core.LintfordCore;
 
 public class ReplayController extends BaseController {

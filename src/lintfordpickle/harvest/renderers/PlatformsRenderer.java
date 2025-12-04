@@ -3,13 +3,14 @@ package lintfordpickle.harvest.renderers;
 import lintfordpickle.harvest.ConstantsGame;
 import lintfordpickle.harvest.controllers.PlatformController;
 import lintfordpickle.harvest.data.scene.platforms.PlatformInstance;
+import net.lintfordlib.assets.ResourceManager;
 import net.lintfordlib.core.LintfordCore;
-import net.lintfordlib.core.ResourceManager;
 import net.lintfordlib.core.graphics.ColorConstants;
 import net.lintfordlib.core.graphics.sprites.SpriteInstance;
 import net.lintfordlib.core.graphics.sprites.spritesheet.SpriteSheetDefinition;
+import net.lintfordlib.core.rendering.RenderPass;
 import net.lintfordlib.renderers.BaseRenderer;
-import net.lintfordlib.renderers.RendererManager;
+import net.lintfordlib.renderers.RendererManagerBase;
 
 public class PlatformsRenderer extends BaseRenderer {
 
@@ -40,7 +41,7 @@ public class PlatformsRenderer extends BaseRenderer {
 	// Constructor
 	// ---------------------------------------------
 
-	public PlatformsRenderer(RendererManager rendererManager, int entityGroupID) {
+	public PlatformsRenderer(RendererManagerBase rendererManager, int entityGroupID) {
 		super(rendererManager, RENDERER_NAME, entityGroupID);
 	}
 
@@ -50,7 +51,7 @@ public class PlatformsRenderer extends BaseRenderer {
 
 	@Override
 	public void initialize(LintfordCore core) {
-		mPlatformsController = (PlatformController) core.controllerManager().getControllerByNameRequired(PlatformController.CONTROLLER_NAME, entityGroupID());
+		mPlatformsController = (PlatformController) core.controllerManager().getControllerByNameRequired(PlatformController.CONTROLLER_NAME, entityGroupUid());
 	}
 
 	@Override
@@ -79,7 +80,7 @@ public class PlatformsRenderer extends BaseRenderer {
 	}
 
 	@Override
-	public void draw(LintfordCore core) {
+	public void draw(LintfordCore core, RenderPass renderPass) {
 		final var lPlatformManager = mPlatformsController.platformManager();
 		final var lPlatformsList = lPlatformManager.platforms();
 		final int lNumPlatform = lPlatformsList.size();
@@ -105,28 +106,34 @@ public class PlatformsRenderer extends BaseRenderer {
 
 		lSpriteFrame.update(core);
 
-		final var lSpriteBatch = mRendererManager.uiSpriteBatch();
-		lSpriteBatch.begin(core.gameCamera());
-
 		final var lWhiteWithAlpha = ColorConstants.getColor(1.f, 1.f, 1.f, 1.f);
-		lSpriteBatch.draw(mPlatformsSpritesheet, lSpriteFrame, platform, -0.01f, lWhiteWithAlpha);
+		final var spriteBatch = core.sharedResources().uiSpriteBatch();
+
+		spriteBatch.setColor(lWhiteWithAlpha);
+		spriteBatch.begin(core.gameCamera());
+		spriteBatch.draw(mPlatformsSpritesheet, lSpriteFrame, platform, .01f);
 
 		if (platform.containerSprite != null) {
 			platform.containerSprite.update(core);
-			lSpriteBatch.draw(mPlatformsSpritesheet, platform.containerSprite, platform, -0.01f, lWhiteWithAlpha);
+			spriteBatch.draw(mPlatformsSpritesheet, platform.containerSprite, platform, .01f);
 		}
 
 		// texture light
 		if (platform.isStockFull) {
-			lSpriteBatch.draw(mPlatformsSpritesheet, mPlatformsSpritesheet.getSpriteFrame("TEXTURELIGHTGLOW"), platform.x(), platform.y(), 8, 8, -0.01f, ColorConstants.GREEN);
+			spriteBatch.setColor(ColorConstants.GREEN());
+			spriteBatch.draw(mPlatformsSpritesheet, mPlatformsSpritesheet.getSpriteFrame("TEXTURELIGHTGLOW"), platform.x(), platform.y(), 8, 8, .01f);
 		} else {
-			if (platform.isRefillingStock)
-				lSpriteBatch.draw(mPlatformsSpritesheet, mPlatformsSpritesheet.getSpriteFrame("TEXTURELIGHTGLOW"), platform.x(), platform.y(), 8, 8, -0.01f, ColorConstants.YELLOW);
-			else
-				lSpriteBatch.draw(mPlatformsSpritesheet, mPlatformsSpritesheet.getSpriteFrame("TEXTURELIGHTGLOW"), platform.x(), platform.y(), 8, 8, -0.01f, ColorConstants.RED);
+			if (platform.isRefillingStock) {
+				spriteBatch.setColor(ColorConstants.YELLOW());
+				spriteBatch.draw(mPlatformsSpritesheet, mPlatformsSpritesheet.getSpriteFrame("TEXTURELIGHTGLOW"), platform.x(), platform.y(), 8, 8, .01f);
+			} else {
+				spriteBatch.setColor(ColorConstants.RED());
+				spriteBatch.draw(mPlatformsSpritesheet, mPlatformsSpritesheet.getSpriteFrame("TEXTURELIGHTGLOW"), platform.x(), platform.y(), 8, 8, .01f);
+			}
+
 		}
 
-		lSpriteBatch.end();
+		spriteBatch.end();
 	}
 
 	private SpriteInstance getPlatformSpriteFrame(PlatformInstance platform) {

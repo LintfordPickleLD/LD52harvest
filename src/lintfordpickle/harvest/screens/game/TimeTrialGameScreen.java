@@ -1,6 +1,5 @@
 package lintfordpickle.harvest.screens.game;
 
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.GsonBuilder;
@@ -27,21 +26,23 @@ import lintfordpickle.harvest.renderers.hud.MinimapRenderer;
 import lintfordpickle.harvest.renderers.hud.TimeTrialHudRenderer;
 import lintfordpickle.harvest.renderers.scene.SceneAdWallRenderer;
 import lintfordpickle.harvest.renderers.scene.SceneRenderer;
-import net.lintfordLib.editor.data.scene.SceneHeader;
 import net.lintfordlib.ConstantsPhysics;
-import net.lintfordlib.controllers.core.ControllerManager;
+import net.lintfordlib.MenuActions;
+import net.lintfordlib.assets.ResourceManager;
+import net.lintfordlib.controllers.ControllerManager;
 import net.lintfordlib.controllers.core.particles.ParticleFrameworkController;
 import net.lintfordlib.controllers.debug.physics.DebugPhysicsWorldWatcher;
 import net.lintfordlib.controllers.physics.IPhysicsControllerCallback;
 import net.lintfordlib.controllers.physics.PhysicsController;
 import net.lintfordlib.core.LintfordCore;
-import net.lintfordlib.core.ResourceManager;
 import net.lintfordlib.core.debug.Debug;
 import net.lintfordlib.core.graphics.rendertarget.RenderTarget;
 import net.lintfordlib.core.particles.ParticleFrameworkData;
 import net.lintfordlib.core.physics.PhysicsWorld;
 import net.lintfordlib.core.physics.resolvers.CollisionResolverRotationAndFriction;
 import net.lintfordlib.core.storage.FileUtils;
+import net.lintfordlib.data.DataManager;
+import net.lintfordlib.data.scene.SceneHeader;
 import net.lintfordlib.renderers.debug.physics.DebugPhysicsGridRenderer;
 import net.lintfordlib.renderers.debug.physics.DebugPhysicsRenderer;
 import net.lintfordlib.renderers.particles.ParticleFrameworkRenderer;
@@ -121,6 +122,14 @@ public class TimeTrialGameScreen extends BaseGameScreen implements IPhysicsContr
 	// ---------------------------------------------
 
 	@Override
+	public void initialize() {
+		super.initialize();
+
+		mPhysicsController.simulationRunning(true);
+
+	}
+
+	@Override
 	public void loadResources(ResourceManager resourceManager) {
 		super.loadResources(resourceManager);
 
@@ -128,7 +137,7 @@ public class TimeTrialGameScreen extends BaseGameScreen implements IPhysicsContr
 		final var lCanvasWidth = lDisplaySettings.gameResolutionWidth();
 		final var lCanvasHeight = lDisplaySettings.gameResolutionHeight();
 
-		mRenderTarget = mRendererManager.createRenderTarget("RT_MAIN", lCanvasWidth, lCanvasHeight, 1.f, GL11.GL_NEAREST, false);
+		mRenderTarget = mRendererManager.createRenderTarget("RT_MAIN", lCanvasWidth, lCanvasHeight, 1.f, GL11.GL_NEAREST, false, null);
 
 		// TODO: Change this!
 		resourceManager.textureManager().loadTexture("TEXTURE_PARTICLES", "res/textureParticles.png", entityGroupUid());
@@ -145,16 +154,23 @@ public class TimeTrialGameScreen extends BaseGameScreen implements IPhysicsContr
 	public void handleInput(LintfordCore core) {
 		super.handleInput(core);
 
-		if (core.input().keyboard().isKeyDownTimed(GLFW.GLFW_KEY_ESCAPE, this) || core.input().gamepads().isGamepadButtonDownTimed(GLFW.GLFW_GAMEPAD_BUTTON_START, this)) {
+		final var actionManager = core.input().actionManager();
+		final var menuEscapeAction = actionManager.getActionState(MenuActions.NAV_BACK);
+
+		if (menuEscapeAction.isDownTimed(this)) {
 			if (ConstantsGame.ESCAPE_RESTART_MAIN_SCENE) {
-				final var lLoadingScreen = new LoadingScreen(screenManager(), true, new TimeTrialGameScreen(screenManager(), mSceneHeader, mPlayerManager));
-				screenManager().createLoadingScreen(new LoadingScreen(screenManager(), true, lLoadingScreen));
+
+				final var gameScreen = new TimeTrialGameScreen(screenManager, mSceneHeader, mPlayerManager);
+				screenManager.initiateLoadingScreen(new LoadingScreen(screenManager, true, true, gameScreen));
+
 				return;
 			}
 
-			screenManager().addScreen(new PauseScreen(screenManager(), mSceneHeader, mPlayerManager));
+			screenManager.addScreen(new PauseScreen(screenManager, mSceneHeader, mPlayerManager));
 			return;
 		}
+
+		// TODO: Start game stuff here
 	}
 
 	@Override
@@ -183,7 +199,8 @@ public class TimeTrialGameScreen extends BaseGameScreen implements IPhysicsContr
 	@Override
 	public void draw(LintfordCore core) {
 		super.draw(core);
-		mRendererManager.drawWindowRenderers(core);
+
+		// mRendererManager.drawWindowRenderers(core);
 	}
 
 	// ---------------------------------------------
@@ -193,8 +210,8 @@ public class TimeTrialGameScreen extends BaseGameScreen implements IPhysicsContr
 	// DATA ----------------------------------------
 
 	@Override
-	protected void createData(LintfordCore core) {
-		mParticleFrameworkData = new ParticleFrameworkData();
+	protected void createData(DataManager dataManager) {
+		mParticleFrameworkData = new ParticleFrameworkData(dataManager, entityGroupUid());
 		mParticleFrameworkData.loadFromMetaFiles();
 		mCollisionHandler = new CollisionHandler();
 
@@ -203,9 +220,9 @@ public class TimeTrialGameScreen extends BaseGameScreen implements IPhysicsContr
 		mSceneData = new SceneData(); // We fill *the components* of the SceneData, by deserilizing objects using the SceneHeader.
 
 		if (mSceneHeader != null && mSceneHeader.isSceneValid()) {
-			loadTrackDefinitionFromFile(mSceneHeader.sceneDataFilepath());
+			loadTrackDefinitionFromFile(mSceneHeader.sceneDataFilePath());
 		} else
-			throw new RuntimeException("Couldn't deserialize level file."); // TODO: don't just flake out
+			throw new RuntimeException("Couldn't deserialize level file.");
 	}
 
 	public void createNewScene() {
@@ -238,7 +255,7 @@ public class TimeTrialGameScreen extends BaseGameScreen implements IPhysicsContr
 
 	@Override
 	protected void createControllers(ControllerManager controllerManager) {
-		mAudioController = new AudioController(controllerManager, screenManager().core().resources().audioManager(), entityGroupUid());
+		mAudioController = new AudioController(controllerManager, screenManager.core().resources().audioManager(), entityGroupUid());
 		mGameActionEventController = new GameActionEventController(controllerManager, mPlayerManager, inputCounter(), entityGroupUid());
 		mPhysicsController = new PhysicsController(controllerManager, this, entityGroupUid());
 		mLevelController = new LevelController(controllerManager, entityGroupUid());
@@ -292,37 +309,12 @@ public class TimeTrialGameScreen extends BaseGameScreen implements IPhysicsContr
 	}
 
 	@Override
-	protected void initializeRenderers(LintfordCore core) {
-		mShipRenderer.initialize(core);
-		if (ConstantsGame.PHYICS_DEBUG_MODE) {
-			mPhysicsRenderer.initialize(core);
-			mPhysicsDebugGridRenderer.initialize(core);
-		}
+	protected void createRendererStructure(LintfordCore core) {
+		// TODO Auto-generated method stub
 
-		mSceneRenderer.initialize(core);
-		mSceneAdWallRenderer.initialize(core);
-		mPlatformsRenderer.initialize(core);
-		mParticleFrameworkRenderer.initialize(core);
-		mHudRenderer.initialize(core);
-		mMinimapRenderer.initialize(core);
 	}
 
-	@Override
-	protected void loadRendererResources(ResourceManager resourceManager) {
-		mSceneRenderer.loadResources(resourceManager);
-		mShipRenderer.loadResources(resourceManager);
-
-		mSceneAdWallRenderer.loadResources(resourceManager);
-		if (ConstantsGame.PHYICS_DEBUG_MODE) {
-			mPhysicsRenderer.loadResources(resourceManager);
-			mPhysicsDebugGridRenderer.loadResources(resourceManager);
-		}
-
-		mPlatformsRenderer.loadResources(resourceManager);
-		mParticleFrameworkRenderer.loadResources(resourceManager);
-		mHudRenderer.loadResources(resourceManager);
-		mMinimapRenderer.loadResources(resourceManager);
-	}
+	// -----------------------------------
 
 	@Override
 	public void exitScreen() {
@@ -330,8 +322,6 @@ public class TimeTrialGameScreen extends BaseGameScreen implements IPhysicsContr
 
 		mGameActionEventController.finalizeInputFile();
 	}
-
-	// RENDERERS -----------------------------------
 
 	@Override
 	public PhysicsWorld createPhysicsWorld() {
@@ -350,5 +340,4 @@ public class TimeTrialGameScreen extends BaseGameScreen implements IPhysicsContr
 
 		return lPhysicsWorld;
 	}
-
 }

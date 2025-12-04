@@ -2,7 +2,7 @@ package lintfordpickle.harvest.controllers;
 
 import lintfordpickle.harvest.data.players.PlayerManager;
 import lintfordpickle.harvest.data.scene.SceneData;
-import net.lintfordlib.controllers.core.ControllerManager;
+import net.lintfordlib.controllers.ControllerManager;
 import net.lintfordlib.core.LintfordCore;
 
 public class TimeTrialGameStateController extends GameStateController {

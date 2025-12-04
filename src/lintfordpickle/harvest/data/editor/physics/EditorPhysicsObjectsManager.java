@@ -6,7 +6,7 @@ import java.util.List;
 import lintfordpickle.harvest.data.editor.BaseEditorInstanceManager;
 import lintfordpickle.harvest.data.editor.EditorSceneData;
 import lintfordpickle.harvest.data.scene.SceneSaveDefinition;
-import net.lintfordlib.core.geometry.partitioning.GridEntity;
+import net.lintfordlib.assets.ResourceGroupProvider;
 import net.lintfordlib.core.maths.Vector2f;
 
 public class EditorPhysicsObjectsManager extends BaseEditorInstanceManager {
@@ -66,11 +66,11 @@ public class EditorPhysicsObjectsManager extends BaseEditorInstanceManager {
 
 	@Override
 	public void storeInTrackDefinition(SceneSaveDefinition sceneDefinition) {
-		final var lPhysicsObjectsToSave = sceneDefinition.physicsObjects().physicsObjects;
-		lPhysicsObjectsToSave.clear();
+		final var physicsObjectsToSave = sceneDefinition.physicsObjects().physicsObjects;
+		physicsObjectsToSave.clear();
 
-		final int lNumFloorDefinitions = mPhysicsObjects.size();
-		for (int i = 0; i < lNumFloorDefinitions; i++) {
+		final int numFloorDefinitions = mPhysicsObjects.size();
+		for (int i = 0; i < numFloorDefinitions; i++) {
 			final var lPhysicsObject = mPhysicsObjects.get(i);
 			final var lPhysicsObjectToSave = new ScenePhysicsObjectSaveDefinition();
 
@@ -83,18 +83,18 @@ public class EditorPhysicsObjectsManager extends BaseEditorInstanceManager {
 			lPhysicsObjectToSave.localPoints.add(new Vector2f(lPhysicsObject.c.worldPosition.x - lPhysicsObject.wcx, lPhysicsObject.c.worldPosition.y - lPhysicsObject.wcy));
 			lPhysicsObjectToSave.localPoints.add(new Vector2f(lPhysicsObject.d.worldPosition.x - lPhysicsObject.wcx, lPhysicsObject.d.worldPosition.y - lPhysicsObject.wcy));
 
-			lPhysicsObjectsToSave.add(lPhysicsObjectToSave);
+			physicsObjectsToSave.add(lPhysicsObjectToSave);
 		}
 
 	}
 
 	@Override
 	public void loadFromTrackDefinition(SceneSaveDefinition sceneDefinition) {
-		final var lFloorDefinitions = sceneDefinition.physicsObjects().physicsObjects;
-		final var lNumFloorDefinitions = lFloorDefinitions.size();
-		for (int i = 0; i < lNumFloorDefinitions; i++) {
-			final var lFloorSaveDefinition = lFloorDefinitions.get(i);
-			final var lNewPhyiscsObjectInstance = new EditorPhysicsObjectInstance(GridEntity.getNewEntityUid());
+		final var floorDefinitions = sceneDefinition.physicsObjects().physicsObjects;
+		final var numFloorDefinitions = floorDefinitions.size();
+		for (int i = 0; i < numFloorDefinitions; i++) {
+			final var lFloorSaveDefinition = floorDefinitions.get(i);
+			final var lNewPhyiscsObjectInstance = new EditorPhysicsObjectInstance(ResourceGroupProvider.getRollingEntityNumber());
 
 			// @formatter:off
 			lNewPhyiscsObjectInstance.initialize(

@@ -8,15 +8,16 @@ import lintfordpickle.harvest.controllers.PlatformController;
 import lintfordpickle.harvest.controllers.ShipController;
 import lintfordpickle.harvest.data.scene.platforms.PlatformType;
 import net.lintfordlib.ConstantsPhysics;
+import net.lintfordlib.assets.ResourceManager;
 import net.lintfordlib.core.LintfordCore;
-import net.lintfordlib.core.ResourceManager;
 import net.lintfordlib.core.graphics.ColorConstants;
 import net.lintfordlib.core.graphics.sprites.spritesheet.SpriteSheetDefinition;
 import net.lintfordlib.core.graphics.sprites.spritesheet.SpriteSheetManager;
 import net.lintfordlib.core.graphics.textures.Texture;
 import net.lintfordlib.core.input.mouse.IInputProcessor;
 import net.lintfordlib.core.maths.MathHelper;
-import net.lintfordlib.renderers.RendererManager;
+import net.lintfordlib.core.rendering.RenderPass;
+import net.lintfordlib.renderers.RendererManagerBase;
 import net.lintfordlib.renderers.windows.UiWindow;
 
 public class MinimapRenderer extends UiWindow implements IInputProcessor {
@@ -53,7 +54,7 @@ public class MinimapRenderer extends UiWindow implements IInputProcessor {
 	// Constructor
 	// ---------------------------------------------
 
-	public MinimapRenderer(RendererManager rendererManager, int entityGroupID) {
+	public MinimapRenderer(RendererManagerBase rendererManager, int entityGroupID) {
 		super(rendererManager, RENDERER_NAME, entityGroupID);
 
 		mIsOpen = true;
@@ -67,9 +68,9 @@ public class MinimapRenderer extends UiWindow implements IInputProcessor {
 	public void initialize(LintfordCore core) {
 		final var lControllerManager = core.controllerManager();
 
-		mPlatformsController = (PlatformController) lControllerManager.getControllerByNameRequired(PlatformController.CONTROLLER_NAME, entityGroupID());
-		mShipController = (ShipController) lControllerManager.getControllerByNameRequired(ShipController.CONTROLLER_NAME, entityGroupID());
-		mGameStateController = (GameStateController) lControllerManager.getControllerByNameRequired(GameStateController.CONTROLLER_NAME, entityGroupID());
+		mPlatformsController = (PlatformController) lControllerManager.getControllerByNameRequired(PlatformController.CONTROLLER_NAME, entityGroupUid());
+		mShipController = (ShipController) lControllerManager.getControllerByNameRequired(ShipController.CONTROLLER_NAME, entityGroupUid());
+		mGameStateController = (GameStateController) lControllerManager.getControllerByNameRequired(GameStateController.CONTROLLER_NAME, entityGroupUid());
 	}
 
 	@Override
@@ -103,42 +104,44 @@ public class MinimapRenderer extends UiWindow implements IInputProcessor {
 	}
 
 	@Override
-	public void draw(LintfordCore core) {
-		final var lHudBoundingBox = core.HUD().boundingRectangle();
+	public void draw(LintfordCore core, RenderPass renderPass) {
+		final var hudBoundingBox = core.HUD().boundingRectangle();
 
-		final var lFontUnit = mRendererManager.uiTitleFont();
-		final var lSpriteBatch = mRendererManager.uiSpriteBatch();
+		final var fontUnit = core.sharedResources().uiTitleFont();
+		final var spriteBatch = core.sharedResources().uiSpriteBatch();
 
-		lSpriteBatch.begin(core.HUD());
+		spriteBatch.begin(core.HUD());
 
-		final var lSize = 196;
+		final var size = 196;
 
-		final var lMinimapPositionX = lHudBoundingBox.right() - 10.f - lSize;
-		final var lMinimapPositionY = lHudBoundingBox.top() + 48.0f;
+		final var minimapPositionX = hudBoundingBox.right() - 10.f - size;
+		final var minimapPositionY = hudBoundingBox.top() + 48.0f;
+		final var minimapHudColor = ColorConstants.getWhiteWithAlpha(0.75f);
 
-		lFontUnit.begin(core.HUD());
-		final var lMinimapHudColor = ColorConstants.getWhiteWithAlpha(0.75f);
-		lSpriteBatch.draw(mMinimapTexture, 0, 0, 196, 196, lMinimapPositionX, lMinimapPositionY, lSize, lSize, -0.01f, lMinimapHudColor);
+		fontUnit.begin(core.HUD());
+		spriteBatch.setColor(minimapHudColor);
+		spriteBatch.draw(mMinimapTexture, 0, 0, 196, 196, minimapPositionX, minimapPositionY, size, size, .01f);
 
-		final var lPlatformManager = mPlatformsController.platformManager();
-		final var lPlatforms = lPlatformManager.platforms();
-		final var lNumPlatforms = lPlatforms.size();
-		for (int i = 0; i < lNumPlatforms; i++) {
-			final var lPlatform = lPlatforms.get(i);
+		final var platformManager = mPlatformsController.platformManager();
+		final var platforms = platformManager.platforms();
+		final var numPlatforms = platforms.size();
+		for (int i = 0; i < numPlatforms; i++) {
+			final var lPlatform = platforms.get(i);
 			final var lWorldPositionX = lPlatform.x();
 			final var lWorldPositionY = lPlatform.y();
 
-			final var lScaledPositionX = MathHelper.scaleToRange(lWorldPositionX, -1024, 1024, 0, lSize);
-			final var lScaledPositionY = MathHelper.scaleToRange(lWorldPositionY, -1024, 1024, 0, lSize);
+			final var lScaledPositionX = MathHelper.scaleToRange(lWorldPositionX, -1024, 1024, 0, size);
+			final var lScaledPositionY = MathHelper.scaleToRange(lWorldPositionY, -1024, 1024, 0, size);
 
-			var lShipColor = ColorConstants.GREEN;
+			var shipColor = ColorConstants.GREEN();
 			if (lPlatform.platformType == PlatformType.Warehouse) {
-				lShipColor = ColorConstants.YELLOW;
+				shipColor = ColorConstants.YELLOW();
 			} else if (lPlatform.platformType == PlatformType.Water) {
-				lShipColor = ColorConstants.BLUE;
+				shipColor = ColorConstants.BLUE();
 			}
 
-			lSpriteBatch.draw(mCoreSpritesheet, mCoreSpritesheet.getSpriteFrame("TEXTURE_WHITE"), lMinimapPositionX + lScaledPositionX, lMinimapPositionY + lScaledPositionY, 4, 4, -0.01f, lShipColor);
+			spriteBatch.setColor(shipColor);
+			spriteBatch.draw(mCoreSpritesheet, mCoreSpritesheet.getSpriteFrame("TEXTURE_WHITE"), minimapPositionX + lScaledPositionX, minimapPositionY + lScaledPositionY, 4, 4, .01f);
 		}
 
 		final var lShipManager = mShipController.shipManager();
@@ -149,15 +152,16 @@ public class MinimapRenderer extends UiWindow implements IInputProcessor {
 			final var lWorldPositionX = lShip.body().transform.p.x * ConstantsPhysics.UnitsToPixels();
 			final var lWorldPositionY = lShip.body().transform.p.y * ConstantsPhysics.UnitsToPixels();
 
-			final var lScaledPositionX = MathHelper.scaleToRange(lWorldPositionX, -1024, 1024, 0, lSize);
-			final var lScaledPositionY = MathHelper.scaleToRange(lWorldPositionY, -1024, 1024, 0, lSize);
+			final var lScaledPositionX = MathHelper.scaleToRange(lWorldPositionX, -1024, 1024, 0, size);
+			final var lScaledPositionY = MathHelper.scaleToRange(lWorldPositionY, -1024, 1024, 0, size);
 
-			var lShipColor = lShip.isPlayerControlled ? ColorConstants.RED : ColorConstants.GREY_DARK;
-			lSpriteBatch.draw(mCoreSpritesheet, mCoreSpritesheet.getSpriteFrame("TEXTURE_WHITE"), lMinimapPositionX + lScaledPositionX, lMinimapPositionY + lScaledPositionY, 4, 4, -0.01f, lShipColor);
+			var shipColor = lShip.isPlayerControlled ? ColorConstants.RED() : ColorConstants.GREY_DARK();
+			spriteBatch.setColor(shipColor);
+			spriteBatch.draw(mCoreSpritesheet, mCoreSpritesheet.getSpriteFrame("TEXTURE_WHITE"), minimapPositionX + lScaledPositionX, minimapPositionY + lScaledPositionY, 4, 4, .01f);
 		}
 
-		lFontUnit.end();
-		lSpriteBatch.end();
+		fontUnit.end();
+		spriteBatch.end();
 
 	}
 

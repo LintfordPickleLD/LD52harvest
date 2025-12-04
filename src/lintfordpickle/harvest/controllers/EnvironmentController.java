@@ -1,7 +1,7 @@
 package lintfordpickle.harvest.controllers;
 
 import net.lintfordlib.controllers.BaseController;
-import net.lintfordlib.controllers.core.ControllerManager;
+import net.lintfordlib.controllers.ControllerManager;
 import net.lintfordlib.controllers.core.particles.ParticleFrameworkController;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.camera.ICamera;

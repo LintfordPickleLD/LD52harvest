@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL20;
 
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.graphics.shaders.ShaderMVP_PCT;
+import net.lintfordlib.core.storage.FileUtils;
 
 public class TrailShader extends ShaderMVP_PCT {
 
@@ -11,7 +12,7 @@ public class TrailShader extends ShaderMVP_PCT {
 	// COnstants
 	// --------------------------------------
 
-	private static final String VERT_FILENAME = "/res/shaders/shader_batch_pct.vert";
+	private static final String VERT_FILENAME = FileUtils.RESOURCE_LOCATION_PREFIX + "/res/shaders/shader_batch_pct.vert";
 	private static final String FRAG_FILENAME = "res/shaders/shader_trail_batch_pct.frag";
 
 	// --------------------------------------

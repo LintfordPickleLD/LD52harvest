@@ -2,10 +2,10 @@ package lintfordpickle.harvest.screens.editor.panels;
 
 import lintfordpickle.harvest.controllers.editor.EditorLayerController;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
-import net.lintfordLib.editor.renderers.UiDockedWindow;
-import net.lintfordLib.editor.renderers.UiPanel;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.input.InputManager;
+import net.lintfordlib.renderers.editor.panels.UiDockedWindow;
+import net.lintfordlib.renderers.editor.panels.UiPanel;
 import net.lintfordlib.renderers.windows.UiWindow;
 
 public abstract class LayerPanel<T extends SceneBaseLayer> extends UiPanel {

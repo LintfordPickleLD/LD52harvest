@@ -4,7 +4,7 @@ import lintfordpickle.harvest.data.scene.cargo.Cargo;
 import lintfordpickle.harvest.data.scene.cargo.CargoManager;
 import lintfordpickle.harvest.data.scene.cargo.CargoType;
 import net.lintfordlib.controllers.BaseController;
-import net.lintfordlib.controllers.core.ControllerManager;
+import net.lintfordlib.controllers.ControllerManager;
 import net.lintfordlib.core.LintfordCore;
 
 public class CargoController extends BaseController {

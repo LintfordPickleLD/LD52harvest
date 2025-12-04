@@ -4,12 +4,12 @@ import lintfordpickle.harvest.controllers.editor.EditorSceneController;
 import lintfordpickle.harvest.data.editor.EditorLayersData;
 import lintfordpickle.harvest.data.scene.physics.PhysicsSettingsManager;
 import lintfordpickle.harvest.renderers.editor.EditorPhysicsSettingsRenderer;
-import net.lintfordLib.editor.controllers.EditorBrushController;
-import net.lintfordLib.editor.controllers.EditorHashGridController;
-import net.lintfordLib.editor.renderers.UiPanel;
 import net.lintfordlib.ConstantsPhysics;
+import net.lintfordlib.controllers.editor.EditorBrushController;
+import net.lintfordlib.controllers.editor.EditorHashGridController;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.input.InputManager;
+import net.lintfordlib.renderers.editor.panels.UiPanel;
 import net.lintfordlib.renderers.windows.UiWindow;
 import net.lintfordlib.renderers.windows.components.UiButton;
 import net.lintfordlib.renderers.windows.components.UiHorizontalEntryGroup;
@@ -72,44 +72,44 @@ public class LayerPhysicsScene extends UiPanel {
 		mRenderPanelTitle = true;
 		mPanelTitle = "Physics Settings";
 
-		mGravityX = new UiInputFloat(parentWindow);
+		mGravityX = new UiInputFloat();
 		mGravityX.label("Gravity X");
 		mGravityX.setUiWidgetListener(this, INPUT_GRAVITY_X);
-		mGravityY = new UiInputFloat(parentWindow);
+		mGravityY = new UiInputFloat();
 		mGravityY.label("Gravity Y");
 		mGravityY.setUiWidgetListener(this, INPUT_GRAVITY_Y);
 
-		mGridWidth = new UiInputFloat(parentWindow);
+		mGridWidth = new UiInputFloat();
 		mGridWidth.label("Width");
 		mGridWidth.setMinMax(500, 10000);
 		mGridWidth.stepSize(1);
 		mGridWidth.setUiWidgetListener(this, INPUT_GRID_WIDTH);
 
-		mGridHeight = new UiInputFloat(parentWindow);
+		mGridHeight = new UiInputFloat();
 		mGridHeight.label("Height");
 		mGridHeight.setMinMax(500, 10000);
 		mGridHeight.stepSize(50);
 		mGridHeight.setUiWidgetListener(this, INPUT_GRID_HEIGHT);
 
-		mGridTilesWide = new UiInputInteger(parentWindow);
+		mGridTilesWide = new UiInputInteger();
 		mGridTilesWide.label("Tiles X");
 		mGridTilesWide.setMinMax(5, 20);
 		mGridTilesWide.setUiWidgetListener(this, INPUT_GRID_TILES_WIDE);
 
-		mGridTilesHigh = new UiInputInteger(parentWindow);
+		mGridTilesHigh = new UiInputInteger();
 		mGridTilesHigh.label("Tiles Y");
 		mGridTilesHigh.setMinMax(5, 20);
 		mGridTilesHigh.setUiWidgetListener(this, INPUT_GRID_TILES_HIGH);
 
-		mTakeFromGridSettings = new UiButton(parentWindow);
+		mTakeFromGridSettings = new UiButton();
 		mTakeFromGridSettings.buttonLabel("Take From Scene Grid");
 		mTakeFromGridSettings.setUiWidgetListener(this, INPUT_TAKE_FROM_SCENE_GRID);
 
-		UiHorizontalEntryGroup mGridSize = new UiHorizontalEntryGroup(parentWindow);
+		UiHorizontalEntryGroup mGridSize = new UiHorizontalEntryGroup();
 		mGridSize.widgets().add(mGridWidth);
 		mGridSize.widgets().add(mGridHeight);
 
-		UiHorizontalEntryGroup mGridCells = new UiHorizontalEntryGroup(parentWindow);
+		UiHorizontalEntryGroup mGridCells = new UiHorizontalEntryGroup();
 		mGridCells.widgets().add(mGridTilesWide);
 		mGridCells.widgets().add(mGridTilesHigh);
 

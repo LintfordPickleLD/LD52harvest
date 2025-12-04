@@ -6,7 +6,7 @@ import java.util.List;
 import lintfordpickle.harvest.data.scene.layers.LayersManager;
 import lintfordpickle.harvest.data.scene.layers.SceneParticleLayer;
 import net.lintfordlib.controllers.BaseController;
-import net.lintfordlib.controllers.core.ControllerManager;
+import net.lintfordlib.controllers.ControllerManager;
 
 public class EditorParticleLayerController extends BaseController {
 

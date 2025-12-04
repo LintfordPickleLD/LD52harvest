@@ -4,10 +4,10 @@ import lintfordpickle.harvest.controllers.editor.EditorPhysicsController;
 import lintfordpickle.harvest.data.editor.EditorLayersData;
 import lintfordpickle.harvest.data.editor.physics.EditorPhysicsObjectInstance;
 import lintfordpickle.harvest.renderers.editor.EditorPhysicsRenderer;
-import net.lintfordLib.editor.controllers.EditorBrushController;
-import net.lintfordLib.editor.renderers.UiPanel;
+import net.lintfordlib.controllers.editor.EditorBrushController;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.input.InputManager;
+import net.lintfordlib.renderers.editor.panels.UiPanel;
 import net.lintfordlib.renderers.windows.UiWindow;
 import net.lintfordlib.renderers.windows.components.UiButton;
 import net.lintfordlib.renderers.windows.components.UiButtonToggle;
@@ -66,22 +66,22 @@ public class LayerPhysicsObjects extends UiPanel {
 		mRenderPanelTitle = true;
 		mPanelTitle = "Physics Scene";
 
-		mNumFloorRegions = new UiLabelledInt(parentWindow);
+		mNumFloorRegions = new UiLabelledInt();
 		mNumFloorRegions.labelText("Number Objects: ");
 
-		mAddNewPolygon = new UiButton(parentWindow);
+		mAddNewPolygon = new UiButton();
 		mAddNewPolygon.setUiWidgetListener(this, BUTTON_PLACE_FLOOR);
 		mAddNewPolygon.buttonLabel("Add Polygon");
 
-		mDeletePolygon = new UiButton(parentWindow);
+		mDeletePolygon = new UiButton();
 		mDeletePolygon.setUiWidgetListener(this, BUTTON_DELETE_SELECTED);
 		mDeletePolygon.buttonLabel("Delete");
 
-		mSetFloorCenterToCursor = new UiButton(parentWindow);
+		mSetFloorCenterToCursor = new UiButton();
 		mSetFloorCenterToCursor.setUiWidgetListener(this, BUTTON_SET_OBJECT_CENTER_TO_CURSOR);
 		mSetFloorCenterToCursor.buttonLabel("Center");
 
-		mToggleStatic = new UiButtonToggle(parentWindow);
+		mToggleStatic = new UiButtonToggle();
 		mToggleStatic.setUiWidgetListener(this, BUTTON_TOGGLE_STATIC);
 		mToggleStatic.buttonLabel("Is Static");
 

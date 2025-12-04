@@ -8,13 +8,13 @@ import lintfordpickle.harvest.data.scene.physics.ShipPhysicsData;
 import lintfordpickle.harvest.data.scene.ships.Ship;
 import lintfordpickle.harvest.data.scene.ships.ShipManager;
 import net.lintfordlib.ConstantsPhysics;
+import net.lintfordlib.assets.ResourceGroupProvider;
 import net.lintfordlib.controllers.BaseController;
-import net.lintfordlib.controllers.core.ControllerManager;
+import net.lintfordlib.controllers.ControllerManager;
 import net.lintfordlib.controllers.core.particles.ParticleFrameworkController;
 import net.lintfordlib.controllers.physics.PhysicsController;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.debug.Debug;
-import net.lintfordlib.core.geometry.partitioning.GridEntity;
 import net.lintfordlib.core.maths.RandomNumbers;
 import net.lintfordlib.core.maths.Vector2f;
 import net.lintfordlib.core.particles.particlesystems.ParticleSystemInstance;
@@ -138,32 +138,31 @@ public class ShipController extends BaseController {
 
 		final int lNumPlayers = mPlayerManager.numActivePlayers();
 		for (int i = 0; i < lNumPlayers; i++) {
-			final var lPlayerSession = mPlayerManager.getPlayer(i);
+			final var playerSession = mPlayerManager.getPlayer(i);
 
-			// Add a ship for this entry to the world
-			final var lShip = new Ship(GridEntity.getNewEntityUid());
-			lShip.owningPlayerSessionUid = lPlayerSession.playerUid();
-			lShip.isPlayerControlled = lPlayerSession.isPlayerControlled();
-			lShip.isGhostShip = lPlayerSession.isGhostMode();
+			final var ship = new Ship(ResourceGroupProvider.getRollingEntityNumber());
+			ship.owningPlayerSessionUid = playerSession.playerUid();
+			ship.isPlayerControlled = playerSession.isPlayerControlled();
+			ship.isGhostShip = playerSession.isGhostMode();
 
 			final float lShipPositionInUnitsX = ConstantsPhysics.toUnits(0.f);
 			final float lShipPositioninUnitsY = ConstantsPhysics.toUnits(0.f);
 
-			lShip.body().moveTo(lShipPositionInUnitsX, lShipPositioninUnitsY);
+			ship.body().moveTo(lShipPositionInUnitsX, lShipPositioninUnitsY);
 
-			mShipManager.ships().add(lShip);
+			mShipManager.ships().add(ship);
 
-			if (lShip.isGhostShip) {
-				lShip.body().categoryBits(ConstantsGame.PHYSICS_WORLD_MASK_GHOST);
-				lShip.body().maskBits(ConstantsGame.PHYSICS_WORLD_MASK_WALL);
+			if (ship.isGhostShip) {
+				ship.body().categoryBits(ConstantsGame.PHYSICS_WORLD_MASK_GHOST);
+				ship.body().maskBits(ConstantsGame.PHYSICS_WORLD_MASK_WALL);
 			} else {
-				lShip.body().categoryBits(ConstantsGame.PHYSICS_WORLD_MASK_SHIP);
-				lShip.body().maskBits(ConstantsGame.PHYSICS_WORLD_MASK_WALL);
+				ship.body().categoryBits(ConstantsGame.PHYSICS_WORLD_MASK_SHIP);
+				ship.body().maskBits(ConstantsGame.PHYSICS_WORLD_MASK_WALL);
 
-				initializeShipAudio(lShip);
+				initializeShipAudio(ship);
 			}
 
-			lPhysicsWorld.addBody(lShip.body());
+			lPhysicsWorld.addBody(ship.body());
 		}
 
 	}

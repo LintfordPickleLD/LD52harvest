@@ -1,12 +1,12 @@
 package lintfordpickle.harvest.screens.editor.panels;
 
 import lintfordpickle.harvest.controllers.editor.EditorSceneController;
-import net.lintfordLib.editor.controllers.EditorBrushController;
-import net.lintfordLib.editor.renderers.EditorBrushRenderer;
-import net.lintfordLib.editor.renderers.UiPanel;
 import net.lintfordlib.controllers.camera.CameraBoundsController;
+import net.lintfordlib.controllers.editor.EditorBrushController;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.input.InputManager;
+import net.lintfordlib.renderers.editor.EditorBrushRenderer;
+import net.lintfordlib.renderers.editor.panels.UiPanel;
 import net.lintfordlib.renderers.windows.UiWindow;
 import net.lintfordlib.renderers.windows.components.UiButtonToggle;
 import net.lintfordlib.renderers.windows.components.UiInputText;
@@ -58,18 +58,15 @@ public class ScenePanel extends UiPanel {
 		mRenderPanelTitle = true;
 		mPanelTitle = "Scene";
 
-		mToggleSceneBoundRendering = new UiButtonToggle(parentWindow);
+		mToggleSceneBoundRendering = new UiButtonToggle("Toggle Scene Border");
 		mToggleSceneBoundRendering.setUiWidgetListener(this, BUTTON__DRAW_SCENE_BORDER);
-		mToggleSceneBoundRendering.buttonLabel("Toggle Scene Border");
 
-		mSceneWidth = new UiInputText(parentWindow);
+		mSceneWidth = new UiInputText("Width in Px");
 		mSceneWidth.numericInputOnly(true);
-		mSceneWidth.label("Width in Px");
 		mSceneWidth.setUiWidgetListener(this, SCENE_WIDTH_IN_PX);
 
-		mSceneHeight = new UiInputText(parentWindow);
+		mSceneHeight = new UiInputText("Height in Px");
 		mSceneHeight.numericInputOnly(true);
-		mSceneHeight.label("Height in Px");
 		mSceneHeight.setUiWidgetListener(this, SCENE_HEIGHT_IN_PX);
 
 		addWidget(mSceneWidth);

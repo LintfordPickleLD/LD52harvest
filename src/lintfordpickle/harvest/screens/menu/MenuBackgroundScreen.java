@@ -7,11 +7,12 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import lintfordpickle.harvest.ConstantsGame;
+import net.lintfordlib.assets.ResourceManager;
 import net.lintfordlib.controllers.core.particles.ParticleFrameworkController;
 import net.lintfordlib.core.LintfordCore;
-import net.lintfordlib.core.ResourceManager;
 import net.lintfordlib.core.geometry.Rectangle;
 import net.lintfordlib.core.graphics.ColorConstants;
+import net.lintfordlib.core.graphics.ColorHelper;
 import net.lintfordlib.core.graphics.sprites.SpriteInstance;
 import net.lintfordlib.core.graphics.sprites.spritesheet.SpriteSheetDefinition;
 import net.lintfordlib.core.graphics.textures.Texture;
@@ -20,6 +21,7 @@ import net.lintfordlib.core.maths.Vector2f;
 import net.lintfordlib.core.maths.Vector3f;
 import net.lintfordlib.core.particles.ParticleFrameworkData;
 import net.lintfordlib.core.particles.particlesystems.ParticleSystemInstance;
+import net.lintfordlib.core.rendering.RenderPass;
 import net.lintfordlib.renderers.particles.ParticleFrameworkRenderer;
 import net.lintfordlib.screenmanager.Screen;
 import net.lintfordlib.screenmanager.ScreenManager;
@@ -135,6 +137,9 @@ public class MenuBackgroundScreen extends Screen {
 	private ParticleSystemInstance mJetParticleSystem;
 	private ParticleSystemInstance mJetIntenseParticleSystem;
 
+	private float textHsv;
+	private float[] hsvColors = new float[3];
+
 	// ---------------------------------------------
 	// Constructor
 	// ---------------------------------------------
@@ -142,7 +147,9 @@ public class MenuBackgroundScreen extends Screen {
 	public MenuBackgroundScreen(ScreenManager screenManager) {
 		super(screenManager);
 
-		mScreenManager.core().createNewGameCamera();
+		screenManager.core().createNewGameCamera();
+
+		mCanBeHidden = false;
 	}
 
 	// ---------------------------------------------
@@ -153,17 +160,17 @@ public class MenuBackgroundScreen extends Screen {
 	public void initialize() {
 		super.initialize();
 
-		final var lCore = screenManager().core();
-		final var lControllerManager = lCore.controllerManager();
+		final var core = screenManager.core();
+		final var controllerManager = core.controllerManager();
 
-		mParticleFrameworkData = new ParticleFrameworkData();
+		mParticleFrameworkData = new ParticleFrameworkData(core.dataManager(), entityGroupUid());
 		mParticleFrameworkData.loadFromMetaFiles("res/def/particles/systems/menu_meta.json", ParticleFrameworkData.PARTICLE_EMITTER_META_FILE);
 
-		mParticleFrameworkController = new ParticleFrameworkController(lControllerManager, mParticleFrameworkData, entityGroupUid());
-		mParticleFrameworkController.initialize(lCore);
+		mParticleFrameworkController = new ParticleFrameworkController(controllerManager, mParticleFrameworkData, entityGroupUid());
+		mParticleFrameworkController.initialize(core);
 
 		mParticleFrameworkRenderer = new ParticleFrameworkRenderer(mRendererManager, entityGroupUid());
-		mParticleFrameworkRenderer.initialize(lCore);
+		mParticleFrameworkRenderer.initialize(core);
 
 		mUpperRed = new VehicleStream();
 		mUpperRed.init(959.f, 78.f, -50.f, 267.f, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -239,6 +246,7 @@ public class MenuBackgroundScreen extends Screen {
 		mAirCondAnim = mPropsSpritesheet.getSpriteInstance("aircond");
 
 		mParticleFrameworkRenderer.loadResources(resourceManager);
+
 	}
 
 	@Override
@@ -273,36 +281,38 @@ public class MenuBackgroundScreen extends Screen {
 
 	@Override
 	public void draw(LintfordCore core) {
-		super.draw(core);
+
+		// super.draw(core);
 
 		final var lCanvasBox = core.gameCamera().boundingRectangle();
-		final var lTextureBatch = rendererManager().uiSpriteBatch();
+		final var textureBatch = core.sharedResources().uiSpriteBatch();
 
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 
 		core.gameCamera().update(core);
 		core.config().display().reapplyGlViewport();
 
-		lTextureBatch.begin(core.gameCamera());
-		lTextureBatch.draw(mBackgroundTextureSky, 0, 0, 960, 540, lCanvasBox.left(), lCanvasBox.top(), lCanvasBox.width(), lCanvasBox.height(), -0.9f, ColorConstants.WHITE);
-		lTextureBatch.draw(mBackgroundTexture, 0, 0, 960, 540, lCanvasBox.left(), lCanvasBox.top(), lCanvasBox.width(), lCanvasBox.height(), -0.85f, ColorConstants.WHITE);
-		lTextureBatch.end();
+		textureBatch.setColorWhite();
+		textureBatch.begin(core.gameCamera());
+		textureBatch.draw(mBackgroundTextureSky, 0, 0, 960, 540, lCanvasBox.left(), lCanvasBox.top(), lCanvasBox.width(), lCanvasBox.height(), .9f);
+		textureBatch.draw(mBackgroundTexture, 0, 0, 960, 540, lCanvasBox.left(), lCanvasBox.top(), lCanvasBox.width(), lCanvasBox.height(), .85f);
+		textureBatch.end();
 
 		drawVehicleStream(core, true, false, mUpperRed);
 		drawVehicleStream(core, true, false, mLowerRed);
 		drawVehicleStream(core, false, false, mUpperGreen);
 		drawVehicleStream(core, false, false, mLowerGreen);
 
-		lTextureBatch.begin(core.gameCamera());
+		final var rghtWidth = mForegroundRightTexture.getTextureWidth();
+		final var rightHeight = mForegroundRightTexture.getTextureHeight();
+		final var leftWidth = mForegroundLeftTexture.getTextureWidth();
+		final var leftHeight = mForegroundLeftTexture.getTextureHeight();
 
-		final var lRightWidth = mForegroundRightTexture.getTextureWidth();
-		final var lRightHeight = mForegroundRightTexture.getTextureHeight();
-		final var lLeftWidth = mForegroundLeftTexture.getTextureWidth();
-		final var lLeftHeight = mForegroundLeftTexture.getTextureHeight();
-
-		lTextureBatch.draw(mForegroundRightTexture, 0, 0, lRightWidth, lRightHeight, lCanvasBox.right() - lRightWidth, lCanvasBox.top(), lRightWidth, lRightHeight, -0.75f, ColorConstants.WHITE);
-		lTextureBatch.draw(mForegroundLeftTexture, 0, 0, lLeftWidth, lLeftHeight, lCanvasBox.left(), lCanvasBox.top(), lLeftWidth, lLeftHeight, -0.75f, ColorConstants.WHITE);
-		lTextureBatch.end();
+		textureBatch.setColorWhite();
+		textureBatch.begin(core.gameCamera());
+		textureBatch.draw(mForegroundRightTexture, 0, 0, rghtWidth, rightHeight, lCanvasBox.right() - rghtWidth, lCanvasBox.top(), rghtWidth, rightHeight, .75f);
+		textureBatch.draw(mForegroundLeftTexture, 0, 0, leftWidth, leftHeight, lCanvasBox.left(), lCanvasBox.top(), leftWidth, leftHeight, .75f);
+		textureBatch.end();
 
 		drawWallAd(core);
 
@@ -311,34 +321,61 @@ public class MenuBackgroundScreen extends Screen {
 		drawVehicleStream(core, true, true, mUpperGreen);
 		drawVehicleStream(core, true, true, mLowerGreen);
 
-		mParticleFrameworkRenderer.draw(core);
+		// TODO: RenderPass
+		mParticleFrameworkRenderer.draw(core, RenderPass.COLOR0);
 
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
+
+		// TODO: Move this into the game/engine version thing
+
+		final var lHudBoundingBox = core.HUD().boundingRectangle();
+		final var lTitleFont = core.sharedResources().uiHeaderFont();
+
+		final var dt = core.gameTime().elapsedTimeMilli() * .001f;
+		final var speed = 110.f; // scroll speed: 110 degrees per second
+
+		textHsv += dt * speed;
+		textHsv %= 360.0f; // hue is a color wheel
+
+		ColorHelper.hsvToRgb(textHsv, 1.0f, 1.0f, hsvColors);
+		final var textScale = .5f;
+		final var fontHeightScaled = lTitleFont.fontHeight() * textScale;
+
+		lTitleFont.setTextColorRGB(hsvColors[0], hsvColors[1], hsvColors[2]);
+		lTitleFont.begin(core.HUD());
+		lTitleFont.drawShadowedText(ConstantsGame.FOOTER_TEXT, lHudBoundingBox.left() + 5.f, lHudBoundingBox.bottom() - 2.f - fontHeightScaled, .01f, 1, 1, textScale);
+
+		final var versionText = "v1.2.0 - ENGINE 20251201_02";
+		lTitleFont.drawShadowedText(versionText, lHudBoundingBox.left() + 5.f, lHudBoundingBox.bottom() - 2.f - fontHeightScaled * 2.f, .01f, 1, 1, textScale);
+
+		lTitleFont.end();
 
 	}
 
 	// ---
 
 	public void drawWallAd(LintfordCore core) {
-		final var lSpriteBatch = rendererManager().uiSpriteBatch();
+		final var spriteBatch = core.sharedResources().uiSpriteBatch();
 
 		srcRect.x(0);
 		srcRect.y(0);
 		srcRect.width(128);
 		srcRect.height(128);
 
-		lSpriteBatch.begin(core.gameCamera());
 		mAdWallSoup.update(core);
 		mAirCondAnim.update(core);
 		mAirCondAnim.setPosition(-297, 167);
-		lSpriteBatch.drawQuadrilateral(mAdWallSpritesheet, mAdWallSoup, points, -.8f, ColorConstants.WHITE);
-		lSpriteBatch.draw(mPropsSpritesheet, mAirCondAnim, -0.01f, ColorConstants.WHITE);
-		lSpriteBatch.end();
+
+		spriteBatch.setColorWhite();
+		spriteBatch.begin(core.gameCamera());
+		spriteBatch.drawQuadrilateral(mAdWallSpritesheet, mAdWallSoup, points, .8f);
+		spriteBatch.draw(mPropsSpritesheet, mAirCondAnim, .01f);
+		spriteBatch.end();
 
 	}
 
 	public void drawVehicleStream(LintfordCore core, boolean drawLeftSide, boolean zHigh, VehicleStream vs) {
-		final var lSpriteBatch = rendererManager().uiSpriteBatch();
+		final var spriteBatch = core.sharedResources().uiSpriteBatch();
 
 		final var sx = vs.startPoint.screenPositionX;
 		final var sy = vs.startPoint.screenPositionY;
@@ -347,7 +384,7 @@ public class MenuBackgroundScreen extends Screen {
 		final var ey = vs.endPoint.screenPositionY;
 		final var es = vs.endPoint.scale;
 
-		lSpriteBatch.begin(core.gameCamera());
+		spriteBatch.begin(core.gameCamera());
 		final int lNumVehicles = vs.vehicles.size();
 		for (int i = 0; i < lNumVehicles; i++) {
 			final var v = vs.vehicles.get(i);
@@ -365,29 +402,31 @@ public class MenuBackgroundScreen extends Screen {
 			final var posY = sy + ((ey - sy) * v.t);
 			v.s = ss + ((es - ss) * v.t);
 
-			final var lSpriteFrame = mPropsSpritesheet.getSpriteFrame(v.n);
-			final var lColorMod = ColorConstants.getColor(v.r, v.g, v.b);
-			lSpriteBatch.draw(mPropsSpritesheet, lSpriteFrame, posX, posY + v.oy, lSpriteFrame.width() * v.s, lSpriteFrame.height() * v.s, zHigh ? -0.65f : -0.85f, lColorMod);
+			final var spriteFrame = mPropsSpritesheet.getSpriteFrame(v.n);
+			final var colorMod = ColorConstants.getColor(v.r, v.g, v.b);
 
-			final var lSpriteGlassFrame = mPropsSpritesheet.getSpriteFrame(v.n + "_GLASS");
-			lSpriteBatch.draw(mPropsSpritesheet, lSpriteGlassFrame, posX, posY + v.oy, lSpriteGlassFrame.width() * v.s, lSpriteGlassFrame.height() * v.s, zHigh ? -0.65f : -0.85f, ColorConstants.WHITE);
+			spriteBatch.setColor(colorMod);
+			spriteBatch.draw(mPropsSpritesheet, spriteFrame, posX, posY + v.oy, spriteFrame.width() * v.s, spriteFrame.height() * v.s, zHigh ? .65f : .85f);
 
-			final var lPosX_t1 = sx + ((ex - sx) * (v.t - .1f));
-			final var lVehicleDirectionX = Math.signum(posX - lPosX_t1);
+			final var spriteGlassFrame = mPropsSpritesheet.getSpriteFrame(v.n + "_GLASS");
+			spriteBatch.draw(mPropsSpritesheet, spriteGlassFrame, posX, posY + v.oy, spriteGlassFrame.width() * v.s, spriteGlassFrame.height() * v.s, zHigh ? .65f : .85f);
+
+			final var posX_t1 = sx + ((ex - sx) * (v.t - .1f));
+			final var vehicleDirectionX = Math.signum(posX - posX_t1);
 
 			if (RandomNumbers.getRandomChance(40.f)) {
-				if (lVehicleDirectionX < .0f) {
-					mJetParticleSystem.spawnParticle(posX - 4 + lSpriteFrame.width() * v.s, posY + lSpriteGlassFrame.height() * v.s * .5f, zHigh ? -0.55f : -0.75f, 0, 0);
-					mJetParticleSystem.spawnParticle(posX + 4 + lSpriteFrame.width() * v.s, posY + lSpriteGlassFrame.height() * v.s * .5f, zHigh ? -0.55f : -0.75f, 0, 0);
+				if (vehicleDirectionX < .0f) {
+					mJetParticleSystem.spawnParticle(posX - 4 + spriteFrame.width() * v.s, posY + spriteGlassFrame.height() * v.s * .5f, zHigh ? .55f : .75f, 0, 0);
+					mJetParticleSystem.spawnParticle(posX + 4 + spriteFrame.width() * v.s, posY + spriteGlassFrame.height() * v.s * .5f, zHigh ? .55f : .75f, 0, 0);
 				} else {
-					mJetParticleSystem.spawnParticle(posX - 4, posY + lSpriteGlassFrame.height() * v.s * .5f, zHigh ? -0.55f : -0.75f, 0, 0);
-					mJetParticleSystem.spawnParticle(posX + 4, posY + lSpriteGlassFrame.height() * v.s * .5f, zHigh ? -0.55f : -0.75f, 0, 0);
+					mJetParticleSystem.spawnParticle(posX - 4, posY + spriteGlassFrame.height() * v.s * .5f, zHigh ? .55f : .75f, 0, 0);
+					mJetParticleSystem.spawnParticle(posX + 4, posY + spriteGlassFrame.height() * v.s * .5f, zHigh ? .55f : .75f, 0, 0);
 				}
 
 			}
 		}
 
-		lSpriteBatch.end();
+		spriteBatch.end();
 	}
 
 	private String getRandomVehicleName(List<String> names) {
@@ -395,11 +434,13 @@ public class MenuBackgroundScreen extends Screen {
 	}
 
 	private Vector3f getRandomVehicleColor() {
-		final var lMinBrightness = .1f;
-		final var lMaxBrightness = .6f;
-		tempColor.x = RandomNumbers.random(lMinBrightness, lMaxBrightness);
-		tempColor.y = RandomNumbers.random(lMinBrightness, lMaxBrightness);
-		tempColor.z = RandomNumbers.random(lMinBrightness, lMaxBrightness);
+
+		final var minBrightness = .1f;
+		final var maxBrightness = .6f;
+
+		tempColor.x = RandomNumbers.random(minBrightness, maxBrightness);
+		tempColor.y = RandomNumbers.random(minBrightness, maxBrightness);
+		tempColor.z = RandomNumbers.random(minBrightness, maxBrightness);
 		return tempColor;
 	}
 

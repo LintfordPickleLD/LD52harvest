@@ -8,13 +8,14 @@ import lintfordpickle.harvest.controllers.layers.EditorAnimationLayerController;
 import lintfordpickle.harvest.data.editor.EditorLayersData;
 import lintfordpickle.harvest.data.scene.layers.SceneAnimationLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
-import net.lintfordLib.editor.controllers.EditorBrushController;
-import net.lintfordLib.editor.data.EditorLayerBrush;
+import net.lintfordlib.assets.ResourceManager;
+import net.lintfordlib.controllers.editor.EditorBrushController;
 import net.lintfordlib.core.LintfordCore;
-import net.lintfordlib.core.ResourceManager;
 import net.lintfordlib.core.debug.Debug;
+import net.lintfordlib.core.rendering.RenderPass;
+import net.lintfordlib.data.editor.EditorLayerBrush;
 import net.lintfordlib.renderers.BaseRenderer;
-import net.lintfordlib.renderers.RendererManager;
+import net.lintfordlib.renderers.RendererManagerBase;
 
 public class EditorAnimationLayerRenderer extends BaseRenderer {
 
@@ -67,7 +68,7 @@ public class EditorAnimationLayerRenderer extends BaseRenderer {
 	// Constructor
 	// ---------------------------------------------
 
-	public EditorAnimationLayerRenderer(RendererManager rendererManager, int entityGroupID) {
+	public EditorAnimationLayerRenderer(RendererManagerBase rendererManager, int entityGroupID) {
 		super(rendererManager, RENDERER_NAME, entityGroupID);
 
 	}
@@ -80,11 +81,10 @@ public class EditorAnimationLayerRenderer extends BaseRenderer {
 	public void initialize(LintfordCore core) {
 		final var lControllerManager = core.controllerManager();
 
-		mSceneController = (EditorSceneController) lControllerManager.getControllerByNameRequired(EditorSceneController.CONTROLLER_NAME, entityGroupID());
-		mEditorBrushController = (EditorBrushController) lControllerManager.getControllerByNameRequired(EditorBrushController.CONTROLLER_NAME, mEntityGroupUid);
-		mEditorLayerController = (EditorLayerController) lControllerManager.getControllerByNameRequired(EditorLayerController.CONTROLLER_NAME, entityGroupID());
-
-		mEditorAnimationLayerController = (EditorAnimationLayerController) lControllerManager.getControllerByNameRequired(EditorAnimationLayerController.CONTROLLER_NAME, entityGroupID());
+		mSceneController = (EditorSceneController) lControllerManager.getControllerByNameRequired(EditorSceneController.CONTROLLER_NAME, entityGroupUid());
+		mEditorBrushController = (EditorBrushController) lControllerManager.getControllerByNameRequired(EditorBrushController.CONTROLLER_NAME, entityGroupUid());
+		mEditorLayerController = (EditorLayerController) lControllerManager.getControllerByNameRequired(EditorLayerController.CONTROLLER_NAME, entityGroupUid());
+		mEditorAnimationLayerController = (EditorAnimationLayerController) lControllerManager.getControllerByNameRequired(EditorAnimationLayerController.CONTROLLER_NAME, entityGroupUid());
 	}
 
 	@Override
@@ -255,7 +255,7 @@ public class EditorAnimationLayerRenderer extends BaseRenderer {
 	}
 
 	@Override
-	public void draw(LintfordCore core) {
+	public void draw(LintfordCore core, RenderPass renderPass) {
 		final var lLayers = mEditorAnimationLayerController.animationLayers();
 
 		final var lNumLayers = lLayers.size();
@@ -276,7 +276,7 @@ public class EditorAnimationLayerRenderer extends BaseRenderer {
 	// ---------------------------------------------
 
 	protected void drawAnimationLayer(LintfordCore core, SceneAnimationLayer layer) {
-		final var lSpriteBatch = mRendererManager.uiSpriteBatch();
+		final var lSpriteBatch = core.sharedResources().uiSpriteBatch();
 
 		lSpriteBatch.begin(core.gameCamera());
 

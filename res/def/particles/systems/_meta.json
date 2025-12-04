@@ -1,17 +1,16 @@
 {
-	"rootDirectory":"res//def//particles//systems//",
-	"itemFileLocations" : [
+	"AssetRootDirectory":"res//def//particles//systems//",
+	"ItemFilepaths" : [
 	
-		"particlesystem_wisp",
-		"particlesystem_smoke",
-		"particlesystem_fire",
-		"particlesystem_fire_intense",
-		"particlesystem_jet",
-		"particlesystem_jet_intense",
-		
-		"particlesystem_spark",
-		"particlesystem_healeffect",
-		"particlesystem_enginespark",
-		"particlesystem_engineair"
+		"particlesystem_wisp.json",
+		"particlesystem_smoke.json",
+		"particlesystem_fire.json",
+		"particlesystem_fire_intense.json",
+		"particlesystem_jet.json",
+		"particlesystem_jet_intense.json",
+		"particlesystem_spark.json",
+		"particlesystem_healeffect.json",
+		"particlesystem_enginespark.json",
+		"particlesystem_engineair.json"
 	]
 }

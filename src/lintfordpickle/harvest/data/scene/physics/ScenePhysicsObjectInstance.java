@@ -5,14 +5,17 @@ import lintfordpickle.harvest.data.GridCollisionTypes;
 import net.lintfordlib.ConstantsPhysics;
 import net.lintfordlib.core.maths.Vector2f;
 import net.lintfordlib.core.physics.dynamics.RigidBody;
+import net.lintfordlib.core.physics.dynamics.RigidBody.BodyType;
 import net.lintfordlib.core.physics.dynamics.RigidBodyEntity;
 import net.lintfordlib.core.physics.shapes.PolygonShape;
 
 public class ScenePhysicsObjectInstance extends RigidBodyEntity {
 
 	// --------------------------------------
-	// Variables
+	// Constants
 	// --------------------------------------
+
+	private static final long serialVersionUID = 5571115715609894253L;
 
 	// --------------------------------------
 	// Constructor
@@ -35,7 +38,7 @@ public class ScenePhysicsObjectInstance extends RigidBodyEntity {
 		final var unitCenterX = ConstantsPhysics.toUnits(worldCenterX);
 		final var unitCenterY = ConstantsPhysics.toUnits(worldCenterY);
 
-		body = new RigidBody(true);
+		body = new RigidBody(BodyType.Static);
 		body.addShape(PolygonShape.createEmptyPolygonShape(lDensity, lRestitution, lStaticFriction, lDynamicFriction));
 		body.moveTo(unitCenterX, unitCenterY);
 		body.angle(rotation);

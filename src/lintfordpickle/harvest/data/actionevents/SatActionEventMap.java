@@ -28,12 +28,4 @@ public class SatActionEventMap {
 	public static final int BYTEMASK_MOUSE_LEFT_TIMED   = 0b00001000;
 	public static final int BYTEMASK_MOUSE_RIGHT_TIMED  = 0b00010000;
 	
-
-	// Input actions are bindable
-	public static final int INPUT_ACTION_EVENT_THRUSTER_UP    = 0;
-	public static final int INPUT_ACTION_EVENT_THRUSTER_LEFT  = 1;
-	public static final int INPUT_ACTION_EVENT_THRUSTER_RIGHT = 2;
-	public static final int INPUT_ACTION_EVENT_THRUSTER_DOWN  = 4;
-	// @formatter:on
-
 }

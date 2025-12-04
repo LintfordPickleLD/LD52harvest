@@ -1,6 +1,6 @@
 package lintfordpickle.harvest.data.editor;
 
-import net.lintfordLib.editor.data.EditorLayerBrush;
+import net.lintfordlib.data.editor.EditorLayerBrush;
 
 // TODO: Change this to a hash map (expandability in different games)
 public class EditorLayersData {

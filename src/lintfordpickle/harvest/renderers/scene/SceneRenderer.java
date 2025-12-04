@@ -6,12 +6,12 @@ import lintfordpickle.harvest.controllers.SceneController;
 import lintfordpickle.harvest.data.scene.layers.SceneAnimationLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneNoiseLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneTextureLayer;
+import net.lintfordlib.assets.ResourceManager;
 import net.lintfordlib.core.LintfordCore;
-import net.lintfordlib.core.ResourceManager;
-import net.lintfordlib.core.graphics.ColorConstants;
 import net.lintfordlib.core.graphics.geometry.FullScreenTexturedQuad;
+import net.lintfordlib.core.rendering.RenderPass;
 import net.lintfordlib.renderers.BaseRenderer;
-import net.lintfordlib.renderers.RendererManager;
+import net.lintfordlib.renderers.RendererManagerBase;
 
 public class SceneRenderer extends BaseRenderer {
 
@@ -28,7 +28,7 @@ public class SceneRenderer extends BaseRenderer {
 	// ---------------------------------------------
 
 	protected SceneController mSceneController;
-	
+
 	private FullScreenTexturedQuad mTexturedQuad;
 	private NoiseLayerShader mNoiseLayerShader;
 
@@ -46,9 +46,9 @@ public class SceneRenderer extends BaseRenderer {
 	// Constructor
 	// ---------------------------------------------
 
-	public SceneRenderer(RendererManager rendererManager, int entityGroupID) {
+	public SceneRenderer(RendererManagerBase rendererManager, int entityGroupID) {
 		super(rendererManager, RENDERER_NAME, entityGroupID);
-		
+
 		mTexturedQuad = new FullScreenTexturedQuad();
 		mNoiseLayerShader = new NoiseLayerShader();
 	}
@@ -59,7 +59,7 @@ public class SceneRenderer extends BaseRenderer {
 
 	@Override
 	public void initialize(LintfordCore core) {
-		mSceneController = (SceneController) core.controllerManager().getControllerByNameRequired(SceneController.CONTROLLER_NAME, entityGroupID());
+		mSceneController = (SceneController) core.controllerManager().getControllerByNameRequired(SceneController.CONTROLLER_NAME, entityGroupUid());
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class SceneRenderer extends BaseRenderer {
 			if (lSceneLayer instanceof SceneTextureLayer) {
 				final var layer = (SceneTextureLayer) lSceneLayer;
 				if (layer.textureStatus == SceneTextureLayer.TEXTURE_UNLOADED) {
-					layer.texture = resourceManager.textureManager().loadTexture(layer.textureName(), layer.textureFilepath(), entityGroupID());
+					layer.texture = resourceManager.textureManager().loadTexture(layer.textureName(), layer.textureFilepath(), entityGroupUid());
 					if (resourceManager.textureManager().textureNotFound().equals(layer.texture)) {
 						layer.texture = null;
 
@@ -89,7 +89,7 @@ public class SceneRenderer extends BaseRenderer {
 			}
 
 			// TODO: animated textures
-			
+
 			mNoiseLayerShader.loadResources(resourceManager);
 			mTexturedQuad.loadResources(resourceManager);
 
@@ -129,12 +129,12 @@ public class SceneRenderer extends BaseRenderer {
 	}
 
 	@Override
-	public void draw(LintfordCore core) {
-		final var lLayersManager = mSceneController.sceneData().layersManager();
-		final var lLayers = lLayersManager.layers();
-		final var lNumLayers = lLayers.size();
-		for (int i = 0; i < lNumLayers; i++) {
-			final var lSceneLayer = lLayers.get(i);
+	public void draw(LintfordCore core, RenderPass renderPass) {
+		final var layersManager = mSceneController.sceneData().layersManager();
+		final var layers = layersManager.layers();
+		final var numLayers = layers.size();
+		for (int i = 0; i < numLayers; i++) {
+			final var lSceneLayer = layers.get(i);
 
 			if (lSceneLayer instanceof SceneTextureLayer) {
 				drawTextureLayer(core, (SceneTextureLayer) lSceneLayer);
@@ -154,7 +154,7 @@ public class SceneRenderer extends BaseRenderer {
 	}
 
 	protected void drawTextureLayer(LintfordCore core, SceneTextureLayer layer) {
-		final var lSpriteBatch = mRendererManager.uiSpriteBatch();
+		final var spriteBatch = mRendererManager.sharedResources().uiSpriteBatch();
 
 		final var aabb_c = core.gameCamera().boundingRectangle();
 		final var cameraPositionX = aabb_c.centerX();
@@ -174,29 +174,28 @@ public class SceneRenderer extends BaseRenderer {
 			final var lDstWidth = layer.width;
 			final var lDstHeight = layer.height;
 
-			lSpriteBatch.begin(core.gameCamera());
-
-			lSpriteBatch.draw(layer.texture, lSrcX, lSrcY, lSrcW, lSrcH, lDstX, lDstY, lDstWidth, lDstHeight, -.01f, ColorConstants.WHITE);
-
-			lSpriteBatch.end();
+			spriteBatch.setColorWhite();
+			spriteBatch.begin(core.gameCamera());
+			spriteBatch.draw(layer.texture, lSrcX, lSrcY, lSrcW, lSrcH, lDstX, lDstY, lDstWidth, lDstHeight, 9 - layer.zDepth);
+			spriteBatch.end();
 			return;
 		}
 	}
 
 	protected void drawAnimationLayer(LintfordCore core, SceneAnimationLayer layer) {
-		final var lSpriteBatch = mRendererManager.uiSpriteBatch();
+		final var spriteBatch = mRendererManager.sharedResources().uiSpriteBatch();
 
-		lSpriteBatch.begin(core.gameCamera());
+		spriteBatch.setColorWhite();
+		spriteBatch.begin(core.gameCamera());
 
 		final var lLayerAnimations = layer.spriteAssets();
 		final var lNumAnimations = lLayerAnimations.size();
 		for (int i = 0; i < lNumAnimations; i++) {
 			// final var lSprite = lLayerAnimations.get(i);
-
-			// lSpriteBatch.draw(mPropsSpritesheetDefintion, lSprite, lSprite, 2.f, -0.01f, ColorConstants.WHITE);
+			// spriteBatch.draw(mPropsSpritesheetDefintion, lSprite, lSprite, 2.f, -0.01f, ColorConstants.WHITE);
 		}
 
-		lSpriteBatch.end();
+		spriteBatch.end();
 	}
 
 	protected void drawNoiseLayer(LintfordCore core, SceneNoiseLayer layer) {
@@ -212,8 +211,8 @@ public class SceneRenderer extends BaseRenderer {
 
 		// TODO: Only needs updating when dirty
 		layer.worldMatrix.setIdentity();
-		layer.worldMatrix.translate(lDstX, lDstY, .0f);
-		layer.worldMatrix.scale(lDstWidth, lDstHeight, 1.f);
+		layer.worldMatrix.translate(lDstX, lDstY, 4.5f);
+		layer.worldMatrix.scale(lDstWidth, lDstHeight, 1);
 
 		mNoiseLayerShader.modelMatrix(layer.worldMatrix);
 		mNoiseLayerShader.viewMatrix(core.gameCamera().view());
@@ -225,7 +224,7 @@ public class SceneRenderer extends BaseRenderer {
 		mTexturedQuad.draw(core);
 
 		mNoiseLayerShader.unbind();
-		
+
 	}
 
 }

@@ -7,10 +7,10 @@ import java.util.List;
 import lintfordpickle.harvest.controllers.editor.EditorLayerController;
 import lintfordpickle.harvest.data.editor.LayerListBoxItem;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
-import net.lintfordLib.editor.renderers.UiPanel;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.debug.Debug;
 import net.lintfordlib.core.input.InputManager;
+import net.lintfordlib.renderers.editor.panels.UiPanel;
 import net.lintfordlib.renderers.windows.UiWindow;
 import net.lintfordlib.renderers.windows.components.UiButton;
 import net.lintfordlib.renderers.windows.components.UiHorizontalEntryGroup;
@@ -73,25 +73,25 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 		mRenderPanelTitle = true;
 		mPanelTitle = "Layers";
 
-		mLayerListWidget = new UiVerticalTextListBox(parentWindow, entityGroupUid);
+		mLayerListWidget = new UiVerticalTextListBox(entityGroupUid);
 		mLayerListWidget.addCallbackListener(this);
 		mLayerListWidget.setHeightMinMax(200, 200);
 
-		mDeleteSelected = new UiButton(parentWindow, "Delete");
+		mDeleteSelected = new UiButton("Delete");
 		mDeleteSelected.setUiWidgetListener(this, BUTTON_DELETE_LAYER);
-		mAddTextureLayer = new UiButton(parentWindow, "Add Texture");
+		mAddTextureLayer = new UiButton("Add Texture");
 		mAddTextureLayer.setUiWidgetListener(this, BUTTON_ADD_TEX_LAYER);
-		mAddAnimationLayer = new UiButton(parentWindow, "Add Anim");
+		mAddAnimationLayer = new UiButton("Add Anim");
 		mAddAnimationLayer.setUiWidgetListener(this, BUTTON_ADD_ANIM_LAYER);
-		mAddNoiseLayer = new UiButton(parentWindow, "Add Noise");
+		mAddNoiseLayer = new UiButton("Add Noise");
 		mAddNoiseLayer.setUiWidgetListener(this, BUTTON_ADD_NOISE_LAYER);
 
-		final var lHorizontaGroup = new UiHorizontalEntryGroup(parentWindow);
+		final var lHorizontaGroup = new UiHorizontalEntryGroup();
 
-		mMoveUp = new UiButton(parentWindow, "Up");
+		mMoveUp = new UiButton("Up");
 		mMoveUp.setUiWidgetListener(this, BUTTON_MOVE_LAYER_UP);
 
-		mMoveDown = new UiButton(parentWindow, "Down");
+		mMoveDown = new UiButton("Down");
 		mMoveDown.setUiWidgetListener(this, BUTTON_MOVE_LAYER_DOWN);
 
 		lHorizontaGroup.widgets().add(mMoveUp);

@@ -2,10 +2,11 @@ package lintfordpickle.harvest.controllers.actionevents;
 
 import java.nio.ByteBuffer;
 
+import lintfordpickle.harvest.GameActions;
 import lintfordpickle.harvest.data.actionevents.SatActionEventMap;
 import lintfordpickle.harvest.data.actionevents.SatActionFrame;
+import net.lintfordlib.controllers.ControllerManager;
 import net.lintfordlib.controllers.actionevents.ActionEventController;
-import net.lintfordlib.controllers.core.ControllerManager;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.time.LogicialCounter;
 
@@ -59,15 +60,13 @@ public class SatActionEventController extends ActionEventController<SatActionFra
 
 	protected void updateInputActionEvents(LintfordCore core, ActionEventPlayer player) {
 
-		final var lEventActionManager = core.input().eventActionManager();
+		final var actionManager = core.input().actionManager();
 
-		// keyboard
-		player.currentActionEvents.isSpaceDown = lEventActionManager.getCurrentControlActionStateTimed(SatActionEventMap.INPUT_ACTION_EVENT_THRUSTER_UP);
-		player.currentActionEvents.isDownDown = lEventActionManager.getCurrentControlActionState(SatActionEventMap.INPUT_ACTION_EVENT_THRUSTER_DOWN);
-		player.currentActionEvents.isLeftDown = lEventActionManager.getCurrentControlActionState(SatActionEventMap.INPUT_ACTION_EVENT_THRUSTER_LEFT);
-		player.currentActionEvents.isRightDown = lEventActionManager.getCurrentControlActionState(SatActionEventMap.INPUT_ACTION_EVENT_THRUSTER_RIGHT);
+		player.currentActionEvents.isSpaceDown = actionManager.getActionState(GameActions.THRUSTER_UP).isDown();
+		player.currentActionEvents.isDownDown = actionManager.getActionState(GameActions.THRUSTER_DOWN).isDown();
+		player.currentActionEvents.isLeftDown = actionManager.getActionState(GameActions.THRUSTER_LEFT).isDown();
+		player.currentActionEvents.isRightDown = actionManager.getActionState(GameActions.THRUSTER_RIGHT).isDown();
 
-		// mouse
 		player.currentActionEvents.mouseX = core.gameCamera().getMouseWorldSpaceX();
 		player.currentActionEvents.mouseY = core.gameCamera().getMouseWorldSpaceY();
 

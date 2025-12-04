@@ -1,14 +1,13 @@
 package lintfordpickle.harvest.screens.menu;
 
 import lintfordpickle.harvest.ConstantsGame;
-import lintfordpickle.harvest.GameSceneSettings;
 import lintfordpickle.harvest.controllers.replays.ReplayController;
 import lintfordpickle.harvest.data.players.PlayerManager;
 import lintfordpickle.harvest.data.players.ReplayManager;
 import lintfordpickle.harvest.screens.game.TimeTrialGameScreen;
-import net.lintfordLib.editor.data.scene.SceneHeader;
 import net.lintfordlib.core.graphics.Color;
 import net.lintfordlib.core.time.TimeConstants;
+import net.lintfordlib.data.scene.SceneManager;
 import net.lintfordlib.screenmanager.MenuEntry;
 import net.lintfordlib.screenmanager.MenuScreen;
 import net.lintfordlib.screenmanager.ScreenManager;
@@ -42,6 +41,8 @@ public class TimeTrialLandingScreen extends MenuScreen {
 	private MenuInputEntry mGhostFatestTime;
 	private MenuLabelEntry mNoFastestTime;
 
+	private SceneManager mSceneManager;
+
 	// ---------------------------------------------
 	// Constructors
 	// ---------------------------------------------
@@ -50,14 +51,13 @@ public class TimeTrialLandingScreen extends MenuScreen {
 		super(pScreenManager, TITLE);
 
 		mMainMenuListBox = new ListLayout(this);
-		mMainMenuListBox.layoutWidth(LAYOUT_WIDTH.HALF);
+		mMainMenuListBox.layoutWidth(LAYOUT_WIDTH.THREEQUARTER);
 		mMainMenuListBox.layoutFillType(FILLTYPE.TAKE_WHATS_NEEDED);
 		mMainMenuListBox.setDrawBackground(true, new Color(0.02f, 0.12f, 0.15f, 0.8f));
 		mMainMenuListBox.title("Time-Trial Mode");
 		mMainMenuListBox.showTitle(true);
 
-		// ---
-		final var lPlayTimeEntry = new MenuEntry(mScreenManager, this, "Start");
+		final var lPlayTimeEntry = new MenuEntry(screenManager, this, "Start");
 		lPlayTimeEntry.registerClickListener(this, SCREEN_BUTTON_PLAY_TIME_TRIAL);
 		lPlayTimeEntry.setToolTip("You need ot harvest and deliver food from each of the farms. Fastest time wins.");
 
@@ -90,13 +90,13 @@ public class TimeTrialLandingScreen extends MenuScreen {
 
 		mScreenPaddingTop = 40.f;
 
-		mLayoutAlignment = LAYOUT_ALIGNMENT.RIGHT;
+		mLayoutAlignment = LAYOUT_ALIGNMENT.CENTER;
 		mLayoutPaddingHorizontal = 50.f;
 
 		mIsPopup = false;
 		mShowBackgroundScreens = true;
 
-		mBlockMouseInputInBackground = false;
+		// mBlockMouseInputInBackground = false;
 	}
 
 	// ---------------------------------------------
@@ -107,7 +107,10 @@ public class TimeTrialLandingScreen extends MenuScreen {
 	public void initialize() {
 		super.initialize();
 
-		final var lControllerManager = mScreenManager.core().controllerManager();
+		final var dataManager = screenManager.core().dataManager();
+		mSceneManager = (SceneManager) dataManager.getDataManagerByName(SceneManager.DATA_MANAGER_NAME, ConstantsGame.GAME_RESOURCE_GROUP_ID);
+
+		final var lControllerManager = screenManager.core().controllerManager();
 		mReplayController = (ReplayController) lControllerManager.getControllerByNameRequired(ReplayController.CONTROLLER_NAME, ConstantsGame.GAME_RESOURCE_GROUP_ID);
 
 		final var lReplayManager = mReplayController.replayManager();
@@ -130,7 +133,7 @@ public class TimeTrialLandingScreen extends MenuScreen {
 
 		} else {
 			mNoFastestTime.enabled(true);
-			mNoFastestTime.active(true);
+			// mNoFastestTime.active(true);
 
 			mGhostEnabled.enabled(false);
 			mGhostEnabled.isChecked(false);
@@ -159,16 +162,9 @@ public class TimeTrialLandingScreen extends MenuScreen {
 				}
 			}
 
-			// TODO: Select a valid SceneHeader / pick a level
-			final var lGameSceneSettings = new GameSceneSettings(mScreenManager.core().appResources());
-			final var lSceneHeader = new SceneHeader("level1", lGameSceneSettings);
-			
-			lSceneHeader.baseSceneDirectory("level1");
-			final var h = lSceneHeader.sceneHeaderFilepath();
-			final var d = lSceneHeader.sceneDataFilepath();
-
-			final var lLoadingScreen = new LoadingScreen(screenManager(), true, new TimeTrialGameScreen(screenManager(), lSceneHeader, lPlayerManager));
-			screenManager().createLoadingScreen(new LoadingScreen(screenManager(), true, lLoadingScreen));
+			final var lSceneHeader = mSceneManager.loadSceneHeader("level1");
+			final var timeTrialGameScreen = new TimeTrialGameScreen(screenManager, lSceneHeader, lPlayerManager);
+			screenManager.initiateLoadingScreen(new LoadingScreen(screenManager, true, true, timeTrialGameScreen));
 			break;
 		}
 		}

@@ -5,19 +5,21 @@ import org.lwjgl.opengl.GL20;
 import lintfordpickle.harvest.ConstantsGame;
 import lintfordpickle.harvest.controllers.SceneController;
 import lintfordpickle.harvest.data.scene.AdWall;
+import net.lintfordlib.assets.ResourceManager;
 import net.lintfordlib.core.LintfordCore;
-import net.lintfordlib.core.ResourceManager;
 import net.lintfordlib.core.graphics.ColorConstants;
 import net.lintfordlib.core.graphics.shaders.ShaderMVP_PCT;
+import net.lintfordlib.core.rendering.RenderPass;
+import net.lintfordlib.core.storage.FileUtils;
 import net.lintfordlib.renderers.BaseRenderer;
-import net.lintfordlib.renderers.RendererManager;
+import net.lintfordlib.renderers.RendererManagerBase;
 
 public class SceneAdWallRenderer extends BaseRenderer {
 
 	public class AdWallShader extends ShaderMVP_PCT {
 
 		private static final String FRAG_FILEPATH = "res/shaders/shader_adwall_pct.frag";
-		private static final String VERT_FILENAME = "/res/shaders/shader_batch_pct.vert";
+		private static final String VERT_FILENAME = FileUtils.RESOURCE_LOCATION_PREFIX + "/res/shaders/shader_batch_pct.vert";
 
 		private float mTimeAcc;
 
@@ -86,7 +88,7 @@ public class SceneAdWallRenderer extends BaseRenderer {
 	// Constructor
 	// ---------------------------------------------
 
-	public SceneAdWallRenderer(RendererManager rendererManager, int entityGroupID) {
+	public SceneAdWallRenderer(RendererManagerBase rendererManager, int entityGroupID) {
 		super(rendererManager, RENDERER_NAME, entityGroupID);
 
 		mAdWallShader = new AdWallShader("SHADER_ADWALL");
@@ -98,7 +100,7 @@ public class SceneAdWallRenderer extends BaseRenderer {
 
 	@Override
 	public void initialize(LintfordCore core) {
-		mSceneController = (SceneController) core.controllerManager().getControllerByNameRequired(SceneController.CONTROLLER_NAME, entityGroupID());
+		mSceneController = (SceneController) core.controllerManager().getControllerByNameRequired(SceneController.CONTROLLER_NAME, entityGroupUid());
 	}
 
 	@Override
@@ -123,7 +125,7 @@ public class SceneAdWallRenderer extends BaseRenderer {
 	}
 
 	@Override
-	public void draw(LintfordCore core) {
+	public void draw(LintfordCore core, RenderPass renderPass) {
 		// final var horAds = mSceneController.horizontalAdWall();
 
 		// drawAdWall(core, horAds);
@@ -138,22 +140,23 @@ public class SceneAdWallRenderer extends BaseRenderer {
 		if (adWall == null)
 			return;
 
-		final var lTextureBatch = mRendererManager.uiSpriteBatch();
+		final var spriteBatch = core.sharedResources().uiSpriteBatch();
 
-		final var lTexture = core.resources().textureManager().getTexture(adWall.adWallTextureName, ConstantsGame.GAME_RESOURCE_GROUP_ID);
-		if (lTexture == null)
+		final var texture = core.resources().textureManager().getTexture(adWall.adWallTextureName, ConstantsGame.GAME_RESOURCE_GROUP_ID);
+		if (texture == null)
 			return;
 
-		lTextureBatch.begin(core.gameCamera(), mAdWallShader);
+		final var whiteWithAlpha = ColorConstants.getWhiteWithAlpha(1.5f);
+		spriteBatch.setColor(whiteWithAlpha);
+		spriteBatch.begin(core.gameCamera(), mAdWallShader);
 
 		final var srcX = 0.f;
 		final var srcY = 0.f;// (float) core.gameTime().totalTimeMilli() * .005f;
-		final var srcW = lTexture.getTextureWidth();
-		final var srcH = lTexture.getTextureHeight();
+		final var srcW = texture.getTextureWidth();
+		final var srcH = texture.getTextureHeight();
 
-		final var lWhiteWithAlpha = ColorConstants.getWhiteWithAlpha(1.5f);
-		lTextureBatch.draw(lTexture, srcX, srcY, srcW, srcH, adWall, -0.01f, lWhiteWithAlpha);
+		spriteBatch.draw(texture, srcX, srcY, srcW, srcH, adWall, .01f);
 
-		lTextureBatch.end();
+		spriteBatch.end();
 	}
 }

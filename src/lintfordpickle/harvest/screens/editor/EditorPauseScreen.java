@@ -1,6 +1,5 @@
-package lintfordpickle.harvest.screens.game;
+package lintfordpickle.harvest.screens.editor;
 
-import lintfordpickle.harvest.data.players.PlayerManager;
 import lintfordpickle.harvest.screens.MainMenu;
 import lintfordpickle.harvest.screens.menu.MenuBackgroundScreen;
 import net.lintfordlib.core.graphics.ColorConstants;
@@ -12,14 +11,13 @@ import net.lintfordlib.screenmanager.ScreenManagerConstants.FILLTYPE;
 import net.lintfordlib.screenmanager.layouts.ListLayout;
 import net.lintfordlib.screenmanager.screens.LoadingScreen;
 
-public class PauseScreen extends MenuScreen {
+public class EditorPauseScreen extends MenuScreen {
 
 	// ---------------------------------------------
 	// Constants
 	// ---------------------------------------------
 
 	private static final int SCREEN_BUTTON_CONTINUE = 10;
-	private static final int SCREEN_BUTTON_RESTART = 11;
 	private static final int SCREEN_BUTTON_EXIT = 12;
 
 	// ---------------------------------------------
@@ -27,17 +25,15 @@ public class PauseScreen extends MenuScreen {
 	// ---------------------------------------------
 
 	private SceneHeader mSceneHeader;
-	private PlayerManager mPlayerManager;
 
 	// ---------------------------------------------
 	// Constructor
 	// ---------------------------------------------
 
-	public PauseScreen(ScreenManager screenManager, SceneHeader sceneHeader, PlayerManager playerManager) {
+	public EditorPauseScreen(ScreenManager screenManager, SceneHeader sceneHeader) {
 		super(screenManager, null);
 
 		mSceneHeader = sceneHeader;
-		mPlayerManager = playerManager;
 
 		final var lLayout = new ListLayout(this);
 		lLayout.layoutFillType(FILLTYPE.TAKE_WHATS_NEEDED);
@@ -49,14 +45,10 @@ public class PauseScreen extends MenuScreen {
 		final var lPlayEntry = new MenuEntry(screenManager, this, "Continue");
 		lPlayEntry.registerClickListener(this, SCREEN_BUTTON_CONTINUE);
 
-		final var lOptionsEntry = new MenuEntry(screenManager, this, "Restart");
-		lOptionsEntry.registerClickListener(this, SCREEN_BUTTON_RESTART);
-
 		final var lCreditsEntry = new MenuEntry(screenManager, this, "Exit");
 		lCreditsEntry.registerClickListener(this, SCREEN_BUTTON_EXIT);
 
 		lLayout.addMenuEntry(lPlayEntry);
-		lLayout.addMenuEntry(lOptionsEntry);
 		lLayout.addMenuEntry(lCreditsEntry);
 		lLayout.addMenuEntry(MenuEntry.menuSeparator());
 
@@ -74,11 +66,6 @@ public class PauseScreen extends MenuScreen {
 		case SCREEN_BUTTON_CONTINUE:
 			exitScreen();
 			return;
-
-		case SCREEN_BUTTON_RESTART:
-			final var gameScreen = new TimeTrialGameScreen(screenManager, mSceneHeader, mPlayerManager);
-			screenManager.initiateLoadingScreen(new LoadingScreen(screenManager, true, true, gameScreen));
-			break;
 
 		case SCREEN_BUTTON_EXIT:
 			final var menuBackgroundScreen = new MenuBackgroundScreen(screenManager);

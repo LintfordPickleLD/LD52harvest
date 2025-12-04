@@ -1,9 +1,9 @@
 {
-	"rootDirectory":"res//def//particles//emitters//",
-	"itemFileLocations": [
-		"emitter_fire",
-		"emitter_global_wisp",
-		"emitter_smoke",
-		"emitter_sparks"
+	"AssetRootDirectory":"res//def//particles//emitters//",
+	"ItemFilepaths": [
+		"emitter_fire.json",
+		"emitter_global_wisp.json",
+		"emitter_smoke.json",
+		"emitter_sparks.json"
 	]
 }

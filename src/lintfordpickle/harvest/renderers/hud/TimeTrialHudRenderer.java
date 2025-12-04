@@ -4,14 +4,15 @@ import lintfordpickle.harvest.ConstantsGame;
 import lintfordpickle.harvest.controllers.GameStateController;
 import lintfordpickle.harvest.controllers.ShipController;
 import lintfordpickle.harvest.data.game.GameState;
+import net.lintfordlib.assets.ResourceManager;
 import net.lintfordlib.core.LintfordCore;
-import net.lintfordlib.core.ResourceManager;
 import net.lintfordlib.core.graphics.ColorConstants;
 import net.lintfordlib.core.graphics.batching.SpriteBatch;
 import net.lintfordlib.core.graphics.fonts.FontUnit;
 import net.lintfordlib.core.graphics.sprites.spritesheet.SpriteSheetDefinition;
+import net.lintfordlib.core.rendering.RenderPass;
 import net.lintfordlib.core.time.TimeConstants;
-import net.lintfordlib.renderers.RendererManager;
+import net.lintfordlib.renderers.RendererManagerBase;
 import net.lintfordlib.renderers.windows.UiWindow;
 import net.lintfordlib.renderers.windows.components.UiBar;
 
@@ -48,7 +49,7 @@ public class TimeTrialHudRenderer extends UiWindow {
 	// Constructor
 	// ---------------------------------------------
 
-	public TimeTrialHudRenderer(RendererManager rendererManager, int entityGroupID) {
+	public TimeTrialHudRenderer(RendererManagerBase rendererManager, int entityGroupID) {
 		super(rendererManager, RENDERER_NAME, entityGroupID);
 
 		mHealthBar = new UiBar(0.f, 100.f);
@@ -63,8 +64,8 @@ public class TimeTrialHudRenderer extends UiWindow {
 	public void initialize(LintfordCore core) {
 		final var lControllerManager = core.controllerManager();
 
-		mShipController = (ShipController) lControllerManager.getControllerByNameRequired(ShipController.CONTROLLER_NAME, entityGroupID());
-		mGameStateController = (GameStateController) lControllerManager.getControllerByNameRequired(GameStateController.CONTROLLER_NAME, entityGroupID());
+		mShipController = (ShipController) lControllerManager.getControllerByNameRequired(ShipController.CONTROLLER_NAME, entityGroupUid());
+		mGameStateController = (GameStateController) lControllerManager.getControllerByNameRequired(GameStateController.CONTROLLER_NAME, entityGroupUid());
 
 		mGameState = mGameStateController.gameState();
 	}
@@ -95,48 +96,50 @@ public class TimeTrialHudRenderer extends UiWindow {
 	}
 
 	@Override
-	public void draw(LintfordCore core) {
-		final var lHudBoundingBox = core.HUD().boundingRectangle();
+	public void draw(LintfordCore core, RenderPass renderPass) {
+		final var hudBoundingBox = core.HUD().boundingRectangle();
 
-		final var lFontUnit = mRendererManager.uiTitleFont();
-		final var lSpriteBatch = mRendererManager.uiSpriteBatch();
+		final var fontUnit = core.sharedResources().uiTitleFont();
+		final var spriteBatch = core.sharedResources().uiSpriteBatch();
 
-		lSpriteBatch.begin(core.HUD());
+		spriteBatch.begin(core.HUD());
 
-		final var lTimeRemaining = mGameStateController.gameState().gameTimer;
+		final var timeRemaining = mGameStateController.gameState().gameTimer;
 
-		var tempTime = lTimeRemaining;
-		final var lTotalMinutes = (int) tempTime / TimeConstants.MillisPerMinute;
-		tempTime -= lTotalMinutes * TimeConstants.MillisPerMinute;
-		final var lTotalSeconds = (int) tempTime / TimeConstants.MillisPerSecond;
-		tempTime -= lTotalSeconds * TimeConstants.MillisPerSecond;
+		var tempTime = timeRemaining;
+		final var totalMinutes = (int) tempTime / TimeConstants.MillisPerMinute;
+		tempTime -= totalMinutes * TimeConstants.MillisPerMinute;
+		final var totalSeconds = (int) tempTime / TimeConstants.MillisPerSecond;
+		tempTime -= totalSeconds * TimeConstants.MillisPerSecond;
 
-		final var lTimeFormatted = String.format(java.util.Locale.US, "%02d", lTotalMinutes) + ":" + String.format(java.util.Locale.US, "%02d", lTotalSeconds) + ":" + String.format(java.util.Locale.US, "%1.0f", tempTime);
+		final var timeFormatted = String.format(java.util.Locale.US, "%02d", totalMinutes) + ":" + String.format(java.util.Locale.US, "%02d", totalSeconds) + ":" + String.format(java.util.Locale.US, "%1.0f", tempTime);
 
-		lFontUnit.begin(core.HUD());
-		lSpriteBatch.draw(mHudSpritesheet, mHudSpritesheet.getSpriteFrame("TEXTURE_CLOCK"), lHudBoundingBox.left() + 5.f, lHudBoundingBox.top() + 5.0f, 32, 32, -0.01f, ColorConstants.WHITE);
-		lFontUnit.drawText(": " + lTimeFormatted, lHudBoundingBox.left() + 38.f, lHudBoundingBox.top() + 5.0f, -0.01f, 1.f);
-		float lGridPositionY = lHudBoundingBox.top() + 16.0f;
+		fontUnit.begin(core.HUD());
+		spriteBatch.setColorWhite();
+		spriteBatch.draw(mHudSpritesheet, mHudSpritesheet.getSpriteFrame("TEXTURE_CLOCK"), hudBoundingBox.left() + 5.f, hudBoundingBox.top() + 5.0f, 32, 32, .01f);
+		fontUnit.drawText(": " + timeFormatted, hudBoundingBox.left() + 38.f, hudBoundingBox.top() + 5.0f, -0.01f, 1.f);
+		var gridPositionY = hudBoundingBox.top() + 16.0f;
 
 		// Player Stats
-		drawPlatformStatus(core, lFontUnit, lSpriteBatch, lHudBoundingBox.left() + 10.f, lGridPositionY += 32.f, 1);
-		drawPlatformStatus(core, lFontUnit, lSpriteBatch, lHudBoundingBox.left() + 10.f, lGridPositionY += 32.f, 2);
-		drawPlatformStatus(core, lFontUnit, lSpriteBatch, lHudBoundingBox.left() + 10.f, lGridPositionY += 32.f, 3);
-		drawPlatformStatus(core, lFontUnit, lSpriteBatch, lHudBoundingBox.left() + 10.f, lGridPositionY += 32.f, 4);
+		drawPlatformStatus(core, fontUnit, spriteBatch, hudBoundingBox.left() + 10.f, gridPositionY += 32.f, 1);
+		drawPlatformStatus(core, fontUnit, spriteBatch, hudBoundingBox.left() + 10.f, gridPositionY += 32.f, 2);
+		drawPlatformStatus(core, fontUnit, spriteBatch, hudBoundingBox.left() + 10.f, gridPositionY += 32.f, 3);
+		drawPlatformStatus(core, fontUnit, spriteBatch, hudBoundingBox.left() + 10.f, gridPositionY += 32.f, 4);
 
-		lSpriteBatch.draw(mHudSpritesheet, mHudSpritesheet.getSpriteFrame("TEXTURE_SPANNER"), lHudBoundingBox.right() - 5.f - 32f, lHudBoundingBox.top() + 5.0f, 32, 32, -0.01f, ColorConstants.WHITE);
+		spriteBatch.setColorWhite();
+		spriteBatch.draw(mHudSpritesheet, mHudSpritesheet.getSpriteFrame("TEXTURE_SPANNER"), hudBoundingBox.right() - 5.f - 32f, hudBoundingBox.top() + 5.0f, 32, 32, .01f);
 		final var lShip = mShipController.shipManager().playerShip();
 
 		final var lHealthBarWidth = 196.f - 32.f;
 		mHealthBar.innerBorderPadding(2);
 		mHealthBar.setInnerColor(0.92f, 0.07f, 0.04f, 1.f);
-		mHealthBar.setDestRectangle(lHudBoundingBox.right() - 10 - lHealthBarWidth - 32, lHudBoundingBox.top() + 12, lHealthBarWidth, 20);
+		mHealthBar.setDestRectangle(hudBoundingBox.right() - 10 - lHealthBarWidth - 32, hudBoundingBox.top() + 12, lHealthBarWidth, 20);
 		mHealthBar.setCurrentValue(lShip.health);
 		mHealthBar.setMinMax(0, 100);
-		mHealthBar.draw(core, lSpriteBatch, lFontUnit, -0.01f);
+		mHealthBar.draw(core, spriteBatch, fontUnit, -0.01f);
 
-		lFontUnit.end();
-		lSpriteBatch.end();
+		fontUnit.end();
+		spriteBatch.end();
 
 	}
 
@@ -146,11 +149,13 @@ public class TimeTrialHudRenderer extends UiWindow {
 		// TODO: Show both players
 		final var lPlayerScorecard = mGameState.getScoreCard(0);
 
-		final var lWaterColor = lPlayerScorecard.isPlatformWatered(platformNr) ? ColorConstants.WHITE : ColorConstants.GREY_DARK;
-		spriteBatch.draw(mHudSpritesheet, mHudSpritesheet.getSpriteFrame("TEXTURE_WATER"), x + 24.f, y, 32, 32, -0.01f, lWaterColor);
+		final var waterColor = lPlayerScorecard.isPlatformWatered(platformNr) ? ColorConstants.WHITE() : ColorConstants.GREY_DARK();
+		spriteBatch.setColor(waterColor);
+		spriteBatch.draw(mHudSpritesheet, mHudSpritesheet.getSpriteFrame("TEXTURE_WATER"), x + 24.f, y, 32, 32, .01f);
 
-		final var lWheatColor = lPlayerScorecard.isPlatformHarvested(platformNr) ? ColorConstants.WHITE : ColorConstants.GREY_DARK;
-		spriteBatch.draw(mHudSpritesheet, mHudSpritesheet.getSpriteFrame("TEXTURE_WHEAT"), x + 48.f, y, 32, 32, -0.01f, lWheatColor);
+		final var wheatColor = lPlayerScorecard.isPlatformHarvested(platformNr) ? ColorConstants.WHITE() : ColorConstants.GREY_DARK();
+		spriteBatch.setColor(wheatColor);
+		spriteBatch.draw(mHudSpritesheet, mHudSpritesheet.getSpriteFrame("TEXTURE_WHEAT"), x + 48.f, y, 32, 32, .01f);
 	}
 
 }

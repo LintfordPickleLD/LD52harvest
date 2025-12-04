@@ -6,7 +6,7 @@ import lintfordpickle.harvest.controllers.SceneController;
 import lintfordpickle.harvest.data.scene.ships.Ship;
 import net.lintfordlib.ConstantsPhysics;
 import net.lintfordlib.controllers.BaseController;
-import net.lintfordlib.controllers.core.ControllerManager;
+import net.lintfordlib.controllers.ControllerManager;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.camera.ICamera;
 import net.lintfordlib.core.maths.Vector2f;

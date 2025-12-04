@@ -7,18 +7,19 @@ import lintfordpickle.harvest.controllers.editor.EditorPhysicsController;
 import lintfordpickle.harvest.data.editor.EditorLayersData;
 import lintfordpickle.harvest.data.editor.physics.EditorPhysicsObjectInstance;
 import lintfordpickle.harvest.data.scene.collisions.GridEntityType;
-import net.lintfordLib.editor.controllers.EditorBrushController;
-import net.lintfordLib.editor.controllers.EditorHashGridController;
-import net.lintfordLib.editor.data.EditorLayerBrush;
 import net.lintfordlib.ConstantsPhysics;
+import net.lintfordlib.assets.ResourceGroupProvider;
+import net.lintfordlib.controllers.editor.EditorBrushController;
+import net.lintfordlib.controllers.editor.EditorHashGridController;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.debug.Debug;
-import net.lintfordlib.core.geometry.partitioning.GridEntity;
 import net.lintfordlib.core.graphics.fonts.FontUnit;
 import net.lintfordlib.core.graphics.linebatch.LineBatch;
 import net.lintfordlib.core.maths.Vector2f;
+import net.lintfordlib.core.rendering.RenderPass;
+import net.lintfordlib.data.editor.EditorLayerBrush;
 import net.lintfordlib.renderers.BaseRenderer;
-import net.lintfordlib.renderers.RendererManager;
+import net.lintfordlib.renderers.RendererManagerBase;
 
 public class EditorPhysicsRenderer extends BaseRenderer {
 
@@ -80,7 +81,7 @@ public class EditorPhysicsRenderer extends BaseRenderer {
 	// Constructor
 	// --------------------------------------
 
-	public EditorPhysicsRenderer(RendererManager rendererManager, int entityGroupID) {
+	public EditorPhysicsRenderer(RendererManagerBase rendererManager, int entityGroupID) {
 		super(rendererManager, RENDERER_NAME, entityGroupID);
 	}
 
@@ -280,27 +281,27 @@ public class EditorPhysicsRenderer extends BaseRenderer {
 	}
 
 	@Override
-	public void draw(LintfordCore core) {
+	public void draw(LintfordCore core, RenderPass renderPass) {
 		if (!renderPhysicsObjects())
 			return;
 
-		final var lLineBatch = mRendererManager.uiLineBatch();
-		final var lFontUnit = mRendererManager.uiTextFont();
+		final var lineBatch = core.sharedResources().uiLineBatch();
+		final var fontUnit = core.sharedResources().uiTextFont();
 
-		lLineBatch.lineType(GL11.GL_LINES);
+		lineBatch.lineType(GL11.GL_LINES);
 
-		lLineBatch.begin(core.gameCamera());
-		lFontUnit.begin(core.gameCamera());
+		lineBatch.begin(core.gameCamera());
+		fontUnit.begin(core.gameCamera());
 
-		drawPhysicsObjects(core, lLineBatch, lFontUnit);
+		drawPhysicsObjects(core, lineBatch, fontUnit);
 
 		if (mCreationPhysicsObject != null)
-			drawRectangleCreationGuide(core, mCreationPhysicsObject, lLineBatch, lFontUnit);
+			drawRectangleCreationGuide(core, mCreationPhysicsObject, lineBatch, fontUnit);
 
-		drawSelectedPoints(core, lLineBatch, lFontUnit);
+		drawSelectedPoints(core, lineBatch, fontUnit);
 
-		lLineBatch.end();
-		lFontUnit.end();
+		lineBatch.end();
+		fontUnit.end();
 
 	}
 
@@ -310,7 +311,7 @@ public class EditorPhysicsRenderer extends BaseRenderer {
 		final var lCamWorldX = core.gameCamera().getPosition().x;
 		final var lCamWorldY = core.gameCamera().getPosition().y;
 		final var lCamRadius = core.gameCamera().getWidth() * .5f;
-		final var lFilteredFloors = mEditorBrushController.hashGrid().findNearbyEntities(lCamWorldX, lCamWorldY, lCamRadius, GridEntityType.GRID_ENTITY_TYPE_PHYSICS_OBJECTS);
+		final var lFilteredFloors = mHashGridController.hashGrid().findNearbyEntities(lCamWorldX, lCamWorldY, lCamRadius, GridEntityType.GRID_ENTITY_TYPE_PHYSICS_OBJECTS);
 
 		final var lRectFloorCount = lFilteredFloors.size();
 		for (int i = 0; i < lRectFloorCount; i++) {
@@ -339,19 +340,19 @@ public class EditorPhysicsRenderer extends BaseRenderer {
 				final var c = lFloorRegion.c.worldPosition;
 				final var d = lFloorRegion.d.worldPosition;
 
-				lineBatch.draw(a.x, a.y, b.x, b.y, -0.01f, lR, lG, lB);
-				lineBatch.draw(b.x, b.y, c.x, c.y, -0.01f, lR, lG, lB * 3.f);
-				lineBatch.draw(a.x, a.y, d.x, d.y, -0.01f, lR, lG, lB * 3.f);
-				lineBatch.draw(c.x, c.y, d.x, d.y, -0.01f, lR, lG, lB);
+				lineBatch.draw(a.x, a.y, b.x, b.y, .01f, lR, lG, lB);
+				lineBatch.draw(b.x, b.y, c.x, c.y, .01f, lR, lG, lB * 3.f);
+				lineBatch.draw(a.x, a.y, d.x, d.y, .01f, lR, lG, lB * 3.f);
+				lineBatch.draw(c.x, c.y, d.x, d.y, .01f, lR, lG, lB);
 
 				if (mDrawPhysicsObjectUids)
 					font.drawText("" + lFloorRegion.uid, lFloorRegion.wcx, lFloorRegion.wcy, -0.01f, 0.5f);
 
 				if (lIsSelected || lIsPointSelected) {
-					font.drawText("A", a.x, a.y, -0.01f, 0.5f);
-					font.drawText("B", b.x, b.y, -0.01f, 0.5f);
-					font.drawText("C", c.x, c.y, -0.01f, 0.5f);
-					font.drawText("D", d.x, d.y, -0.01f, 0.5f);
+					font.drawText("A", a.x, a.y, .01f, 0.5f);
+					font.drawText("B", b.x, b.y, .01f, 0.5f);
+					font.drawText("C", c.x, c.y, .01f, 0.5f);
+					font.drawText("D", d.x, d.y, .01f, 0.5f);
 
 					final var lFloorWorldCenterX = lFloorRegion.wcx;
 					final var lFloorWorldCenterY = lFloorRegion.wcy;
@@ -385,22 +386,22 @@ public class EditorPhysicsRenderer extends BaseRenderer {
 
 			if (mNextClickForA) {
 				Debug.debugManager().drawers().drawPointImmediate(core.gameCamera(), mMouseX, mMouseY);
-				font.drawText("A", mMouseX, mMouseY, -0.01f, 0.5f);
+				font.drawText("A", mMouseX, mMouseY, .01f, 0.5f);
 			} else if (mNextClickForB) {
 				Debug.debugManager().drawers().drawPointImmediate(core.gameCamera(), mMouseX, mMouseY);
 				font.drawText("B", mMouseX, mMouseY, -0.01f, 0.5f);
-				lLineBatch.draw(a.x, a.y, mMouseX, mMouseY, -0.01f, 1.f, 1.f, 1.f);
+				lLineBatch.draw(a.x, a.y, mMouseX, mMouseY, .01f, 1.f, 1.f, 1.f);
 			} else if (mNextClickForC) {
 				Debug.debugManager().drawers().drawPointImmediate(core.gameCamera(), mMouseX, mMouseY);
 				font.drawText("C", mMouseX, mMouseY, -0.01f, 0.5f);
 				lLineBatch.draw(a.x, a.y, b.x, b.y, -0.01f, 1.f, 1.f, 1.f);
-				lLineBatch.draw(b.x, b.y, mMouseX, mMouseY, -0.01f, 1.f, 1.f, 1.f);
+				lLineBatch.draw(b.x, b.y, mMouseX, mMouseY, .01f, 1.f, 1.f, 1.f);
 			} else {
 				Debug.debugManager().drawers().drawPointImmediate(core.gameCamera(), mMouseX, mMouseY);
 				font.drawText("D", mMouseX, mMouseY, -0.01f, 0.5f);
 				lLineBatch.draw(a.x, a.y, b.x, b.y, -0.01f, 1.f, 1.f, 1.f);
 				lLineBatch.draw(b.x, b.y, c.x, c.y, -0.01f, 1.f, 1.f, 1.f);
-				lLineBatch.draw(c.x, c.y, mMouseX, mMouseY, -0.01f, 1.f, 1.f, 1.f);
+				lLineBatch.draw(c.x, c.y, mMouseX, mMouseY, .01f, 1.f, 1.f, 1.f);
 			}
 		}
 	}
@@ -418,7 +419,7 @@ public class EditorPhysicsRenderer extends BaseRenderer {
 			if (lSelectedPoint == null)
 				continue;
 
-			Debug.debugManager().drawers().drawPointImmediate(core.gameCamera(), lSelectedPoint.worldPosition.x, lSelectedPoint.worldPosition.y, -0.01f, .95f, 0.97f, 0.f, 1.f);
+			Debug.debugManager().drawers().drawPointImmediate(core.gameCamera(), lSelectedPoint.worldPosition.x, lSelectedPoint.worldPosition.y, .01f, .95f, 0.97f, 0.f, 1.f);
 			Debug.debugManager().drawers().drawCircleImmediate(core.gameCamera(), lSelectedPoint.worldPosition.x, lSelectedPoint.worldPosition.y, 5f, 12);
 		}
 	}
@@ -441,7 +442,7 @@ public class EditorPhysicsRenderer extends BaseRenderer {
 			return; // currently creating floor?
 
 		if (mCreationPhysicsObject == null) {
-			mCreationPhysicsObject = new EditorPhysicsObjectInstance(GridEntity.getNewEntityUid());
+			mCreationPhysicsObject = new EditorPhysicsObjectInstance(ResourceGroupProvider.getRollingEntityNumber());
 			mCreationPhysicsObject.body_isStatic = true;
 			mCreationPhysicsObject.body_dynamicFriction = .5f;
 			mCreationPhysicsObject.body_staticFriction = .5f;

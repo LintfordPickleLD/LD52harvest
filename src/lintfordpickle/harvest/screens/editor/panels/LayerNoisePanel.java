@@ -72,52 +72,52 @@ public class LayerNoisePanel extends LayerPanel<SceneNoiseLayer> implements IUiI
 		mIsExpandable = false;
 		mIsPanelOpen = false;
 
-		mNameLabel = new UiLabel(parentWindow, "Name");
-		mLayerName = new UiInputText(parentWindow);
+		mNameLabel = new UiLabel("Name");
+		mLayerName = new UiInputText();
 		mLayerName.setKeyUpdateListener(this, INPUT_NAME_KEY_UID);
 
-		mCenterXInput = new UiInputInteger(parentWindow);
+		mCenterXInput = new UiInputInteger();
 		mCenterXInput.setUiWidgetListener(this, SLIDER_CENTER_X);
 		mCenterXInput.label("CenterX");
 		mCenterXInput.setMinMax(0, 0);
 
-		mCenterYInput = new UiInputInteger(parentWindow);
+		mCenterYInput = new UiInputInteger();
 		mCenterYInput.setUiWidgetListener(this, SLIDER_CENTER_Y);
 		mCenterYInput.label("CenterY");
 		mCenterYInput.setMinMax(0, 0);
 
-		mTranslationSpeedModX = new UiInputFloat(parentWindow);
+		mTranslationSpeedModX = new UiInputFloat();
 		mTranslationSpeedModX.setUiWidgetListener(this, SLIDER_TRANSLATION_SPEED_X);
 		mTranslationSpeedModX.label("Mod X");
 		mTranslationSpeedModX.setMinMax(-20.f, 20.f);
 		mTranslationSpeedModX.stepSize(.1f);
 
-		mTranslationSpeedModY = new UiInputFloat(parentWindow);
+		mTranslationSpeedModY = new UiInputFloat();
 		mTranslationSpeedModY.setUiWidgetListener(this, SLIDER_TRANSLATION_SPEED_Y);
 		mTranslationSpeedModY.label("Mod Y");
 		mTranslationSpeedModY.setMinMax(0.f, 10.f);
 		mTranslationSpeedModY.stepSize(.1f);
 
-		mWidth = new UiInputFloat(parentWindow);
+		mWidth = new UiInputFloat();
 		mWidth.setUiWidgetListener(this, SLIDER_SCALE_X);
 		mWidth.label("Width");
 		mWidth.setMinMax(0.f, 10.f);
 		mWidth.stepSize(.1f);
-		mHeight = new UiInputFloat(parentWindow);
+		mHeight = new UiInputFloat();
 		mHeight.setUiWidgetListener(this, SLIDER_SCALE_Y);
 		mHeight.label("Height");
 		mHeight.setMinMax(0.f, 10.f);
 		mHeight.stepSize(.1f);
 
-		final var lHorizontalGroup0 = new UiHorizontalEntryGroup(parentWindow);
+		final var lHorizontalGroup0 = new UiHorizontalEntryGroup();
 		lHorizontalGroup0.widgets().add(mCenterXInput);
 		lHorizontalGroup0.widgets().add(mCenterYInput);
 
-		final var lHorizontalGroup1 = new UiHorizontalEntryGroup(parentWindow);
+		final var lHorizontalGroup1 = new UiHorizontalEntryGroup();
 		lHorizontalGroup1.widgets().add(mTranslationSpeedModX);
 		lHorizontalGroup1.widgets().add(mTranslationSpeedModY);
 
-		final var lHorizontalGroup2 = new UiHorizontalEntryGroup(parentWindow);
+		final var lHorizontalGroup2 = new UiHorizontalEntryGroup();
 		lHorizontalGroup2.widgets().add(mWidth);
 		lHorizontalGroup2.widgets().add(mHeight);
 

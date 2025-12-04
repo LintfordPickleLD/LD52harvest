@@ -2,9 +2,8 @@ package lintfordpickle.harvest.screens.menu;
 
 import org.lwjgl.opengl.GL11;
 
+import net.lintfordlib.assets.ResourceManager;
 import net.lintfordlib.core.LintfordCore;
-import net.lintfordlib.core.ResourceManager;
-import net.lintfordlib.core.graphics.ColorConstants;
 import net.lintfordlib.core.graphics.textures.Texture;
 import net.lintfordlib.screenmanager.MenuScreen;
 import net.lintfordlib.screenmanager.ScreenManager;
@@ -46,12 +45,13 @@ public class MenuHelpScreen extends MenuScreen {
 		GL11.glClearColor(0.06f, 0.18f, 0.11f, 1.0f);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-		final var lHudBoundingBox = core.HUD().boundingRectangle();
-		final var lTextureBatch = rendererManager().uiSpriteBatch();
+		final var hudBoundingBox = core.HUD().boundingRectangle();
+		final var spriteBatch = core.sharedResources().uiSpriteBatch();
 
-		lTextureBatch.begin(core.HUD());
-		lTextureBatch.draw(mHelpTexture, 0, 0, 960, 540, lHudBoundingBox.left(), lHudBoundingBox.top(), lHudBoundingBox.width(), lHudBoundingBox.height(), -0.01f, ColorConstants.WHITE);
-		lTextureBatch.end();
+		spriteBatch.setColorWhite();
+		spriteBatch.begin(core.HUD());
+		spriteBatch.draw(mHelpTexture, 0, 0, 960, 540, hudBoundingBox.left(), hudBoundingBox.top(), hudBoundingBox.width(), hudBoundingBox.height(), .01f);
+		spriteBatch.end();
 	}
 
 	@Override

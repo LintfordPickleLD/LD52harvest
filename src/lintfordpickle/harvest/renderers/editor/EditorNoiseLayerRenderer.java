@@ -9,14 +9,15 @@ import lintfordpickle.harvest.data.editor.EditorLayersData;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneNoiseLayer;
 import lintfordpickle.harvest.renderers.scene.NoiseLayerShader;
-import net.lintfordLib.editor.controllers.EditorBrushController;
-import net.lintfordLib.editor.data.EditorLayerBrush;
+import net.lintfordlib.assets.ResourceManager;
+import net.lintfordlib.controllers.editor.EditorBrushController;
 import net.lintfordlib.core.LintfordCore;
-import net.lintfordlib.core.ResourceManager;
 import net.lintfordlib.core.debug.Debug;
 import net.lintfordlib.core.graphics.geometry.FullScreenTexturedQuad;
+import net.lintfordlib.core.rendering.RenderPass;
+import net.lintfordlib.data.editor.EditorLayerBrush;
 import net.lintfordlib.renderers.BaseRenderer;
-import net.lintfordlib.renderers.RendererManager;
+import net.lintfordlib.renderers.RendererManagerBase;
 
 public class EditorNoiseLayerRenderer extends BaseRenderer {
 
@@ -71,7 +72,7 @@ public class EditorNoiseLayerRenderer extends BaseRenderer {
 	// Constructor
 	// ---------------------------------------------
 
-	public EditorNoiseLayerRenderer(RendererManager rendererManager, int entityGroupID) {
+	public EditorNoiseLayerRenderer(RendererManagerBase rendererManager, int entityGroupID) {
 		super(rendererManager, RENDERER_NAME, entityGroupID);
 
 		mTexturedQuad = new FullScreenTexturedQuad();
@@ -86,11 +87,10 @@ public class EditorNoiseLayerRenderer extends BaseRenderer {
 	public void initialize(LintfordCore core) {
 		final var lControllerManager = core.controllerManager();
 
-		mSceneController = (EditorSceneController) lControllerManager.getControllerByNameRequired(EditorSceneController.CONTROLLER_NAME, entityGroupID());
-		mEditorBrushController = (EditorBrushController) lControllerManager.getControllerByNameRequired(EditorBrushController.CONTROLLER_NAME, mEntityGroupUid);
-		mEditorLayerController = (EditorLayerController) lControllerManager.getControllerByNameRequired(EditorLayerController.CONTROLLER_NAME, entityGroupID());
-
-		mEditorNoiseLayerController = (EditorNoiseLayerController) lControllerManager.getControllerByNameRequired(EditorNoiseLayerController.CONTROLLER_NAME, entityGroupID());
+		mSceneController = (EditorSceneController) lControllerManager.getControllerByNameRequired(EditorSceneController.CONTROLLER_NAME, entityGroupUid());
+		mEditorBrushController = (EditorBrushController) lControllerManager.getControllerByNameRequired(EditorBrushController.CONTROLLER_NAME, entityGroupUid());
+		mEditorLayerController = (EditorLayerController) lControllerManager.getControllerByNameRequired(EditorLayerController.CONTROLLER_NAME, entityGroupUid());
+		mEditorNoiseLayerController = (EditorNoiseLayerController) lControllerManager.getControllerByNameRequired(EditorNoiseLayerController.CONTROLLER_NAME, entityGroupUid());
 	}
 
 	@Override
@@ -225,7 +225,7 @@ public class EditorNoiseLayerRenderer extends BaseRenderer {
 	}
 
 	@Override
-	public void draw(LintfordCore core) {
+	public void draw(LintfordCore core, RenderPass renderPass) {
 		final var lLayers = mEditorNoiseLayerController.noiseLayers();
 		final var lNumLayers = lLayers.size();
 		for (int i = 0; i < lNumLayers; i++) {

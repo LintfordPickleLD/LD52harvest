@@ -1,7 +1,7 @@
 package lintfordpickle.harvest;
 
-import net.lintfordlib.ResourceLoader;
-import net.lintfordlib.core.ResourceManager;
+import net.lintfordlib.assets.ResourceLoader;
+import net.lintfordlib.assets.ResourceManager;
 import net.lintfordlib.core.debug.Debug;
 import net.lintfordlib.options.DisplayManager;
 
@@ -11,8 +11,8 @@ public class HarvestResourceLoader extends ResourceLoader {
 	// Constructors
 	// ---------------------------------------------
 
-	public HarvestResourceLoader(ResourceManager resourceManager, DisplayManager displayManager) {
-		super(resourceManager, displayManager, true);
+	public HarvestResourceLoader(ResourceManager resourceManager, DisplayManager displayManager, int entityGroupUid) {
+		super(resourceManager, displayManager, true, entityGroupUid);
 
 	}
 
@@ -21,7 +21,7 @@ public class HarvestResourceLoader extends ResourceLoader {
 	// ---------------------------------------------
 
 	@Override
-	protected void resourcesToLoadInBackground() {
+	protected void resourcesToLoadInBackground(int entityGroupUid) {
 		Debug.debugManager().logger().i(getClass().getSimpleName(), "Loading game assets into group: " + ConstantsGame.GAME_RESOURCE_GROUP_ID);
 		mResourceManager.addProtectedEntityGroupUid(ConstantsGame.GAME_RESOURCE_GROUP_ID);
 

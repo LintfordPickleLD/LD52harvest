@@ -3,11 +3,11 @@ package lintfordpickle.harvest.screens.menu;
 import lintfordpickle.harvest.data.players.PlayerManager;
 import lintfordpickle.harvest.screens.MainMenu;
 import lintfordpickle.harvest.screens.game.TimeTrialGameScreen;
-import net.lintfordLib.editor.data.scene.SceneHeader;
+import net.lintfordlib.assets.ResourceManager;
 import net.lintfordlib.core.LintfordCore;
-import net.lintfordlib.core.ResourceManager;
 import net.lintfordlib.core.graphics.textures.Texture;
 import net.lintfordlib.core.time.TimeConstants;
+import net.lintfordlib.data.scene.SceneHeader;
 import net.lintfordlib.screenmanager.MenuEntry;
 import net.lintfordlib.screenmanager.MenuScreen;
 import net.lintfordlib.screenmanager.ScreenManager;
@@ -57,10 +57,10 @@ public class TimeTrialEndScreen extends MenuScreen {
 		final var lTotalSeconds = (int) tempTime / TimeConstants.MillisPerSecond;
 		tempTime -= lTotalSeconds * TimeConstants.MillisPerSecond;
 
-		final var lRetryButton = new MenuEntry(mScreenManager, this, "Go Again");
+		final var lRetryButton = new MenuEntry(screenManager, this, "Go Again");
 		lRetryButton.registerClickListener(this, SCREEN_BUTTON_RESTART);
 
-		final var lExitToMenuButton = new MenuEntry(mScreenManager, this, "Back to Menu");
+		final var lExitToMenuButton = new MenuEntry(screenManager, this, "Back to Menu");
 		lExitToMenuButton.registerClickListener(this, SCREEN_BUTTON_EXIT);
 
 		lLayout.addMenuEntry(lRetryButton);
@@ -96,11 +96,11 @@ public class TimeTrialEndScreen extends MenuScreen {
 	protected void handleOnClick() {
 		switch (mClickAction.consume()) {
 		case SCREEN_BUTTON_RESTART:
-			screenManager().createLoadingScreen(new LoadingScreen(screenManager(), false, new TimeTrialGameScreen(screenManager(), mSceneHeader, mPlayerManager)));
+			screenManager.initiateLoadingScreen(new LoadingScreen(screenManager, false, false, new TimeTrialGameScreen(screenManager, mSceneHeader, mPlayerManager)));
 			break;
 
 		case SCREEN_BUTTON_EXIT:
-			screenManager().createLoadingScreen(new LoadingScreen(screenManager(), false, new MenuBackgroundScreen(mScreenManager), new MainMenu(screenManager())));
+			screenManager.initiateLoadingScreen(new LoadingScreen(screenManager, false, false, new MenuBackgroundScreen(screenManager), new MainMenu(screenManager)));
 			break;
 		}
 	}
@@ -108,81 +108,80 @@ public class TimeTrialEndScreen extends MenuScreen {
 	@Override
 	public void draw(LintfordCore core) {
 
-		final var lTitleFont = mRendererManager.uiTitleFont();
-		final var lFont = mRendererManager.uiTextFont();
-
 		super.draw(core);
 
-		final var lTextureBatch = rendererManager().uiSpriteBatch();
-		final var lUiStructureController = mScreenManager.UiStructureController();
-		final var lHeaderRect = lUiStructureController.menuTitleRectangle();
+		final var titleFont = core.sharedResources().uiTitleFont();
+		final var lFont = core.sharedResources().uiTextFont();
+		final var spriteBatch = core.sharedResources().uiSpriteBatch();
+		final var uiStructureController = screenManager.UiStructureController();
+		final var headerRect = uiStructureController.menuTitleRectangle();
 
 		lFont.begin(core.HUD());
 		mSurvived = true;
 		if (mSurvived) {
 			if (mMenuTextureWrecked != null) {
-				lTextureBatch.begin(core.HUD());
-
 				final float logoWidth = mMenuTextureCompleted.getTextureWidth();
 				final float logoHeight = mMenuTextureCompleted.getTextureHeight();
 
-				lTextureBatch.draw(mMenuTextureCompleted, 0, 0, logoWidth, logoHeight, -logoWidth * .5f, lHeaderRect.top(), logoWidth, logoHeight, -0.01f, screenColor);
-				lTextureBatch.end();
+				spriteBatch.setColorWhite();
+				spriteBatch.begin(core.HUD());
+				spriteBatch.draw(mMenuTextureCompleted, 0, 0, logoWidth, logoHeight, -logoWidth * .5f, headerRect.top(), logoWidth, logoHeight, .01f);
+				spriteBatch.end();
 			}
 
 			var tempTime = mTotalTimeInMs;
-			final var lTotalMinutes = (int) tempTime / TimeConstants.MillisPerMinute;
-			tempTime -= lTotalMinutes * TimeConstants.MillisPerMinute;
-			final var lTotalSeconds = (int) tempTime / TimeConstants.MillisPerSecond;
-			tempTime -= lTotalSeconds * TimeConstants.MillisPerSecond;
+			final var totalMinutes = (int) tempTime / TimeConstants.MillisPerMinute;
+			tempTime -= totalMinutes * TimeConstants.MillisPerMinute;
+			final var totalSeconds = (int) tempTime / TimeConstants.MillisPerSecond;
+			tempTime -= totalSeconds * TimeConstants.MillisPerSecond;
 
-			final var lHeaderText = "TIME: " + lTotalMinutes + ":" + lTotalSeconds + ":" + (int) tempTime;
-			final var lHeaderTextWidth = lTitleFont.getStringWidth(lHeaderText);
-			final var lScreenHeight = core.config().display().windowHeight();
+			final var headerText = "TIME: " + totalMinutes + ":" + totalSeconds + ":" + (int) tempTime;
+			final var headerTextWidth = titleFont.getStringWidth(headerText);
+			final var screenHeight = core.config().display().windowHeight();
 
-			final var lTextTitleHeight = -lScreenHeight / 4.f;
-			mMenuHeaderPadding = lScreenHeight / 20.f;
+			final var textTitleHeight = -screenHeight / 4.f;
+			mMenuHeaderPadding = screenHeight / 20.f;
 
-			lTitleFont.begin(core.HUD());
-			lTitleFont.drawText(lHeaderText, -lHeaderTextWidth / 2, lTextTitleHeight, -0.01f, 1.f);
-			lTitleFont.end();
+			titleFont.begin(core.HUD());
+			titleFont.drawText(headerText, -headerTextWidth / 2, textTitleHeight, .01f, 1.f);
+			titleFont.end();
 
-			final var lGameOverText0 = "Well Done!";
-			final var lTextWidth0 = lFont.getStringWidth(lGameOverText0);
-			lFont.drawText(lGameOverText0, -lTextWidth0 / 2, lTextTitleHeight + 50, -0.01f, 1.f);
+			final var gameOverText0 = "Well Done!";
+			final var textWidth0 = lFont.getStringWidth(gameOverText0);
+			lFont.drawText(gameOverText0, -textWidth0 / 2, textTitleHeight + 50, .01f, 1.f);
 
 			final var isNewTopTime = true;
 			if (isNewTopTime) {
-				final var lGameOverText1 = "You have set a new record time";
-				final var lTextWidth1 = lFont.getStringWidth(lGameOverText1);
-				lFont.drawText(lGameOverText1, -lTextWidth1 / 2, lTextTitleHeight + 75, -0.01f, 1.f);
+				final var gameOverText1 = "You have set a new record time";
+				final var textWidth1 = lFont.getStringWidth(gameOverText1);
+				lFont.drawText(gameOverText1, -textWidth1 / 2, textTitleHeight + 75, .01f, 1.f);
 			}
 
 		} else {
 			if (mMenuTextureWrecked != null) {
-				lTextureBatch.begin(core.HUD());
-
 				final float logoWidth = mMenuTextureWrecked.getTextureWidth();
 				final float logoHeight = mMenuTextureWrecked.getTextureHeight();
 
-				lTextureBatch.draw(mMenuTextureWrecked, 0, 0, logoWidth, logoHeight, -logoWidth * .5f, lHeaderRect.top(), logoWidth, logoHeight, -0.01f, screenColor);
-				lTextureBatch.end();
+				spriteBatch.setColorWhite();
+				spriteBatch.begin(core.HUD());
+				spriteBatch.draw(mMenuTextureWrecked, 0, 0, logoWidth, logoHeight, -logoWidth * .5f, headerRect.top(), logoWidth, logoHeight, .01f);
+				spriteBatch.end();
 			}
 
-			final var lHeaderText = "Failed to deliver food";
-			final var lHeaderTextWidth = lTitleFont.getStringWidth(lHeaderText);
-			final var lScreenHeight = core.config().display().windowHeight();
+			final var headerText = "Failed to deliver food";
+			final var headerTextWidth = titleFont.getStringWidth(headerText);
+			final var screenHeight = core.config().display().windowHeight();
 
-			final var lTextTitleHeight = -lScreenHeight / 4.f;
-			mMenuHeaderPadding = lScreenHeight / 20.f;
+			final var textTitleHeight = -screenHeight / 4.f;
+			mMenuHeaderPadding = screenHeight / 20.f;
 
-			lTitleFont.begin(core.HUD());
-			lTitleFont.drawText(lHeaderText, -lHeaderTextWidth / 2, lTextTitleHeight, -0.01f, 1.f);
-			lTitleFont.end();
+			titleFont.begin(core.HUD());
+			titleFont.drawText(headerText, -headerTextWidth / 2, textTitleHeight, .01f, 1.f);
+			titleFont.end();
 
-			final var lGameOverText0 = "You totaled your ship!";
-			final var lTextWidth0 = lFont.getStringWidth(lGameOverText0);
-			lFont.drawText(lGameOverText0, -lTextWidth0 / 2, lTextTitleHeight + 50, -0.01f, 1.f);
+			final var fameOverText0 = "You totaled your ship!";
+			final var textWidth0 = lFont.getStringWidth(fameOverText0);
+			lFont.drawText(fameOverText0, -textWidth0 / 2, textTitleHeight + 50, .01f, 1.f);
 
 		}
 

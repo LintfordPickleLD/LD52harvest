@@ -2,9 +2,8 @@ package lintfordpickle.harvest.controllers.actionevents;
 
 import java.nio.ByteBuffer;
 
-import org.lwjgl.glfw.GLFW;
-
 import lintfordpickle.harvest.ConstantsGame;
+import lintfordpickle.harvest.GameActions;
 import lintfordpickle.harvest.controllers.GameStateController;
 import lintfordpickle.harvest.controllers.replays.ReplayController;
 import lintfordpickle.harvest.data.actionevents.ActionEventFileHeader;
@@ -12,13 +11,13 @@ import lintfordpickle.harvest.data.actionevents.ActionFrame;
 import lintfordpickle.harvest.data.actionevents.GameActionEventMap;
 import lintfordpickle.harvest.data.players.PlayerManager;
 import lintfordpickle.harvest.data.players.ReplayManager;
+import net.lintfordlib.controllers.ControllerManager;
 import net.lintfordlib.controllers.actionevents.ActionEventController;
-import net.lintfordlib.controllers.core.ControllerManager;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.actionevents.ActionEventManager.PlaybackMode;
 import net.lintfordlib.core.debug.Debug;
+import net.lintfordlib.core.input.gamepad.Gamepad;
 import net.lintfordlib.core.input.gamepad.IGamepadListener;
-import net.lintfordlib.core.input.gamepad.InputGamepad;
 import net.lintfordlib.core.time.LogicialCounter;
 
 public class GameActionEventController extends ActionEventController<ActionFrame> implements IGamepadListener {
@@ -132,26 +131,24 @@ public class GameActionEventController extends ActionEventController<ActionFrame
 	}
 
 	protected void updateInputActionEvents(LintfordCore core, ActionEventPlayer player) {
-		final var lEventActionManager = core.input().eventActionManager();
 
-		// TODO: Need to resovle the player Uid from the ActionEventPlayer to match it up with a controller
+		final var actionManager = core.input().actionManager();
 
-		// keyboard
-		player.currentActionEvents.isThrottleDown = lEventActionManager.getCurrentControlActionState(GameActionEventMap.INPUT_ACTION_EVENT_THRUSTER_UP);
-		player.currentActionEvents.isDownDown = lEventActionManager.getCurrentControlActionState(GameActionEventMap.INPUT_ACTION_EVENT_THRUSTER_DOWN);
-		player.currentActionEvents.isThrottleLeftDown = lEventActionManager.getCurrentControlActionState(GameActionEventMap.INPUT_ACTION_EVENT_THRUSTER_LEFT);
-		player.currentActionEvents.isThrottleRightDown = lEventActionManager.getCurrentControlActionState(GameActionEventMap.INPUT_ACTION_EVENT_THRUSTER_RIGHT);
+		player.currentActionEvents.isThrottleDown = actionManager.getActionState(GameActions.THRUSTER_UP).isDown();
+		player.currentActionEvents.isDownDown = actionManager.getActionState(GameActions.THRUSTER_DOWN).isDown();
+		player.currentActionEvents.isThrottleLeftDown = actionManager.getActionState(GameActions.THRUSTER_LEFT).isDown();
+		player.currentActionEvents.isThrottleRightDown = actionManager.getActionState(GameActions.THRUSTER_RIGHT).isDown();
 
-		final var lGamepadManager = core.input().gamepads();
-		final var lGamepad = lGamepadManager.getGamepad(player.playerUid);
+		final var gamepadManager = core.input().gamepads();
+		final var gamepad = gamepadManager.getGamepad(player.playerUid);
 
-		if (lGamepad != null) {
-			final float lValue = lGamepad.getLeftAxisX();
-			player.currentActionEvents.isThrottleLeftDown |= lValue < -0.4f;
-			player.currentActionEvents.isThrottleRightDown |= lValue > 0.4f;
-
-			player.currentActionEvents.isThrottleDown |= lGamepad.getIsButtonDown(GLFW.GLFW_GAMEPAD_BUTTON_A);
-		}
+//		if (gamepad != null) {
+//			final float lValue = gamepad.getLeftAxisX();
+//			player.currentActionEvents.isThrottleLeftDown |= lValue < -0.4f;
+//			player.currentActionEvents.isThrottleRightDown |= lValue > 0.4f;
+//
+//			player.currentActionEvents.isThrottleDown |= gamepad.getIsButtonDown(GLFW.GLFW_GAMEPAD_BUTTON_A);
+//		}
 
 		// detect changes in keyboard / mouse / gamepad and set the flags
 		// (n.b. we don't consider the mouse movement as input by default - but we record the mouse position when the player clicks a mouse button.)
@@ -361,8 +358,10 @@ public class GameActionEventController extends ActionEventController<ActionFrame
 
 	// GAMEPAD CALLBACKS --------------------------
 
+	// TODO: don't think these are needed anymore
+
 	@Override
-	public void onGamepadConnected(InputGamepad gamepad) {
+	public void onGamepadConnected(Gamepad gamepad) {
 		final var lPlayer = mPlayerManager.getPlayer(PlayerManager.DEFAULT_PLAYER_SESSION_UID);
 		final var lActionEventPlayer = actionEventPlayer(lPlayer.playerUid());
 
@@ -372,7 +371,7 @@ public class GameActionEventController extends ActionEventController<ActionFrame
 	}
 
 	@Override
-	public void onGamepadDisconnected(InputGamepad gamepad) {
+	public void onGamepadDisconnected(Gamepad gamepad) {
 		final var lPlayer = mPlayerManager.getPlayer(PlayerManager.DEFAULT_PLAYER_SESSION_UID);
 		final var lActionEventPlayer = actionEventPlayer(lPlayer.playerUid());
 

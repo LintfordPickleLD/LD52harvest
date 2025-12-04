@@ -17,9 +17,11 @@ public class OptionsScreen extends MenuScreen {
 	// Constants
 	// ---------------------------------------------
 
-	private static final int BUTTON_AUDIO = 10;
-	private static final int BUTTON_GRAPHICS = 11;
-	private static final int BUTTON_KEY_BINDS = 12;
+	private static final int BUTTON_GAME = 10;
+	private static final int BUTTON_AUDIO = 11;
+	private static final int BUTTON_GRAPHICS = 12;
+	private static final int BUTTON_KEY_BINDS = 13;
+	private static final int BUTTON_CONTROLLER = 14;
 	private static final int BUTTON_BACK = 30;
 
 	// ---------------------------------------------
@@ -27,39 +29,48 @@ public class OptionsScreen extends MenuScreen {
 	// ---------------------------------------------
 
 	public OptionsScreen(ScreenManager pScreenManager) {
-		super(pScreenManager, null);
+		super(pScreenManager, "SETTINGS");
 
-		final var lLayout = new ListLayout(this);
-		lLayout.setDrawBackground(true, ColorConstants.WHITE);
-		lLayout.layoutWidth(LAYOUT_WIDTH.HALF);
-		lLayout.layoutFillType(FILLTYPE.TAKE_WHATS_NEEDED);
+		final var layout = new ListLayout(this);
+		// layout.setDrawBackground(true, ColorConstants.WHITE());
+		layout.layoutWidth(LAYOUT_WIDTH.HALF);
+		layout.layoutFillType(FILLTYPE.TAKE_WHATS_NEEDED);
 
-		lLayout.showTitle(true);
-		lLayout.title("Options");
-		lLayout.cropPaddingTop(10.f);
-		lLayout.cropPaddingBottom(10.f);
+		layout.showTitle(false);
+		layout.cropPaddingTop(10.f);
+		layout.cropPaddingBottom(10.f);
 
-		final var lKeyBindsEntry = new MenuEntry(mScreenManager, this, "Key Binds");
-		lKeyBindsEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
-		lKeyBindsEntry.registerClickListener(this, BUTTON_KEY_BINDS);
+		final var gameSettingsEntry = new MenuEntry(screenManager, this, "Game");
+		gameSettingsEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
+		gameSettingsEntry.registerClickListener(this, BUTTON_GAME);
 
-		final var lGraphicsEntry = new MenuEntry(mScreenManager, this, "Graphics");
-		lGraphicsEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
-		lGraphicsEntry.registerClickListener(this, BUTTON_GRAPHICS);
+		final var audioSettingsEntry = new MenuEntry(screenManager, this, "Audio");
+		audioSettingsEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
+		audioSettingsEntry.registerClickListener(this, BUTTON_AUDIO);
 
-		final var lAudioSettingsEntry = new MenuEntry(mScreenManager, this, "Audio");
-		lAudioSettingsEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
-		lAudioSettingsEntry.registerClickListener(this, BUTTON_AUDIO);
+		final var graphicsEntry = new MenuEntry(screenManager, this, "Graphics");
+		graphicsEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
+		graphicsEntry.registerClickListener(this, BUTTON_GRAPHICS);
 
-		final var lBackEntry = new MenuEntry(mScreenManager, this, "Back");
-		lBackEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
-		lBackEntry.registerClickListener(this, BUTTON_BACK);
+		final var keyBindsEntry = new MenuEntry(screenManager, this, "Key Binds");
+		keyBindsEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
+		keyBindsEntry.registerClickListener(this, BUTTON_KEY_BINDS);
 
-		lLayout.addMenuEntry(lKeyBindsEntry);
-		lLayout.addMenuEntry(lGraphicsEntry);
-		lLayout.addMenuEntry(lAudioSettingsEntry);
-		lLayout.addMenuEntry(MenuEntry.menuSeparator());
-		lLayout.addMenuEntry(lBackEntry);
+		final var controllerSettingsEntry = new MenuEntry(screenManager, this, "Controller");
+		controllerSettingsEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
+		controllerSettingsEntry.registerClickListener(this, BUTTON_CONTROLLER);
+
+		final var backEntry = new MenuEntry(screenManager, this, "Back");
+		backEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
+		backEntry.registerClickListener(this, BUTTON_BACK);
+
+		layout.addMenuEntry(gameSettingsEntry);
+		layout.addMenuEntry(keyBindsEntry);
+		layout.addMenuEntry(graphicsEntry);
+		layout.addMenuEntry(audioSettingsEntry);
+		layout.addMenuEntry(controllerSettingsEntry);
+		layout.addMenuEntry(MenuEntry.menuSeparator());
+		layout.addMenuEntry(backEntry);
 
 		mScreenPaddingTop = 30.f;
 		mLayoutPaddingHorizontal = 50.f;
@@ -67,7 +78,7 @@ public class OptionsScreen extends MenuScreen {
 
 		mShowBackgroundScreens = false;
 
-		mLayouts.add(lLayout);
+		mLayouts.add(layout);
 
 	}
 
@@ -93,7 +104,7 @@ public class OptionsScreen extends MenuScreen {
 	protected void handleOnClick() {
 		switch (mClickAction.consume()) {
 		case BUTTON_AUDIO:
-			screenManager().addScreen(new AudioOptionsScreen(mScreenManager));
+			screenManager.addScreen(new AudioOptionsScreen(screenManager));
 			break;
 
 		case BUTTON_BACK:

@@ -1,5 +1,6 @@
 package lintfordpickle.harvest.data.assets;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,8 @@ public class SceneAssetsManager extends BaseInstanceManager {
 		// --------------------------------------
 
 		public AssetsDefinitionManager() {
-			loadDefinitionsFromMetaFile(META_FILENAME);
+			final var lMetaDataFile = new File(META_FILENAME);
+			loadDefinitionsFromMetaFile(lMetaDataFile);
 		}
 
 		// --------------------------------------
@@ -39,20 +41,15 @@ public class SceneAssetsManager extends BaseInstanceManager {
 		}
 
 		@Override
-		public void loadDefinitionsFromMetaFile(String metaFilepath) {
+		public void loadDefinitionsFromMetaFile(File file) {
 			final var lGson = new GsonBuilder().create();
-			loadDefinitionsFromMetaFileItems(metaFilepath, lGson, SceneAssetDefinition.class);
+			loadDefinitionsFromMetaFileItems(file, lGson, SceneAssetDefinition.class);
 		}
 
 		@Override
-		public void loadDefinitionFromFile(String filepath) {
+		public SceneAssetDefinition loadDefinitionFromFile(File file) {
 			final var lGson = new GsonBuilder().create();
-			loadDefinitionFromFile(filepath, lGson, SceneAssetDefinition.class);
-		}
-
-		@Override
-		public void afterDefinitionLoaded(SceneAssetDefinition newDefinition) {
-
+			return loadDefinitionFromFile(file, lGson, SceneAssetDefinition.class);
 		}
 
 	}

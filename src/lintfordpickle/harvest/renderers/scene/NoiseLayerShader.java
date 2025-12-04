@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL20;
 
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.graphics.shaders.ShaderMVP_PT;
+import net.lintfordlib.core.storage.FileUtils;
 
 public class NoiseLayerShader extends ShaderMVP_PT {
 
@@ -13,7 +14,7 @@ public class NoiseLayerShader extends ShaderMVP_PT {
 
 	public final static String SHADER_NAME = "ShaderMVP_PCT";
 
-	public final static String SHADER_VERT_FILENAME = "/res/shaders/shader_basic_pt.vert";
+	public final static String SHADER_VERT_FILENAME = FileUtils.RESOURCE_LOCATION_PREFIX + "/res/shaders/shader_basic_pt.vert";
 	public final static String SHADER_FRAG_FILENAME = "res/shaders/shaderForefog.frag";
 
 	// --------------------------------------

@@ -14,14 +14,17 @@ import net.lintfordlib.ConstantsPhysics;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.audio.AudioManager;
 import net.lintfordlib.core.audio.AudioSource;
-import net.lintfordlib.core.audio.data.AudioData;
+import net.lintfordlib.core.audio.data.AudioFileBase;
 import net.lintfordlib.core.maths.MathHelper;
 import net.lintfordlib.core.maths.Vector2f;
 import net.lintfordlib.core.physics.dynamics.RigidBody;
+import net.lintfordlib.core.physics.dynamics.RigidBody.BodyType;
 import net.lintfordlib.core.physics.dynamics.RigidBodyEntity;
 import net.lintfordlib.core.physics.shapes.PolygonShape;
 
 public class Ship extends RigidBodyEntity {
+
+	private static final long serialVersionUID = -4005560928733452992L;
 
 	public class Inventory {
 
@@ -102,13 +105,13 @@ public class Ship extends RigidBodyEntity {
 	public class ShipAudioComponent {
 		private boolean mAudioEnabled;
 
-		private AudioData mEngine00_TO;
-		private AudioData mEngine00_00;
-		private AudioData mEngine00_20;
-		private AudioData mEngine00_40;
-		private AudioData mEngine00_60;
-		private AudioData mEngine00_80;
-		private AudioData mEngine00_100;
+		private AudioFileBase mEngine00_TO;
+		private AudioFileBase mEngine00_00;
+		private AudioFileBase mEngine00_20;
+		private AudioFileBase mEngine00_40;
+		private AudioFileBase mEngine00_60;
+		private AudioFileBase mEngine00_80;
+		private AudioFileBase mEngine00_100;
 
 		private float mCrossFade00Amt;
 		private float mCrossFade20Amt;
@@ -210,7 +213,7 @@ public class Ship extends RigidBodyEntity {
 			return 1.f - MathHelper.scaleToRange(relVal, 0, maxSize, 0, 1);
 		}
 
-		private void modifyCrossFadeOnChannel(AudioData audioData, float crossFadeAmt, int channelId) {
+		private void modifyCrossFadeOnChannel(AudioFileBase audioData, float crossFadeAmt, int channelId) {
 			if (crossFadeAmt > 0) {
 				if (stepActive00 == channelId) {
 					mEngineAudioSource0.setGain(crossFadeAmt);
@@ -303,19 +306,19 @@ public class Ship extends RigidBodyEntity {
 	public Ship(int entityUid) {
 		super(entityUid, GridCollisionTypes.COLLISION_TYPE_SHIP);
 
-		final var lPixelsToUnits = ConstantsPhysics.PixelsToUnits();
-		final var lDensity = 2.f;
+		final var pixelsToUnits = ConstantsPhysics.PixelsToUnits();
+		final var density = 2.f;
 
-		final var width = 64.f * lPixelsToUnits;
-		final var height = 32.f * lPixelsToUnits;
+		final var width = 64.f * pixelsToUnits;
+		final var height = 32.f * pixelsToUnits;
 
 		final var restitution = .1f;
 
 		final var staticFriction = .8f;
 		final var dynamicFriction = .5f;
 
-		body = new RigidBody(false);
-		body.addShape(PolygonShape.createBoxShape(width, height, 0.f, lDensity, restitution, staticFriction, dynamicFriction));
+		body = new RigidBody(BodyType.Dynamic);
+		body.addShape(PolygonShape.createBoxShape(width, height, 0.f, density, restitution, staticFriction, dynamicFriction));
 		body.userData(new ShipPhysicsData(entityUid));
 
 		body.categoryBits(GridEntityType.GRID_ENTITY_TYPE_SHIP);

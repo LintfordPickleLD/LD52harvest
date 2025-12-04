@@ -1,6 +1,6 @@
 package lintfordpickle.harvest;
 
-import net.lintfordlib.core.ResourceGroupProvider;
+import net.lintfordlib.assets.ResourceGroupProvider;
 
 public class ConstantsGame {
 
@@ -8,7 +8,7 @@ public class ConstantsGame {
 	// Setup
 	// ---------------------------------------------
 
-	public static final String FOOTER_TEXT = "(c) 2023 LintfordPickle";
+	public static final String FOOTER_TEXT = "2025 (c) LintfordPickle";
 
 	public static final String APPLICATION_NAME = "Harvester 008";
 	public static final String WINDOW_TITLE = "Harvester 008";

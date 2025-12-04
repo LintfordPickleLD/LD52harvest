@@ -7,7 +7,7 @@ import lintfordpickle.harvest.data.scene.platforms.PlatformManager;
 import lintfordpickle.harvest.data.scene.ships.Ship;
 import net.lintfordlib.ConstantsPhysics;
 import net.lintfordlib.controllers.BaseController;
-import net.lintfordlib.controllers.core.ControllerManager;
+import net.lintfordlib.controllers.ControllerManager;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.debug.Debug;
 

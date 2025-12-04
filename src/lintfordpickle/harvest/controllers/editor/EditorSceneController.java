@@ -9,10 +9,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import lintfordpickle.harvest.data.editor.EditorSceneData;
-import net.lintfordLib.editor.data.scene.SceneHeader;
 import net.lintfordlib.controllers.BaseController;
-import net.lintfordlib.controllers.core.ControllerManager;
+import net.lintfordlib.controllers.ControllerManager;
 import net.lintfordlib.core.debug.Debug;
+import net.lintfordlib.data.scene.SceneHeader;
 
 // TODO: This is the same as the TrackController in RazerRunnner - consider adding to lib to make setup faster.
 // TODO: I think this can be made 'generic' 

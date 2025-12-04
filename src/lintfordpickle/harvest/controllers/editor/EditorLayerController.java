@@ -13,7 +13,7 @@ import lintfordpickle.harvest.data.scene.layers.SceneNoiseLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneParticleLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneTextureLayer;
 import net.lintfordlib.controllers.BaseController;
-import net.lintfordlib.controllers.core.ControllerManager;
+import net.lintfordlib.controllers.ControllerManager;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.debug.Debug;
 

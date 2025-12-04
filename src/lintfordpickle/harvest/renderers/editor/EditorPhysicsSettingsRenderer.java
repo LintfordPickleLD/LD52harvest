@@ -2,13 +2,14 @@ package lintfordpickle.harvest.renderers.editor;
 
 import org.lwjgl.opengl.GL11;
 
-import net.lintfordLib.editor.controllers.EditorPhysicsSettingsController;
 import net.lintfordlib.ConstantsPhysics;
+import net.lintfordlib.assets.ResourceManager;
+import net.lintfordlib.controllers.editor.EditorPhysicsSettingsController;
 import net.lintfordlib.core.LintfordCore;
-import net.lintfordlib.core.ResourceManager;
 import net.lintfordlib.core.graphics.linebatch.LineBatch;
+import net.lintfordlib.core.rendering.RenderPass;
 import net.lintfordlib.renderers.BaseRenderer;
-import net.lintfordlib.renderers.RendererManager;
+import net.lintfordlib.renderers.RendererManagerBase;
 
 public class EditorPhysicsSettingsRenderer extends BaseRenderer {
 
@@ -47,7 +48,7 @@ public class EditorPhysicsSettingsRenderer extends BaseRenderer {
 	// Constructor
 	// ---------------------------------------------
 
-	public EditorPhysicsSettingsRenderer(RendererManager rendererManager, int entityGroupID) {
+	public EditorPhysicsSettingsRenderer(RendererManagerBase rendererManager, int entityGroupID) {
 		super(rendererManager, RENDERER_NAME, entityGroupID);
 
 		mLineBatch = new LineBatch();
@@ -78,7 +79,7 @@ public class EditorPhysicsSettingsRenderer extends BaseRenderer {
 	}
 
 	@Override
-	public void draw(LintfordCore core) {
+	public void draw(LintfordCore core, RenderPass renderPass) {
 		if (mRenderHashGrid) {
 			drawSpatialHashGridGrid(core);
 		}

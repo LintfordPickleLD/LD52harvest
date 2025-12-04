@@ -7,13 +7,13 @@ import lintfordpickle.harvest.screens.editor.panels.LayerPhysicsScene;
 import lintfordpickle.harvest.screens.editor.panels.LayerTexturePanel;
 import lintfordpickle.harvest.screens.editor.panels.LayersPanel;
 import lintfordpickle.harvest.screens.editor.panels.ScenePanel;
-import net.lintfordLib.editor.renderers.UiDockedWindow;
-import net.lintfordLib.editor.renderers.panels.CameraPanel;
-import net.lintfordLib.editor.renderers.panels.CursorPanel;
-import net.lintfordLib.editor.renderers.panels.FileInfoPanel;
-import net.lintfordLib.editor.renderers.panels.GridPanel;
 import net.lintfordlib.core.LintfordCore;
-import net.lintfordlib.renderers.RendererManager;
+import net.lintfordlib.renderers.RendererManagerBase;
+import net.lintfordlib.renderers.editor.panels.CameraPanel;
+import net.lintfordlib.renderers.editor.panels.CursorPanel;
+import net.lintfordlib.renderers.editor.panels.FileInfoPanel;
+import net.lintfordlib.renderers.editor.panels.GridPanel;
+import net.lintfordlib.renderers.editor.panels.UiDockedWindow;
 import net.lintfordlib.renderers.windows.components.UiLabel;
 
 public class EditorGui extends UiDockedWindow {
@@ -31,19 +31,15 @@ public class EditorGui extends UiDockedWindow {
 	private UiLabel mWindowTitle;
 
 	// --------------------------------------
-	// Properties
-	// --------------------------------------
-
-	// --------------------------------------
 	// Constructor
 	// --------------------------------------
 
-	public EditorGui(RendererManager rendererManager, int entityGroupUid) {
+	public EditorGui(RendererManagerBase rendererManager, int entityGroupUid) {
 		super(rendererManager, GUI_NAME, entityGroupUid);
 
 		UiDockedWindow.DOCKED_WINDOW_WIDTH = 320;
 
-		mWindowTitle = new UiLabel(this, "Window Title");
+		mWindowTitle = new UiLabel("Window Title");
 
 		addComponent(mWindowTitle);
 

@@ -6,7 +6,7 @@ import java.util.List;
 import lintfordpickle.harvest.data.scene.layers.LayersManager;
 import lintfordpickle.harvest.data.scene.layers.SceneAnimationLayer;
 import net.lintfordlib.controllers.BaseController;
-import net.lintfordlib.controllers.core.ControllerManager;
+import net.lintfordlib.controllers.ControllerManager;
 import net.lintfordlib.core.LintfordCore;
 
 public class EditorAnimationLayerController extends BaseController {

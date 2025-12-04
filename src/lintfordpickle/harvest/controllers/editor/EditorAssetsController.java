@@ -3,7 +3,7 @@ package lintfordpickle.harvest.controllers.editor;
 import lintfordpickle.harvest.data.assets.SceneAssetInstance;
 import lintfordpickle.harvest.data.assets.SceneAssetsManager;
 import net.lintfordlib.controllers.BaseController;
-import net.lintfordlib.controllers.core.ControllerManager;
+import net.lintfordlib.controllers.ControllerManager;
 
 public class EditorAssetsController extends BaseController {
 

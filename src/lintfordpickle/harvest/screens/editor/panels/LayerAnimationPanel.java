@@ -5,7 +5,7 @@ import lintfordpickle.harvest.data.editor.EditorLayersData;
 import lintfordpickle.harvest.data.scene.layers.SceneAnimationLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
 import lintfordpickle.harvest.renderers.editor.EditorAnimationLayerRenderer;
-import net.lintfordLib.editor.controllers.EditorBrushController;
+import net.lintfordlib.controllers.editor.EditorBrushController;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.input.InputManager;
 import net.lintfordlib.core.input.keyboard.IUiInputKeyPressCallback;
@@ -87,66 +87,66 @@ public class LayerAnimationPanel extends LayerPanel<SceneAnimationLayer> impleme
 		mIsExpandable = false;
 		mIsPanelOpen = false;
 
-		mNameLabel = new UiLabel(parentWindow, "Layer Name");
-		mLayerName = new UiInputText(parentWindow);
+		mNameLabel = new UiLabel("Layer Name");
+		mLayerName = new UiInputText();
 		mLayerName.setKeyUpdateListener(this, INPUT_NAME_KEY_UID);
 
-		mAnimationAssetList = new UiHorizontalListBox(parentWindow, entityGroupUid);
+		mAnimationAssetList = new UiHorizontalListBox(entityGroupUid);
 		mAnimationAssetList.desiredHeight(170);
 
-		mAddAnimationButton = new UiButton(parentWindow, "Add");
+		mAddAnimationButton = new UiButton("Add");
 		mAddAnimationButton.setUiWidgetListener(this, BUTTON_ADD_SPRITE);
-		mRemoveAnimationButton = new UiButton(parentWindow, "Delete");
+		mRemoveAnimationButton = new UiButton("Delete");
 		mRemoveAnimationButton.setUiWidgetListener(this, BUTTON_DEL_SPRITE);
 
 		// ---
 
-		mCenterXInput = new UiInputInteger(parentWindow);
+		mCenterXInput = new UiInputInteger();
 		mCenterXInput.setUiWidgetListener(this, SLIDER_CENTER_X);
 		mCenterXInput.label("CenterX");
 		mCenterXInput.setMinMax(0, 0);
 
-		mCenterYInput = new UiInputInteger(parentWindow);
+		mCenterYInput = new UiInputInteger();
 		mCenterYInput.setUiWidgetListener(this, SLIDER_CENTER_Y);
 		mCenterYInput.label("CenterY");
 		mCenterYInput.setMinMax(0, 0);
 
-		mTranslationSpeedModX = new UiInputFloat(parentWindow);
+		mTranslationSpeedModX = new UiInputFloat();
 		mTranslationSpeedModX.setUiWidgetListener(this, SLIDER_TRANSLATION_SPEED_X);
 		mTranslationSpeedModX.label("Mod X");
 		mTranslationSpeedModX.setMinMax(-20.f, 20.f);
 		mTranslationSpeedModX.stepSize(.1f);
 
-		mTranslationSpeedModY = new UiInputFloat(parentWindow);
+		mTranslationSpeedModY = new UiInputFloat();
 		mTranslationSpeedModY.setUiWidgetListener(this, SLIDER_TRANSLATION_SPEED_Y);
 		mTranslationSpeedModY.label("Mod Y");
 		mTranslationSpeedModY.setMinMax(0.f, 10.f);
 		mTranslationSpeedModY.stepSize(.1f);
 
-		mWidth = new UiInputFloat(parentWindow);
+		mWidth = new UiInputFloat();
 		mWidth.setUiWidgetListener(this, SLIDER_SCALE_X);
 		mWidth.label("Width");
 		mWidth.setMinMax(0.f, 10.f);
 		mWidth.stepSize(.1f);
-		mHeight = new UiInputFloat(parentWindow);
+		mHeight = new UiInputFloat();
 		mHeight.setUiWidgetListener(this, SLIDER_SCALE_Y);
 		mHeight.label("Height");
 		mHeight.setMinMax(0.f, 10.f);
 		mHeight.stepSize(.1f);
 
-		final var lHorizontalGroup0 = new UiHorizontalEntryGroup(parentWindow);
+		final var lHorizontalGroup0 = new UiHorizontalEntryGroup();
 		lHorizontalGroup0.widgets().add(mAddAnimationButton);
 		lHorizontalGroup0.widgets().add(mRemoveAnimationButton);
 
-		final var lHorizontalGroup1 = new UiHorizontalEntryGroup(parentWindow);
+		final var lHorizontalGroup1 = new UiHorizontalEntryGroup();
 		lHorizontalGroup1.widgets().add(mCenterXInput);
 		lHorizontalGroup1.widgets().add(mCenterYInput);
 
-		final var lHorizontalGroup2 = new UiHorizontalEntryGroup(parentWindow);
+		final var lHorizontalGroup2 = new UiHorizontalEntryGroup();
 		lHorizontalGroup2.widgets().add(mTranslationSpeedModX);
 		lHorizontalGroup2.widgets().add(mTranslationSpeedModY);
 
-		final var lHorizontalGroup3 = new UiHorizontalEntryGroup(parentWindow);
+		final var lHorizontalGroup3 = new UiHorizontalEntryGroup();
 		lHorizontalGroup3.widgets().add(mWidth);
 		lHorizontalGroup3.widgets().add(mHeight);
 
@@ -172,7 +172,7 @@ public class LayerAnimationPanel extends LayerPanel<SceneAnimationLayer> impleme
 		mEditorBrushController = (EditorBrushController) lControllerManager.getControllerByNameRequired(EditorBrushController.CONTROLLER_NAME, mEntityGroupUid);
 
 		loadAssets(core);
-		
+
 		mEditorAnimationLayerRenderer = (EditorAnimationLayerRenderer) mParentWindow.rendererManager().getRenderer(EditorAnimationLayerRenderer.RENDERER_NAME);
 	}
 
