@@ -1,7 +1,6 @@
 package lintfordpickle.harvest.screens.editor.panels;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 import lintfordpickle.harvest.controllers.editor.EditorLayerController;
 import lintfordpickle.harvest.data.editor.LayerListBoxItem;
@@ -12,6 +11,7 @@ import net.lintfordlib.core.input.InputManager;
 import net.lintfordlib.renderers.editor.panels.UiPanel;
 import net.lintfordlib.renderers.windows.UiWindow;
 import net.lintfordlib.renderers.windows.components.UiButton;
+import net.lintfordlib.renderers.windows.components.UiCheckBox;
 import net.lintfordlib.renderers.windows.components.UiHorizontalEntryGroup;
 import net.lintfordlib.renderers.windows.components.UiListBoxItem;
 import net.lintfordlib.renderers.windows.components.UiVerticalTextListBox;
@@ -28,6 +28,7 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 	public static final int BUTTON_ADD_TEX_LAYER = 15;
 	public static final int BUTTON_ADD_ANIM_LAYER = 16;
 	public static final int BUTTON_ADD_NOISE_LAYER = 17;
+	public static final int BUTTON_LAYER_VISIBLE = 18;
 
 	public static final int BUTTON_MOVE_LAYER_UP = 50;
 	public static final int BUTTON_MOVE_LAYER_DOWN = 51;
@@ -35,8 +36,6 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 	// --------------------------------------
 	// Variables
 	// --------------------------------------
-
-	private UiVerticalTextListBox mLayerListWidget;
 
 	private UiButton mDeleteSelected;
 	private UiButton mAddTextureLayer;
@@ -46,9 +45,11 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 	private UiButton mMoveUp;
 	private UiButton mMoveDown;
 
+	private UiCheckBox mLayerVisible;
+
 	private EditorLayerController mEditorLayerController;
 
-	private final List<SceneBaseLayer> mTempOrderedSceneList = new ArrayList<>();
+	private UiVerticalTextListBox mLayerListWidget;
 
 	// --------------------------------------
 	// Properties
@@ -85,6 +86,10 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 		mAddNoiseLayer = new UiButton("Add Noise");
 		mAddNoiseLayer.setUiWidgetListener(this, BUTTON_ADD_NOISE_LAYER);
 
+		mLayerVisible = new UiCheckBox("Visible");
+		mLayerVisible.setUiWidgetListener(this, BUTTON_LAYER_VISIBLE);
+		mLayerVisible.isChecked(true);
+
 		final var lHorizontaGroup = new UiHorizontalEntryGroup();
 
 		mMoveUp = new UiButton("Up");
@@ -97,6 +102,7 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 		lHorizontaGroup.widgets().add(mMoveDown);
 
 		addWidget(mLayerListWidget);
+		addWidget(mLayerVisible);
 		addWidget(lHorizontaGroup);
 		addWidget(mDeleteSelected);
 		addWidget(mAddTextureLayer);
@@ -116,19 +122,7 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 		final var lControllerManager = core.controllerManager();
 		mEditorLayerController = (EditorLayerController) lControllerManager.getControllerByNameRequired(EditorLayerController.CONTROLLER_NAME, mEntityGroupUid);
 
-		addLoadedLayersToListBox();
-	}
-
-	private void addLoadedLayersToListBox() {
-		final var lLayerManager = mEditorLayerController.layersManager();
-		final var lLayerList = lLayerManager.layers();
-
-		final var lNumLayers = lLayerList.size();
-		for (int i = 0; i < lNumLayers; i++) {
-			addLayerToUiList(lLayerList.get(i));
-		}
-
-		refreshLayerItems();
+		recreateUiListFromlayersManager();
 	}
 
 	// --------------------------------------
@@ -182,20 +176,54 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 			return;
 
 		case BUTTON_MOVE_LAYER_UP: {
-			mLayerListWidget.moveSelectedIndexUp();
+			final var selectedLayerIndex = mLayerListWidget.selectedItemIndex();
+			if (selectedLayerIndex == -1)
+				return;
 
+			if (selectedLayerIndex <= 0)
+				return; // already last in list
+
+			final var layerManager = mEditorLayerController.layersManager();
+			final var layerList = layerManager.layers();
+			Collections.swap(layerList, selectedLayerIndex, selectedLayerIndex - 1);
+
+			recreateUiListFromlayersManager();
+			mLayerListWidget.selectedItemIndex(selectedLayerIndex - 1);
 			break;
 		}
 
 		case BUTTON_MOVE_LAYER_DOWN: {
-			mLayerListWidget.moveSelectedIndexDown();
+			final var selectedLayerIndex = mLayerListWidget.selectedItemIndex();
+			if (selectedLayerIndex == -1)
+				return;
 
+			if (selectedLayerIndex >= mLayerListWidget.items().size() - 1)
+				return; // already last in list
+
+			final var layerManager = mEditorLayerController.layersManager();
+			final var layerList = layerManager.layers();
+			Collections.swap(layerList, selectedLayerIndex, selectedLayerIndex + 1);
+
+			recreateUiListFromlayersManager();
+			mLayerListWidget.selectedItemIndex(selectedLayerIndex + 1);
 			break;
 		}
 
 		}
+	}
 
-		refreshLayerItems();
+	// add the layers from the manager to the ui list
+	private void recreateUiListFromlayersManager() {
+		mLayerListWidget.clearItems();
+
+		final var layerManager = mEditorLayerController.layersManager();
+		final var layerList = layerManager.layers();
+
+		// Create a ui element in the list of layers for each Layer in the LayerManager.
+		final var numLayers = layerList.size();
+		for (int i = 0; i < numLayers; i++) {
+			addLayerToUiList(layerList.get(i));
+		}
 	}
 
 	private void addLayerToUiList(SceneBaseLayer layer) {
@@ -204,34 +232,15 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 			return;
 		}
 
-		final var lNewListItemBox = new LayerListBoxItem(layer.layerUid);
-		lNewListItemBox.layer(layer);
+		final var newListItemBox = new LayerListBoxItem(layer.layerUid);
+		newListItemBox.layer(layer);
 
-		lNewListItemBox.displayName = layer.name;
-		lNewListItemBox.listOrderIndex = mLayerListWidget.items().size();
-		layer.zDepth = lNewListItemBox.listOrderIndex;
+		newListItemBox.displayName = layer.name;
+		newListItemBox.listOrderIndex = mLayerListWidget.items().size();
+		layer.zDepth = newListItemBox.listOrderIndex;
 
-		mLayerListWidget.addItem(lNewListItemBox);
+		mLayerListWidget.addItem(newListItemBox);
 
-	}
-
-	public void refreshLayerItems() {
-		final var lLayerListItems = mLayerListWidget.items();
-		final var lNumLayerItems = lLayerListItems.size();
-
-		mTempOrderedSceneList.clear();
-
-		for (int i = 0; i < lNumLayerItems; i++) {
-			final var lListBoxLayerItem = (LayerListBoxItem) mLayerListWidget.items().get(i);
-			final var lSceneLayer = lListBoxLayerItem.layer();
-
-			lListBoxLayerItem.displayName = lSceneLayer.name;
-			lSceneLayer.zDepth = i;
-
-			mTempOrderedSceneList.add(lSceneLayer);
-		}
-
-		mEditorLayerController.reorderLayersPerZDepth(mTempOrderedSceneList);
 	}
 
 	private void removeLayerFromUiList(SceneBaseLayer layer) {
@@ -245,7 +254,19 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 
 	@Override
 	public void widgetOnDataChanged(InputManager inputManager, int entryUid) {
+		switch (entryUid) {
+		case BUTTON_LAYER_VISIBLE:
+			final var selectedLayerIndex = mLayerListWidget.selectedItemIndex();
+			if (selectedLayerIndex == -1)
+				return;
 
+			final var layerManager = mEditorLayerController.layersManager();
+			final var layerList = layerManager.layers();
+			final var selectedLayer = layerList.get(selectedLayerIndex);
+			selectedLayer.visible = mLayerVisible.isChecked();
+
+			break;
+		}
 	}
 
 	// --------------------------------------
@@ -259,12 +280,12 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 			return;
 		}
 
-		final var lLayerUid = selectedItem.itemUid;
-		mEditorLayerController.setSelectedLayer(lLayerUid);
+		final var layerUid = selectedItem.itemUid;
+		mEditorLayerController.setSelectedLayer(layerUid);
 
-		final var lBackingSceneLayer = mEditorLayerController.selectedLayer();
-		if (lBackingSceneLayer != null) {
-
+		final var backingSceneLayer = mEditorLayerController.selectedLayer();
+		if (backingSceneLayer != null) {
+			mLayerVisible.isChecked(backingSceneLayer.visible);
 		}
 	}
 

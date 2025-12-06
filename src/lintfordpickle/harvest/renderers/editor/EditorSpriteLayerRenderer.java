@@ -4,35 +4,30 @@ import org.lwjgl.glfw.GLFW;
 
 import lintfordpickle.harvest.controllers.editor.EditorLayerController;
 import lintfordpickle.harvest.controllers.editor.EditorSceneController;
-import lintfordpickle.harvest.controllers.layers.EditorAnimationLayerController;
 import lintfordpickle.harvest.data.editor.EditorLayersData;
-import lintfordpickle.harvest.data.scene.layers.SceneAnimationLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
+import lintfordpickle.harvest.data.scene.layers.SceneSpriteLayer;
 import net.lintfordlib.assets.ResourceManager;
 import net.lintfordlib.controllers.editor.EditorBrushController;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.debug.Debug;
-import net.lintfordlib.core.rendering.RenderPass;
+import net.lintfordlib.core.input.mouse.IInputProcessor;
 import net.lintfordlib.data.editor.EditorLayerBrush;
-import net.lintfordlib.renderers.BaseRenderer;
-import net.lintfordlib.renderers.RendererManagerBase;
 
-public class EditorAnimationLayerRenderer extends BaseRenderer {
+public class EditorSpriteLayerRenderer implements IInputProcessor {
 
 	// ---------------------------------------------
 	// Constants
 	// ---------------------------------------------
 
-	public static final String RENDERER_NAME = "Editor Animation Renderer";
+	public static final String RENDERER_NAME = "Editor Sprite Renderer";
 
 	// ---------------------------------------------
 	// Variables
 	// ---------------------------------------------
 
 	private EditorSceneController mSceneController;
-	private ResourceManager mResourceManager;
 
-	private EditorAnimationLayerController mEditorAnimationLayerController;
 	private EditorLayerController mEditorLayerController;
 	private EditorBrushController mEditorBrushController;
 
@@ -44,69 +39,52 @@ public class EditorAnimationLayerRenderer extends BaseRenderer {
 	private float mMouseDownX;
 	private float mMouseDownY;
 
-	private boolean mRenderAnimations;
+	private boolean mRenderSpriteLayer;
+	private int mEntityGroupUid;
 
 	// ---------------------------------------------
 	// Properties
 	// ---------------------------------------------
 
-	@Override
-	public boolean isInitialized() {
-		return mSceneController != null;
-
+	public boolean renderSpritesLayer() {
+		return mRenderSpriteLayer;
 	}
 
-	public boolean renderAnimations() {
-		return mRenderAnimations;
-	}
-
-	public void renderAnimations(boolean renderingEnabled) {
-		mRenderAnimations = renderingEnabled;
+	public void renderSpritesLayer(boolean renderingEnabled) {
+		mRenderSpriteLayer = renderingEnabled;
 	}
 
 	// ---------------------------------------------
 	// Constructor
 	// ---------------------------------------------
 
-	public EditorAnimationLayerRenderer(RendererManagerBase rendererManager, int entityGroupID) {
-		super(rendererManager, RENDERER_NAME, entityGroupID);
-
+	public EditorSpriteLayerRenderer(int entityGroupID) {
+		mEntityGroupUid = entityGroupID;
 	}
 
 	// ---------------------------------------------
 	// Core-Methods
 	// ---------------------------------------------
 
-	@Override
 	public void initialize(LintfordCore core) {
 		final var lControllerManager = core.controllerManager();
 
-		mSceneController = (EditorSceneController) lControllerManager.getControllerByNameRequired(EditorSceneController.CONTROLLER_NAME, entityGroupUid());
-		mEditorBrushController = (EditorBrushController) lControllerManager.getControllerByNameRequired(EditorBrushController.CONTROLLER_NAME, entityGroupUid());
-		mEditorLayerController = (EditorLayerController) lControllerManager.getControllerByNameRequired(EditorLayerController.CONTROLLER_NAME, entityGroupUid());
-		mEditorAnimationLayerController = (EditorAnimationLayerController) lControllerManager.getControllerByNameRequired(EditorAnimationLayerController.CONTROLLER_NAME, entityGroupUid());
+		mSceneController = (EditorSceneController) lControllerManager.getControllerByNameRequired(EditorSceneController.CONTROLLER_NAME, mEntityGroupUid);
+		mEditorBrushController = (EditorBrushController) lControllerManager.getControllerByNameRequired(EditorBrushController.CONTROLLER_NAME, mEntityGroupUid);
+		mEditorLayerController = (EditorLayerController) lControllerManager.getControllerByNameRequired(EditorLayerController.CONTROLLER_NAME, mEntityGroupUid);
 	}
 
-	@Override
 	public void loadResources(ResourceManager resourceManager) {
-		super.loadResources(resourceManager);
 
-		mResourceManager = resourceManager;
 	}
 
-	@Override
 	public void unloadResources() {
-		super.unloadResources();
 
-		mResourceManager = null;
 	}
 
-	@Override
 	public boolean handleInput(LintfordCore core) {
-		var lInputHandled = super.handleInput(core);
-
-		if (mEditorBrushController.isLayerActive(EditorLayersData.Layer_Animation) == false)
-			return lInputHandled;
+		if (!mEditorBrushController.isLayerActive(EditorLayersData.Layer_Animation))
+			return false;
 
 		final var leftMouseDown = core.input().mouse().tryAcquireMouseLeftClick(hashCode());
 		mMouseX = core.gameCamera().getMouseWorldSpaceX();
@@ -213,20 +191,18 @@ public class EditorAnimationLayerRenderer extends BaseRenderer {
 			mIsNewLeftClick = false;
 		}
 
-		return lInputHandled;
+		return false;
 	}
 
-	@Override
 	public void update(LintfordCore core) {
-		super.update(core);
 
 		final var lLayersManager = mSceneController.sceneData().layersManager();
 		final var lLayers = lLayersManager.layers();
 		final var lNumLayers = lLayers.size();
 		for (int i = 0; i < lNumLayers; i++) {
 			final var lSceneLayer = lLayers.get(i);
-			if (lSceneLayer instanceof SceneAnimationLayer) {
-				var lAnimationSceneLayer = (SceneAnimationLayer) lSceneLayer;
+			if (lSceneLayer instanceof SceneSpriteLayer) {
+				var lAnimationSceneLayer = (SceneSpriteLayer) lSceneLayer;
 
 				final var lLayerAnimations = lAnimationSceneLayer.spriteAssets();
 				final var lNumAnimations = lLayerAnimations.size();
@@ -236,7 +212,7 @@ public class EditorAnimationLayerRenderer extends BaseRenderer {
 					// TODO: rework this
 					if (lAsset.spriteInstance == null) {
 						if (lAsset.spriteStatus < 2) {
-							final var lAssetDef = lAsset.definition;
+//							final var lAssetDef = lAsset.definition;
 //							final var lSpritesheetDef = core.resources().spriteSheetManager().getSpriteSheet(lAssetDef.spritesheetDefinitionName, mEntityGroupUid);
 //							if (lSpritesheetDef != null) {
 //								lAsset.spriteInstance = lSpritesheetDef.getSpriteInstance(lAssetDef.spriteName);
@@ -254,28 +230,14 @@ public class EditorAnimationLayerRenderer extends BaseRenderer {
 		}
 	}
 
-	@Override
-	public void draw(LintfordCore core, RenderPass renderPass) {
-		final var lLayers = mEditorAnimationLayerController.animationLayers();
-
-		final var lNumLayers = lLayers.size();
-		for (int i = 0; i < lNumLayers; i++) {
-			final var lSceneLayer = lLayers.get(i);
-
-			drawAnimationLayer(core, (SceneAnimationLayer) lSceneLayer);
-		}
-
-		final var lSelectedLayer = mEditorLayerController.selectedLayer();
-		if (lSelectedLayer != null) {
-			drawSelectedLayerDebug(core, lSelectedLayer);
-		}
-	}
-
 	// ---------------------------------------------
 	// Methods
 	// ---------------------------------------------
 
-	protected void drawAnimationLayer(LintfordCore core, SceneAnimationLayer layer) {
+	public void drawSpriteLayer(LintfordCore core, SceneSpriteLayer layer) {
+		if (!mRenderSpriteLayer)
+			return;
+
 		final var lSpriteBatch = core.sharedResources().uiSpriteBatch();
 
 		lSpriteBatch.begin(core.gameCamera());
@@ -296,15 +258,44 @@ public class EditorAnimationLayerRenderer extends BaseRenderer {
 		lSpriteBatch.end();
 	}
 
-	private void drawSelectedLayerDebug(LintfordCore core, SceneBaseLayer layer) {
+	public void drawSelectedLayerDebug(LintfordCore core, SceneBaseLayer layer) {
 		final var x = layer.centerX - layer.width * .5f;
 		final var y = layer.centerY - layer.height * .5f;
 
 		Debug.debugManager().drawers().drawRectImmediate(core.gameCamera(), x, y, layer.width, layer.height, 1f, 1f, 0f);
 	}
 
+	// ---------------------------------------------
+	// Inherited-Methods
+	// ---------------------------------------------
+
 	@Override
 	public boolean allowKeyboardInput() {
 		return true;
 	}
+
+	@Override
+	public boolean isCoolDownElapsed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void resetCoolDownTimer(float cooldownInMs) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean allowGamepadInput() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean allowMouseInput() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

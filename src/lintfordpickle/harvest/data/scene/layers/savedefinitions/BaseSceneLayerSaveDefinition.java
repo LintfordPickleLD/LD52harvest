@@ -25,6 +25,8 @@ public abstract class BaseSceneLayerSaveDefinition implements Serializable {
 	public float centerY;
 	public float width;
 	public float height;
+	public float contentScaleX;
+	public float contentScaleY;
 
 	// --------------------------------------
 	// Constructors

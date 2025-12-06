@@ -3,8 +3,6 @@ package lintfordpickle.harvest.renderers.editor;
 import org.lwjgl.glfw.GLFW;
 
 import lintfordpickle.harvest.controllers.editor.EditorLayerController;
-import lintfordpickle.harvest.controllers.editor.EditorSceneController;
-import lintfordpickle.harvest.controllers.layers.EditorTextureLayerController;
 import lintfordpickle.harvest.data.editor.EditorLayersData;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneTextureLayer;
@@ -14,27 +12,17 @@ import net.lintfordlib.controllers.editor.EditorBrushController;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.debug.Debug;
 import net.lintfordlib.core.graphics.geometry.FullScreenTexturedQuad;
-import net.lintfordlib.core.rendering.RenderPass;
+import net.lintfordlib.core.input.mouse.IInputProcessor;
 import net.lintfordlib.data.editor.EditorLayerBrush;
-import net.lintfordlib.renderers.BaseRenderer;
-import net.lintfordlib.renderers.RendererManagerBase;
 
-public class EditorTextureLayerRenderer extends BaseRenderer {
-
-	// ---------------------------------------------
-	// Constants
-	// ---------------------------------------------
-
-	public static final String RENDERER_NAME = "Editor Texture Renderer";
+public class EditorTextureLayerRenderer implements IInputProcessor {
 
 	// ---------------------------------------------
 	// Variables
 	// ---------------------------------------------
 
-	private EditorSceneController mSceneController;
 	private ResourceManager mResourceManager;
 
-	private EditorTextureLayerController mEditorTextureLayerController;
 	private EditorLayerController mEditorLayerController;
 	private EditorBrushController mEditorBrushController;
 
@@ -49,76 +37,62 @@ public class EditorTextureLayerRenderer extends BaseRenderer {
 	private float mMouseDownX;
 	private float mMouseDownY;
 
-	private boolean mRenderAnimations;
+	private int mEntityGroupUid;
+	private boolean mRenderSpriteLayers;
 
 	// ---------------------------------------------
 	// Properties
 	// ---------------------------------------------
 
-	@Override
-	public boolean isInitialized() {
-		return mSceneController != null;
-
+	public boolean renderSpriteLayers() {
+		return mRenderSpriteLayers;
 	}
 
-	public boolean renderAnimations() {
-		return mRenderAnimations;
-	}
-
-	public void renderAnimations(boolean renderingEnabled) {
-		mRenderAnimations = renderingEnabled;
+	public void renderSpriteLayers(boolean renderingEnabled) {
+		mRenderSpriteLayers = renderingEnabled;
 	}
 
 	// ---------------------------------------------
 	// Constructor
 	// ---------------------------------------------
 
-	public EditorTextureLayerRenderer(RendererManagerBase rendererManager, int entityGroupID) {
-		super(rendererManager, RENDERER_NAME, entityGroupID);
+	public EditorTextureLayerRenderer(int entityGroupID) {
+
+		mEntityGroupUid = entityGroupID;
 
 		mTexturedQuad = new FullScreenTexturedQuad();
 		mNoiseLayerShader = new NoiseLayerShader();
+
 	}
 
 	// ---------------------------------------------
 	// Core-Methods
 	// ---------------------------------------------
 
-	@Override
 	public void initialize(LintfordCore core) {
-		final var lControllerManager = core.controllerManager();
+		final var controllerManager = core.controllerManager();
 
-		mSceneController = (EditorSceneController) lControllerManager.getControllerByNameRequired(EditorSceneController.CONTROLLER_NAME, entityGroupUid());
-		mEditorBrushController = (EditorBrushController) lControllerManager.getControllerByNameRequired(EditorBrushController.CONTROLLER_NAME, entityGroupUid());
-		mEditorLayerController = (EditorLayerController) lControllerManager.getControllerByNameRequired(EditorLayerController.CONTROLLER_NAME, entityGroupUid());
+		mEditorBrushController = (EditorBrushController) controllerManager.getControllerByNameRequired(EditorBrushController.CONTROLLER_NAME, mEntityGroupUid);
+		mEditorLayerController = (EditorLayerController) controllerManager.getControllerByNameRequired(EditorLayerController.CONTROLLER_NAME, mEntityGroupUid);
 
-		mEditorTextureLayerController = (EditorTextureLayerController) lControllerManager.getControllerByNameRequired(EditorTextureLayerController.CONTROLLER_NAME, entityGroupUid());
 	}
 
-	@Override
 	public void loadResources(ResourceManager resourceManager) {
-		super.loadResources(resourceManager);
-
 		mNoiseLayerShader.loadResources(resourceManager);
 		mTexturedQuad.loadResources(resourceManager);
 		mResourceManager = resourceManager;
 	}
 
-	@Override
 	public void unloadResources() {
-		super.unloadResources();
 
 		mNoiseLayerShader.unbind();
 		mTexturedQuad.unloadResources();
 		mResourceManager = null;
 	}
 
-	@Override
 	public boolean handleInput(LintfordCore core) {
-		var lInputHandled = super.handleInput(core);
-
 		if (mEditorBrushController.isLayerActive(EditorLayersData.Layer_Texture) == false)
-			return lInputHandled;
+			return false;
 
 		final var leftMouseDown = core.input().mouse().tryAcquireMouseLeftClick(hashCode());
 		mMouseX = core.gameCamera().getMouseWorldSpaceX();
@@ -225,26 +199,20 @@ public class EditorTextureLayerRenderer extends BaseRenderer {
 			mIsNewLeftClick = false;
 		}
 
-		return lInputHandled;
+		return false;
 	}
 
-	@Override
-	public void draw(LintfordCore core, RenderPass renderPass) {
-		final var lLayers = mEditorTextureLayerController.textureLayers();
-		final var lNumLayers = lLayers.size();
-		for (int i = 0; i < lNumLayers; i++) {
-			final var lSceneLayer = lLayers.get(i);
+	public void update(LintfordCore core) {
 
-			drawTextureLayer(core, lSceneLayer);
-		}
-
-		final var lSelectedLayer = mEditorLayerController.selectedLayer();
-		if (lSelectedLayer != null) {
-			drawSelectedLayerDebug(core, lSelectedLayer);
-		}
 	}
 
-	protected void drawTextureLayer(LintfordCore core, SceneTextureLayer layer) {
+	public void drawTextureLayer(LintfordCore core, SceneTextureLayer layer) {
+		if (!mRenderSpriteLayers)
+			return;
+
+		if (layer == null || !layer.visible)
+			return;
+
 		final var spriteBatch = core.sharedResources().uiSpriteBatch();
 
 		final var aabb_c = core.gameCamera().boundingRectangle();
@@ -252,7 +220,7 @@ public class EditorTextureLayerRenderer extends BaseRenderer {
 		final var cameraPositionY = aabb_c.centerY();
 
 		if (layer.textureStatus == SceneTextureLayer.TEXTURE_UNLOADED) {
-			layer.texture = mResourceManager.textureManager().loadTexture(layer.textureName(), layer.textureFilepath(), entityGroupUid());
+			layer.texture = mResourceManager.textureManager().loadTexture(layer.textureName(), layer.textureFilepath(), mEntityGroupUid);
 			layer.textureStatus = SceneTextureLayer.TEXTURE_LOADED;
 			if (mResourceManager.textureManager().textureNotFound().equals(layer.texture)) {
 				layer.texture = null;
@@ -315,5 +283,33 @@ public class EditorTextureLayerRenderer extends BaseRenderer {
 	@Override
 	public boolean allowKeyboardInput() {
 		return true;
+	}
+
+	// ---------------------------------------------
+	// Inherited-Methods
+	// ---------------------------------------------
+
+	@Override
+	public boolean isCoolDownElapsed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void resetCoolDownTimer(float cooldownInMs) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean allowGamepadInput() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean allowMouseInput() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

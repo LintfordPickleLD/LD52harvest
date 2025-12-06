@@ -43,12 +43,6 @@ public class SceneParticleLayer extends SceneBaseLayer {
 		lSaveDefinition.translationSpeedModX = translationSpeedModX;
 		lSaveDefinition.translationSpeedModY = translationSpeedModY;
 
-		lSaveDefinition.centerX = centerX;
-		lSaveDefinition.centerY = centerY;
-
-		lSaveDefinition.width = width;
-		lSaveDefinition.height = height;
-
 		return lSaveDefinition;
 	}
 

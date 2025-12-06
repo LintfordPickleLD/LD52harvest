@@ -5,9 +5,9 @@ import java.util.List;
 
 import lintfordpickle.harvest.data.assets.SceneAssetInstance;
 import lintfordpickle.harvest.data.scene.layers.savedefinitions.BaseSceneLayerSaveDefinition;
-import lintfordpickle.harvest.data.scene.layers.savedefinitions.SceneAnimationLayerSaveDefinition;
+import lintfordpickle.harvest.data.scene.layers.savedefinitions.SceneSpritesLayerSaveDefinition;
 
-public class SceneAnimationLayer extends SceneBaseLayer {
+public class SceneSpriteLayer extends SceneBaseLayer {
 
 	// --------------------------------------
 	// Variables
@@ -28,7 +28,7 @@ public class SceneAnimationLayer extends SceneBaseLayer {
 	// Constructor
 	// --------------------------------------
 
-	public SceneAnimationLayer(int uid) {
+	public SceneSpriteLayer(int uid) {
 		super(uid);
 	}
 
@@ -58,7 +58,7 @@ public class SceneAnimationLayer extends SceneBaseLayer {
 
 	@Override
 	public BaseSceneLayerSaveDefinition getSaveDefinition() {
-		final var lSaveDefinition = new SceneAnimationLayerSaveDefinition();
+		final var lSaveDefinition = new SceneSpritesLayerSaveDefinition();
 
 		fillBaseSceneLayerInfo(lSaveDefinition);
 

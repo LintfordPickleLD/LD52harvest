@@ -24,6 +24,8 @@ public abstract class SceneBaseLayer {
 	public float contentScaleX;
 	public float contentScaleY;
 
+	public transient boolean visible;
+
 	// --------------------------------------
 	// Constructor
 	// --------------------------------------
@@ -48,6 +50,15 @@ public abstract class SceneBaseLayer {
 		saveDefinition.layerZDepth = zDepth;
 		saveDefinition.layerUid = layerUid;
 		saveDefinition.layerName = name;
+
+		saveDefinition.centerX = centerX;
+		saveDefinition.centerY = centerY;
+
+		saveDefinition.width = width;
+		saveDefinition.height = height;
+
+		saveDefinition.contentScaleX = contentScaleX;
+		saveDefinition.contentScaleY = contentScaleY;
 	}
 
 }

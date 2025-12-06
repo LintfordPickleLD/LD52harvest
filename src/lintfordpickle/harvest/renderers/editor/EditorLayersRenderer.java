@@ -1,0 +1,155 @@
+package lintfordpickle.harvest.renderers.editor;
+
+import lintfordpickle.harvest.controllers.editor.EditorLayerController;
+import lintfordpickle.harvest.controllers.editor.EditorSceneController;
+import lintfordpickle.harvest.data.editor.EditorLayersData;
+import lintfordpickle.harvest.data.scene.layers.SceneNoiseLayer;
+import lintfordpickle.harvest.data.scene.layers.SceneSpriteLayer;
+import lintfordpickle.harvest.data.scene.layers.SceneTextureLayer;
+import net.lintfordlib.assets.ResourceManager;
+import net.lintfordlib.controllers.editor.EditorBrushController;
+import net.lintfordlib.core.LintfordCore;
+import net.lintfordlib.core.rendering.RenderPass;
+import net.lintfordlib.renderers.BaseRenderer;
+import net.lintfordlib.renderers.RendererManagerBase;
+
+public class EditorLayersRenderer extends BaseRenderer {
+
+	// ---------------------------------------------
+	// Constants
+	// ---------------------------------------------
+
+	public static final String RENDERER_NAME = "Editor Layers Renderer";
+
+	// ---------------------------------------------
+	// Variables
+	// ---------------------------------------------
+
+	private EditorSceneController mSceneController;
+
+	private EditorLayerController mEditorLayerController;
+	private EditorBrushController mEditorBrushController;
+
+	private EditorTextureLayerRenderer mEditorTextureLayerRenderer;
+	private EditorNoiseLayerRenderer mEditorNoiseLayerRenderer;
+	private EditorSpriteLayerRenderer mEditorSpriteLayerRenderer;
+
+	// ---------------------------------------------
+	// Properties
+	// ---------------------------------------------
+
+	@Override
+	public boolean isInitialized() {
+		return mSceneController != null;
+
+	}
+
+	public EditorTextureLayerRenderer textureLayerRenderer() {
+		return mEditorTextureLayerRenderer;
+	}
+
+	public EditorNoiseLayerRenderer noiseLayerRenderer() {
+		return mEditorNoiseLayerRenderer;
+	}
+
+	public EditorSpriteLayerRenderer spritesLayerRenderer() {
+		return mEditorSpriteLayerRenderer;
+	}
+
+	// ---------------------------------------------
+	// Constructor
+	// ---------------------------------------------
+
+	public EditorLayersRenderer(RendererManagerBase rendererManager, int entityGroupID) {
+		super(rendererManager, RENDERER_NAME, entityGroupID);
+
+		mEditorTextureLayerRenderer = new EditorTextureLayerRenderer(entityGroupID);
+		mEditorNoiseLayerRenderer = new EditorNoiseLayerRenderer(entityGroupID);
+		mEditorSpriteLayerRenderer = new EditorSpriteLayerRenderer(entityGroupID);
+	}
+
+	// ---------------------------------------------
+	// Core-Methods
+	// ---------------------------------------------
+
+	@Override
+	public void initialize(LintfordCore core) {
+		final var lControllerManager = core.controllerManager();
+
+		mSceneController = (EditorSceneController) lControllerManager.getControllerByNameRequired(EditorSceneController.CONTROLLER_NAME, entityGroupUid());
+		mEditorBrushController = (EditorBrushController) lControllerManager.getControllerByNameRequired(EditorBrushController.CONTROLLER_NAME, entityGroupUid());
+		mEditorLayerController = (EditorLayerController) lControllerManager.getControllerByNameRequired(EditorLayerController.CONTROLLER_NAME, entityGroupUid());
+
+		mEditorTextureLayerRenderer.initialize(core);
+		mEditorNoiseLayerRenderer.initialize(core);
+		mEditorSpriteLayerRenderer.initialize(core);
+	}
+
+	@Override
+	public void loadResources(ResourceManager resourceManager) {
+		super.loadResources(resourceManager);
+
+		mEditorTextureLayerRenderer.loadResources(resourceManager);
+		mEditorNoiseLayerRenderer.loadResources(resourceManager);
+		mEditorSpriteLayerRenderer.loadResources(resourceManager);
+	}
+
+	@Override
+	public void unloadResources() {
+		super.unloadResources();
+
+		mEditorTextureLayerRenderer.unloadResources();
+		mEditorNoiseLayerRenderer.unloadResources();
+		mEditorSpriteLayerRenderer.unloadResources();
+	}
+
+	@Override
+	public boolean handleInput(LintfordCore core) {
+		var lInputHandled = super.handleInput(core);
+
+		if (mEditorBrushController.isLayerActive(EditorLayersData.Layer_Texture) == false)
+			return lInputHandled;
+
+		// TODO: Thsi depends on the currently selected layer type
+
+		mEditorTextureLayerRenderer.handleInput(core);
+		mEditorNoiseLayerRenderer.handleInput(core);
+		mEditorSpriteLayerRenderer.handleInput(core);
+
+		return false;
+	}
+
+	@Override
+	public void update(LintfordCore core) {
+		super.update(core);
+
+		mEditorTextureLayerRenderer.update(core);
+		mEditorNoiseLayerRenderer.update(core);
+		mEditorSpriteLayerRenderer.update(core);
+	}
+
+	@Override
+	public void draw(LintfordCore core, RenderPass renderPass) {
+		final var layers = mEditorLayerController.layersManager().layers();
+		final var numLayers = layers.size();
+		for (int i = 0; i < numLayers; i++) {
+			final var sceneLayer = layers.get(i);
+
+			if (sceneLayer == null)
+				continue;
+
+			switch (sceneLayer) {
+			case SceneNoiseLayer s -> mEditorNoiseLayerRenderer.drawNoiseLayer(core, s);
+			case SceneTextureLayer z -> mEditorTextureLayerRenderer.drawTextureLayer(core, z);
+			case SceneSpriteLayer t -> mEditorSpriteLayerRenderer.drawSpriteLayer(core, t);
+			default -> {
+				/* ignore */ }
+
+			}
+			;
+
+		}
+
+	}
+
+}

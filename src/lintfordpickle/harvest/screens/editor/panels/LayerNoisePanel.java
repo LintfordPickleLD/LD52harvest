@@ -3,6 +3,7 @@ package lintfordpickle.harvest.screens.editor.panels;
 import lintfordpickle.harvest.data.editor.EditorLayersData;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneNoiseLayer;
+import lintfordpickle.harvest.renderers.editor.EditorLayersRenderer;
 import lintfordpickle.harvest.renderers.editor.EditorNoiseLayerRenderer;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.input.InputManager;
@@ -138,7 +139,12 @@ public class LayerNoisePanel extends LayerPanel<SceneNoiseLayer> implements IUiI
 	public void initialize(LintfordCore core) {
 		super.initialize(core);
 
-		mEditorNoiseLayerRenderer = (EditorNoiseLayerRenderer) mParentWindow.rendererManager().getRenderer(EditorNoiseLayerRenderer.RENDERER_NAME);
+		final var layersRenderer = (EditorLayersRenderer) mParentWindow.rendererManager().getRenderer(EditorLayersRenderer.RENDERER_NAME);
+		mEditorNoiseLayerRenderer = layersRenderer.noiseLayerRenderer();
+
+		isLayerVisible(true);
+		mEditorNoiseLayerRenderer.renderNoiseLayer(true);
+
 	}
 
 	protected void newLayerSelected(SceneBaseLayer selectedLayer) {

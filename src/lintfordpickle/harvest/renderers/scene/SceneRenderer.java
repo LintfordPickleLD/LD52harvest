@@ -3,7 +3,7 @@ package lintfordpickle.harvest.renderers.scene;
 import org.lwjgl.glfw.GLFW;
 
 import lintfordpickle.harvest.controllers.SceneController;
-import lintfordpickle.harvest.data.scene.layers.SceneAnimationLayer;
+import lintfordpickle.harvest.data.scene.layers.SceneSpriteLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneNoiseLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneTextureLayer;
 import net.lintfordlib.assets.ResourceManager;
@@ -141,8 +141,8 @@ public class SceneRenderer extends BaseRenderer {
 				continue;
 			}
 
-			if (lSceneLayer instanceof SceneAnimationLayer) {
-				drawAnimationLayer(core, (SceneAnimationLayer) lSceneLayer);
+			if (lSceneLayer instanceof SceneSpriteLayer) {
+				drawAnimationLayer(core, (SceneSpriteLayer) lSceneLayer);
 				continue;
 			}
 
@@ -182,7 +182,7 @@ public class SceneRenderer extends BaseRenderer {
 		}
 	}
 
-	protected void drawAnimationLayer(LintfordCore core, SceneAnimationLayer layer) {
+	protected void drawAnimationLayer(LintfordCore core, SceneSpriteLayer layer) {
 		final var spriteBatch = mRendererManager.sharedResources().uiSpriteBatch();
 
 		spriteBatch.setColorWhite();

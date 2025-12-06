@@ -5,7 +5,7 @@ import java.util.List;
 
 import lintfordpickle.harvest.data.scene.BaseInstanceManager;
 import lintfordpickle.harvest.data.scene.SceneSaveDefinition;
-import lintfordpickle.harvest.data.scene.layers.savedefinitions.SceneAnimationLayerSaveDefinition;
+import lintfordpickle.harvest.data.scene.layers.savedefinitions.SceneSpritesLayerSaveDefinition;
 import lintfordpickle.harvest.data.scene.layers.savedefinitions.SceneNoiseLayerSaveDefinition;
 import lintfordpickle.harvest.data.scene.layers.savedefinitions.SceneTextureLayerSaveDefinition;
 
@@ -82,8 +82,8 @@ public class LayersManager extends BaseInstanceManager {
 			if (lLayerSaveDefinition instanceof SceneTextureLayerSaveDefinition) {
 				sceneSaveDefinition.layers().textureLayers.add((SceneTextureLayerSaveDefinition) lLayerSaveDefinition);
 
-			} else if (lLayerSaveDefinition instanceof SceneAnimationLayerSaveDefinition) {
-				sceneSaveDefinition.layers().animationLayers.add((SceneAnimationLayerSaveDefinition) lLayerSaveDefinition);
+			} else if (lLayerSaveDefinition instanceof SceneSpritesLayerSaveDefinition) {
+				sceneSaveDefinition.layers().spriteLayers.add((SceneSpritesLayerSaveDefinition) lLayerSaveDefinition);
 
 			} else if (lLayerSaveDefinition instanceof SceneNoiseLayerSaveDefinition) {
 				sceneSaveDefinition.layers().noiseLayers.add((SceneNoiseLayerSaveDefinition) lLayerSaveDefinition);
@@ -94,27 +94,36 @@ public class LayersManager extends BaseInstanceManager {
 
 	@Override
 	public void loadFromTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
-		final var lLayerSaveManager = sceneSaveDefinition.layers();
+		final var layerSaveManager = sceneSaveDefinition.layers();
 
-		final var lTextureLayers = lLayerSaveManager.textureLayers;
-		final var lNumTextureLayers = lTextureLayers.size();
-		for (int i = 0; i < lNumTextureLayers; i++) {
-			final var lLayerToImport = lTextureLayers.get(i);
-			layers().add(lLayerToImport.getSceneLayer());
+		final var textureLayers = layerSaveManager.textureLayers;
+		final var numTextureLayers = textureLayers.size();
+		for (int i = 0; i < numTextureLayers; i++) {
+			final var layerToImport = textureLayers.get(i);
+			final var sceneLayer = layerToImport.getSceneLayer();
+			sceneLayer.visible = true;
+
+			layers().add(sceneLayer);
 		}
 
-		final var lAnimationLayers = lLayerSaveManager.animationLayers;
-		final var lNumAnimationLayers = lAnimationLayers.size();
+		final var spriteLayers = layerSaveManager.spriteLayers;
+		final var lNumAnimationLayers = spriteLayers.size();
 		for (int i = 0; i < lNumAnimationLayers; i++) {
-			final var lLayerToImport = lAnimationLayers.get(i);
-			layers().add(lLayerToImport.getSceneLayer());
+			final var layerToImport = spriteLayers.get(i);
+			final var sceneLayer = layerToImport.getSceneLayer();
+			sceneLayer.visible = true;
+
+			layers().add(sceneLayer);
 		}
 
-		final var lNoiseLayers = lLayerSaveManager.noiseLayers;
-		final var lNumNoiseLayers = lNoiseLayers.size();
-		for (int i = 0; i < lNumNoiseLayers; i++) {
-			final var lLayerToImport = lNoiseLayers.get(i);
-			layers().add(lLayerToImport.getSceneLayer());
+		final var lNoiseLayers = layerSaveManager.noiseLayers;
+		final var numNoiseLayers = lNoiseLayers.size();
+		for (int i = 0; i < numNoiseLayers; i++) {
+			final var layerToImport = lNoiseLayers.get(i);
+			final var sceneLayer = layerToImport.getSceneLayer();
+			sceneLayer.visible = true;
+
+			layers().add(sceneLayer);
 		}
 
 		setLayerUidCounter();

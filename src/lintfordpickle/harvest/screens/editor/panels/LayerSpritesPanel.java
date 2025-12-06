@@ -2,9 +2,10 @@ package lintfordpickle.harvest.screens.editor.panels;
 
 import lintfordpickle.harvest.controllers.editor.EditorAssetsController;
 import lintfordpickle.harvest.data.editor.EditorLayersData;
-import lintfordpickle.harvest.data.scene.layers.SceneAnimationLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
-import lintfordpickle.harvest.renderers.editor.EditorAnimationLayerRenderer;
+import lintfordpickle.harvest.data.scene.layers.SceneSpriteLayer;
+import lintfordpickle.harvest.renderers.editor.EditorLayersRenderer;
+import lintfordpickle.harvest.renderers.editor.EditorSpriteLayerRenderer;
 import net.lintfordlib.controllers.editor.EditorBrushController;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.input.InputManager;
@@ -19,7 +20,7 @@ import net.lintfordlib.renderers.windows.components.UiInputText;
 import net.lintfordlib.renderers.windows.components.UiLabel;
 import net.lintfordlib.renderers.windows.components.UiListBoxImageItem;
 
-public class LayerAnimationPanel extends LayerPanel<SceneAnimationLayer> implements IUiInputKeyPressCallback {
+public class LayerSpritesPanel extends LayerPanel<SceneSpriteLayer> implements IUiInputKeyPressCallback {
 
 	// --------------------------------------
 	// Constants
@@ -62,7 +63,7 @@ public class LayerAnimationPanel extends LayerPanel<SceneAnimationLayer> impleme
 	private UiInputFloat mWidth;
 	private UiInputFloat mHeight;
 
-	private EditorAnimationLayerRenderer mEditorAnimationLayerRenderer;
+	private EditorSpriteLayerRenderer mEditorAnimationLayerRenderer;
 
 	// --------------------------------------
 	// Properties
@@ -77,8 +78,8 @@ public class LayerAnimationPanel extends LayerPanel<SceneAnimationLayer> impleme
 	// Constructor
 	// --------------------------------------
 
-	public LayerAnimationPanel(UiWindow parentWindow, int entityGroupUid) {
-		super(parentWindow, "Animation Layer", entityGroupUid);
+	public LayerSpritesPanel(UiWindow parentWindow, int entityGroupUid) {
+		super(parentWindow, "Sprites Layer", entityGroupUid);
 
 		mEditorActiveLayerUid = EditorLayersData.Layer_Animation;
 
@@ -173,7 +174,12 @@ public class LayerAnimationPanel extends LayerPanel<SceneAnimationLayer> impleme
 
 		loadAssets(core);
 
-		mEditorAnimationLayerRenderer = (EditorAnimationLayerRenderer) mParentWindow.rendererManager().getRenderer(EditorAnimationLayerRenderer.RENDERER_NAME);
+		final var layersRenderer = (EditorLayersRenderer) mParentWindow.rendererManager().getRenderer(EditorLayersRenderer.RENDERER_NAME);
+		mEditorAnimationLayerRenderer = layersRenderer.spritesLayerRenderer();
+
+		isLayerVisible(true);
+		mEditorAnimationLayerRenderer.renderSpritesLayer(true);
+
 	}
 
 	private void loadAssets(LintfordCore core) {
@@ -200,12 +206,12 @@ public class LayerAnimationPanel extends LayerPanel<SceneAnimationLayer> impleme
 	// --------------------------------------
 
 	protected void newLayerSelected(SceneBaseLayer selectedLayer) {
-		if (selectedLayer instanceof SceneAnimationLayer) {
-			selectLayer((SceneAnimationLayer) selectedLayer);
+		if (selectedLayer instanceof SceneSpriteLayer) {
+			selectLayer((SceneSpriteLayer) selectedLayer);
 		}
 	}
 
-	protected void selectLayer(SceneAnimationLayer selectedLayer) {
+	protected void selectLayer(SceneSpriteLayer selectedLayer) {
 		mSelectedLayer = selectedLayer;
 		mIsExpandable = true;
 		mIsPanelOpen = true;

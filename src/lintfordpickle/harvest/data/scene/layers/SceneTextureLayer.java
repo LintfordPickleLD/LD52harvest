@@ -78,24 +78,18 @@ public class SceneTextureLayer extends SceneBaseLayer {
 
 	@Override
 	public BaseSceneLayerSaveDefinition getSaveDefinition() {
-		final var lSaveDefinition = new SceneTextureLayerSaveDefinition();
+		final var saveDefinition = new SceneTextureLayerSaveDefinition();
 
-		fillBaseSceneLayerInfo(lSaveDefinition);
+		fillBaseSceneLayerInfo(saveDefinition);
 
-		lSaveDefinition.layerName = name;
-		lSaveDefinition.textureName = mTextureName;
-		lSaveDefinition.texturePath = mTexturePath;
+		saveDefinition.layerName = name;
+		saveDefinition.textureName = mTextureName;
+		saveDefinition.texturePath = mTexturePath;
 
-		lSaveDefinition.translationSpeedModX = translationSpeedModX;
-		lSaveDefinition.translationSpeedModY = translationSpeedModY;
+		saveDefinition.translationSpeedModX = translationSpeedModX;
+		saveDefinition.translationSpeedModY = translationSpeedModY;
 
-		lSaveDefinition.centerX = centerX;
-		lSaveDefinition.centerY = centerY;
-
-		lSaveDefinition.width = width;
-		lSaveDefinition.height = height;
-
-		return lSaveDefinition;
+		return saveDefinition;
 	}
 
 }

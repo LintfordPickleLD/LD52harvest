@@ -1,9 +1,9 @@
 package lintfordpickle.harvest.data.scene.layers.savedefinitions;
 
-import lintfordpickle.harvest.data.scene.layers.SceneAnimationLayer;
+import lintfordpickle.harvest.data.scene.layers.SceneSpriteLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
 
-public class SceneAnimationLayerSaveDefinition extends BaseSceneLayerSaveDefinition {
+public class SceneSpritesLayerSaveDefinition extends BaseSceneLayerSaveDefinition {
 
 	// --------------------------------------
 	// Constants
@@ -15,7 +15,7 @@ public class SceneAnimationLayerSaveDefinition extends BaseSceneLayerSaveDefinit
 	// Constructor
 	// --------------------------------------
 
-	public SceneAnimationLayerSaveDefinition() {
+	public SceneSpritesLayerSaveDefinition() {
 	}
 
 	// --------------------------------------
@@ -24,7 +24,7 @@ public class SceneAnimationLayerSaveDefinition extends BaseSceneLayerSaveDefinit
 
 	@Override
 	public SceneBaseLayer getSceneLayer() {
-		final var lAnimationLayer = new SceneAnimationLayer(layerUid);
+		final var lAnimationLayer = new SceneSpriteLayer(layerUid);
 		lAnimationLayer.zDepth = layerZDepth;
 		lAnimationLayer.name = layerName;
 

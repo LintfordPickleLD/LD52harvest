@@ -4,15 +4,10 @@ import lintfordpickle.harvest.controllers.editor.EditorLayerController;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.input.InputManager;
-import net.lintfordlib.renderers.editor.panels.UiDockedWindow;
 import net.lintfordlib.renderers.editor.panels.UiPanel;
 import net.lintfordlib.renderers.windows.UiWindow;
 
 public abstract class LayerPanel<T extends SceneBaseLayer> extends UiPanel {
-
-	// --------------------------------------
-	// Constants
-	// --------------------------------------
 
 	// --------------------------------------
 	// Variables
@@ -102,17 +97,17 @@ public abstract class LayerPanel<T extends SceneBaseLayer> extends UiPanel {
 	}
 
 	protected void refreshLayerPanels() {
-		if (mParentWindow instanceof UiDockedWindow) {
-			final var lDockedWindowWithPanels = (UiDockedWindow) mParentWindow;
-			final var lPanels = lDockedWindowWithPanels.editorPanels();
-
-			final var lNumPanels = lPanels.size();
-			for (int i = 0; i < lNumPanels; i++) {
-				if (lPanels.get(i) instanceof LayersPanel) {
-					final var lLayersPanel = (LayersPanel) lPanels.get(i);
-					lLayersPanel.refreshLayerItems();
-				}
-			}
-		}
+//		if (mParentWindow instanceof UiDockedWindow) {
+//			final var lDockedWindowWithPanels = (UiDockedWindow) mParentWindow;
+//			final var lPanels = lDockedWindowWithPanels.editorPanels();
+//
+//			final var lNumPanels = lPanels.size();
+//			for (int i = 0; i < lNumPanels; i++) {
+//				if (lPanels.get(i) instanceof LayersPanel) {
+//					final var lLayersPanel = (LayersPanel) lPanels.get(i);
+//					lLayersPanel.createUiListItemsFromManager();
+//				}
+//			}
+//		}
 	}
 }

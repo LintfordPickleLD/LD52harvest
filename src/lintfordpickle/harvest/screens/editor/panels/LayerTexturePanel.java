@@ -3,6 +3,7 @@ package lintfordpickle.harvest.screens.editor.panels;
 import lintfordpickle.harvest.data.editor.EditorLayersData;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneTextureLayer;
+import lintfordpickle.harvest.renderers.editor.EditorLayersRenderer;
 import lintfordpickle.harvest.renderers.editor.EditorTextureLayerRenderer;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.input.InputManager;
@@ -191,7 +192,12 @@ public class LayerTexturePanel extends LayerPanel<SceneTextureLayer> implements 
 	public void initialize(LintfordCore core) {
 		super.initialize(core);
 
-		mEditorTextureLayerRenderer = (EditorTextureLayerRenderer) mParentWindow.rendererManager().getRenderer(EditorTextureLayerRenderer.RENDERER_NAME);
+		final var layersRenderer = (EditorLayersRenderer) mParentWindow.rendererManager().getRenderer(EditorLayersRenderer.RENDERER_NAME);
+		mEditorTextureLayerRenderer = layersRenderer.textureLayerRenderer();
+
+		isLayerVisible(true);
+		mEditorTextureLayerRenderer.renderSpriteLayers(true);
+
 	}
 
 	@Override
@@ -262,6 +268,13 @@ public class LayerTexturePanel extends LayerPanel<SceneTextureLayer> implements 
 	@Override
 	public void widgetOnClick(InputManager inputManager, int entryUid) {
 		switch (entryUid) {
+		case BUTTON_SHOW_LAYER:
+			if (mEditorTextureLayerRenderer != null) {
+				final var lCurentVisibility = mEditorTextureLayerRenderer.renderSpriteLayers();
+				mEditorTextureLayerRenderer.renderSpriteLayers(!lCurentVisibility);
+			}
+			break;
+
 		case BUTTON_REFRESH:
 
 			if (mSelectedLayer == null)

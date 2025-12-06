@@ -7,18 +7,12 @@ import lintfordpickle.harvest.controllers.editor.EditorAssetsController;
 import lintfordpickle.harvest.controllers.editor.EditorLayerController;
 import lintfordpickle.harvest.controllers.editor.EditorPhysicsController;
 import lintfordpickle.harvest.controllers.editor.EditorSceneController;
-import lintfordpickle.harvest.controllers.layers.EditorAnimationLayerController;
-import lintfordpickle.harvest.controllers.layers.EditorNoiseLayerController;
-import lintfordpickle.harvest.controllers.layers.EditorParticleLayerController;
-import lintfordpickle.harvest.controllers.layers.EditorTextureLayerController;
 import lintfordpickle.harvest.data.assets.SceneAssetsManager;
 import lintfordpickle.harvest.data.editor.EditorSceneData;
 import lintfordpickle.harvest.data.scene.SceneSaveDefinition;
-import lintfordpickle.harvest.renderers.editor.EditorAnimationLayerRenderer;
-import lintfordpickle.harvest.renderers.editor.EditorNoiseLayerRenderer;
+import lintfordpickle.harvest.renderers.editor.EditorLayersRenderer;
 import lintfordpickle.harvest.renderers.editor.EditorPhysicsRenderer;
 import lintfordpickle.harvest.renderers.editor.EditorPhysicsSettingsRenderer;
-import lintfordpickle.harvest.renderers.editor.EditorTextureLayerRenderer;
 import net.lintfordlib.ConstantsEditor;
 import net.lintfordlib.MenuActions;
 import net.lintfordlib.assets.ResourceManager;
@@ -71,10 +65,6 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 	private EditorFileController mEditorFileController;
 
 	private EditorLayerController mEditorLayerController;
-	private EditorTextureLayerController mEditorTextureLayerController;
-	private EditorNoiseLayerController mEditorNoiseLayerController;
-	private EditorParticleLayerController mEditorParticleLayerController;
-	private EditorAnimationLayerController mEditorAnimationLayerController;
 
 	// Renderers
 	private UiDockedWindow mEditorGui;
@@ -84,9 +74,7 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 	private EditorPhysicsRenderer mEditorPhysicsRenderer;
 	private DebugCameraBoundsDrawer mDebugCameraBoundsDrawer;
 
-	private EditorTextureLayerRenderer mEditorTextureLayerRenderer;
-	private EditorNoiseLayerRenderer mEditorNoiseLayerRenderer;
-	private EditorAnimationLayerRenderer mEditorAnimationLayerRenderer;
+	private EditorLayersRenderer mEditorLayersRenderer;
 
 	// ---------------------------------------------
 	// Constructor
@@ -194,10 +182,6 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 		mHashGridController = new EditorHashGridController(controllerManager, hashGrid, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
 		mEditorFileController = new EditorFileController(controllerManager, mSceneHeader, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
 		mEditorLayerController = new EditorLayerController(controllerManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mEditorTextureLayerController = new EditorTextureLayerController(controllerManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mEditorNoiseLayerController = new EditorNoiseLayerController(controllerManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mEditorParticleLayerController = new EditorParticleLayerController(controllerManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mEditorAnimationLayerController = new EditorAnimationLayerController(controllerManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
 
 		mEditorAssetsController = new EditorAssetsController(controllerManager, mSceneAssetManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
 
@@ -216,10 +200,6 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 		mEditorBrushController.initialize(core);
 		mEditorFileController.initialize(core);
 		mEditorLayerController.initialize(core);
-		mEditorTextureLayerController.initialize(core);
-		mEditorNoiseLayerController.initialize(core);
-		mEditorParticleLayerController.initialize(core);
-		mEditorAnimationLayerController.initialize(core);
 		mEditorAssetsController.initialize(core);
 		mEditorPhysicsController.initialize(core);
 	}
@@ -230,13 +210,9 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 
 	@Override
 	protected void createRenderers(LintfordCore core) {
-		
-		mEditorTextureLayerRenderer = new EditorTextureLayerRenderer(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mEditorNoiseLayerRenderer = new EditorNoiseLayerRenderer(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mEditorAnimationLayerRenderer = new EditorAnimationLayerRenderer(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
 
-		
-		
+		mEditorLayersRenderer = new EditorLayersRenderer(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
+
 		mEditorGui = new EditorGui(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
 		mEditorBrushRenderer = new EditorBrushRenderer(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
 		mEditorHashGridRenderer = new EditorHashGridRenderer(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
@@ -247,7 +223,7 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 
 	@Override
 	protected void createRendererStructure(LintfordCore core) {
-
+		// ignored (automatic in the SimpleRendererManagare).
 	}
 
 	// ---------------------------------------------

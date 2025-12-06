@@ -13,16 +13,18 @@
     "textureLayers": [
       {
         "textureName": "TEXTURE_SKY",
-        "texturePath": "res/textures/scene/textureSceneSky.png",
+        "texturePath": "res/textures/scene/textureScenESKY.png",
         "layerUid": 7,
         "layerZDepth": 0,
-        "layerName": "Sky",
-        "translationSpeedModX": 0.3,
-        "translationSpeedModY": 0.004,
-        "centerX": 0.0,
+        "layerName": "Tex SKY",
+        "translationSpeedModX": 0.0,
+        "translationSpeedModY": 0.0,
+        "centerX": 100.0,
         "centerY": 0.0,
-        "width": 2048.0,
-        "height": 2048.0
+        "width": 2000.0,
+        "height": 2000.0,
+        "contentScaleX": 1.0,
+        "contentScaleY": 1.0
       },
       {
         "textureName": "TEXTURE_FARGROUND",
@@ -35,72 +37,28 @@
         "centerX": 0.0,
         "centerY": 0.0,
         "width": 2048.0,
-        "height": 2048.0
+        "height": 2048.0,
+        "contentScaleX": 1.0,
+        "contentScaleY": 1.0
       },
       {
-        "textureName": "TEXTURE_MIDGROUND",
-        "texturePath": "res/textures/scene/textureSceneBackgroundMid.png",
-        "layerUid": 4,
-        "layerZDepth": 2,
-        "layerName": "Background Mid",
-        "translationSpeedModX": 0.1,
-        "translationSpeedModY": 0.02,
-        "centerX": 0.0,
-        "centerY": 0.0,
-        "width": 2048.0,
-        "height": 2048.0
-      },
-      {
-        "textureName": "TEXTURE_COLLIDABLES",
-        "texturePath": "res/textures/scene/textureSceneCollidables.png",
-        "layerUid": 0,
-        "layerZDepth": 3,
-        "layerName": "Foreground",
-        "translationSpeedModX": 0.0,
-        "translationSpeedModY": 0.0,
-        "centerX": 0.0,
-        "centerY": 0.0,
-        "width": 2048.0,
-        "height": 2048.0
-      }
-    ],
-    "animationLayers": [
-      {
-        "layerUid": 9,
-        "layerZDepth": 4,
-        "layerName": "Animations",
-        "translationSpeedModX": 0.0,
-        "translationSpeedModY": 0.0,
-        "centerX": 0.0,
-        "centerY": 0.0,
-        "width": 0.0,
-        "height": 0.0
-      }
-    ],
-    "noiseLayers": [
-      {
-        "layerUid": 10,
-        "layerZDepth": 5,
-        "layerName": "Noise Layer 10",
-        "translationSpeedModX": 0.0,
-        "translationSpeedModY": 0.0,
-        "centerX": 297.90945,
-        "centerY": -42.51082,
-        "width": 214.22595,
-        "height": 167.55493
-      },
-      {
+        "textureName": "sdfj",
+        "texturePath": "res/textures/scene/texturescenebackgroundmid.png",
         "layerUid": 8,
-        "layerZDepth": 6,
-        "layerName": "Sewer Clouds",
+        "layerZDepth": 2,
+        "layerName": "Tex Layer 8",
         "translationSpeedModX": 0.0,
         "translationSpeedModY": 0.0,
-        "centerX": -4.4979553,
-        "centerY": 741.77185,
-        "width": 2122.9817,
-        "height": 604.30676
+        "centerX": 0.0,
+        "centerY": 0.0,
+        "width": 2024.0,
+        "height": 2048.0,
+        "contentScaleX": 1.0,
+        "contentScaleY": 1.0
       }
-    ]
+    ],
+    "animationLayers": [],
+    "noiseLayers": []
   },
   "PhysicsSettings": {
     "Gravity": {

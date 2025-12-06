@@ -3,8 +3,6 @@ package lintfordpickle.harvest.renderers.editor;
 import org.lwjgl.glfw.GLFW;
 
 import lintfordpickle.harvest.controllers.editor.EditorLayerController;
-import lintfordpickle.harvest.controllers.editor.EditorSceneController;
-import lintfordpickle.harvest.controllers.layers.EditorNoiseLayerController;
 import lintfordpickle.harvest.data.editor.EditorLayersData;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneNoiseLayer;
@@ -14,12 +12,10 @@ import net.lintfordlib.controllers.editor.EditorBrushController;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.debug.Debug;
 import net.lintfordlib.core.graphics.geometry.FullScreenTexturedQuad;
-import net.lintfordlib.core.rendering.RenderPass;
+import net.lintfordlib.core.input.mouse.IInputProcessor;
 import net.lintfordlib.data.editor.EditorLayerBrush;
-import net.lintfordlib.renderers.BaseRenderer;
-import net.lintfordlib.renderers.RendererManagerBase;
 
-public class EditorNoiseLayerRenderer extends BaseRenderer {
+public class EditorNoiseLayerRenderer implements IInputProcessor {
 
 	// ---------------------------------------------
 	// Constants
@@ -31,9 +27,6 @@ public class EditorNoiseLayerRenderer extends BaseRenderer {
 	// Variables
 	// ---------------------------------------------
 
-	private EditorSceneController mSceneController;
-
-	private EditorNoiseLayerController mEditorNoiseLayerController;
 	private EditorLayerController mEditorLayerController;
 	private EditorBrushController mEditorBrushController;
 
@@ -48,32 +41,28 @@ public class EditorNoiseLayerRenderer extends BaseRenderer {
 	private float mMouseDownX;
 	private float mMouseDownY;
 
-	private boolean mRenderAnimations;
+	private boolean mRenderNoiseLayer;
+	private int mEntityGroupUid;
 
 	// ---------------------------------------------
 	// Properties
 	// ---------------------------------------------
 
-	@Override
-	public boolean isInitialized() {
-		return mSceneController != null;
-
+	public boolean renderNoiseLayer() {
+		return mRenderNoiseLayer;
 	}
 
-	public boolean renderAnimations() {
-		return mRenderAnimations;
-	}
-
-	public void renderAnimations(boolean renderingEnabled) {
-		mRenderAnimations = renderingEnabled;
+	public void renderNoiseLayer(boolean renderingEnabled) {
+		mRenderNoiseLayer = renderingEnabled;
 	}
 
 	// ---------------------------------------------
 	// Constructor
 	// ---------------------------------------------
 
-	public EditorNoiseLayerRenderer(RendererManagerBase rendererManager, int entityGroupID) {
-		super(rendererManager, RENDERER_NAME, entityGroupID);
+	public EditorNoiseLayerRenderer(int entityGroupID) {
+
+		mEntityGroupUid = entityGroupID;
 
 		mTexturedQuad = new FullScreenTexturedQuad();
 		mNoiseLayerShader = new NoiseLayerShader();
@@ -83,38 +72,27 @@ public class EditorNoiseLayerRenderer extends BaseRenderer {
 	// Core-Methods
 	// ---------------------------------------------
 
-	@Override
 	public void initialize(LintfordCore core) {
 		final var lControllerManager = core.controllerManager();
 
-		mSceneController = (EditorSceneController) lControllerManager.getControllerByNameRequired(EditorSceneController.CONTROLLER_NAME, entityGroupUid());
-		mEditorBrushController = (EditorBrushController) lControllerManager.getControllerByNameRequired(EditorBrushController.CONTROLLER_NAME, entityGroupUid());
-		mEditorLayerController = (EditorLayerController) lControllerManager.getControllerByNameRequired(EditorLayerController.CONTROLLER_NAME, entityGroupUid());
-		mEditorNoiseLayerController = (EditorNoiseLayerController) lControllerManager.getControllerByNameRequired(EditorNoiseLayerController.CONTROLLER_NAME, entityGroupUid());
+		mEditorBrushController = (EditorBrushController) lControllerManager.getControllerByNameRequired(EditorBrushController.CONTROLLER_NAME, mEntityGroupUid);
+		mEditorLayerController = (EditorLayerController) lControllerManager.getControllerByNameRequired(EditorLayerController.CONTROLLER_NAME, mEntityGroupUid);
 	}
 
-	@Override
 	public void loadResources(ResourceManager resourceManager) {
-		super.loadResources(resourceManager);
-
 		mNoiseLayerShader.loadResources(resourceManager);
 		mTexturedQuad.loadResources(resourceManager);
 	}
 
-	@Override
 	public void unloadResources() {
-		super.unloadResources();
-
 		mNoiseLayerShader.unbind();
 		mTexturedQuad.unloadResources();
 	}
 
-	@Override
 	public boolean handleInput(LintfordCore core) {
-		var lInputHandled = super.handleInput(core);
 
-		if (mEditorBrushController.isLayerActive(EditorLayersData.Layer_Noise) == false)
-			return lInputHandled;
+		if (!mEditorBrushController.isLayerActive(EditorLayersData.Layer_Noise))
+			return false;
 
 		final var leftMouseDown = core.input().mouse().tryAcquireMouseLeftClick(hashCode());
 		mMouseX = core.gameCamera().getMouseWorldSpaceX();
@@ -221,26 +199,16 @@ public class EditorNoiseLayerRenderer extends BaseRenderer {
 			mIsNewLeftClick = false;
 		}
 
-		return lInputHandled;
+		return false;
 	}
 
-	@Override
-	public void draw(LintfordCore core, RenderPass renderPass) {
-		final var lLayers = mEditorNoiseLayerController.noiseLayers();
-		final var lNumLayers = lLayers.size();
-		for (int i = 0; i < lNumLayers; i++) {
-			final var lSceneLayer = lLayers.get(i);
+	public void update(LintfordCore core) {
 
-			drawNoiseLayer(core, lSceneLayer);
-		}
-
-		final var lSelectedLayer = mEditorLayerController.selectedLayer();
-		if (lSelectedLayer != null) {
-			drawSelectedLayerDebug(core, lSelectedLayer);
-		}
 	}
 
-	protected void drawNoiseLayer(LintfordCore core, SceneNoiseLayer layer) {
+	public void drawNoiseLayer(LintfordCore core, SceneNoiseLayer layer) {
+		if (!mRenderNoiseLayer)
+			return;
 
 		// TODO: Camera offset scrolling ?
 
@@ -253,7 +221,6 @@ public class EditorNoiseLayerRenderer extends BaseRenderer {
 			mNoiseLayerShader.recompile();
 		}
 
-		// TODO: Only needs updating when dirty
 		layer.worldMatrix.setIdentity();
 		layer.worldMatrix.translate(lDstX, lDstY, .0f);
 		layer.worldMatrix.scale(lDstWidth, lDstHeight, 1.f);
@@ -286,5 +253,33 @@ public class EditorNoiseLayerRenderer extends BaseRenderer {
 	@Override
 	public boolean allowKeyboardInput() {
 		return true;
+	}
+
+	// ---------------------------------------------
+	// Inherited-Methods
+	// ---------------------------------------------
+
+	@Override
+	public boolean isCoolDownElapsed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void resetCoolDownTimer(float cooldownInMs) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean allowGamepadInput() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean allowMouseInput() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

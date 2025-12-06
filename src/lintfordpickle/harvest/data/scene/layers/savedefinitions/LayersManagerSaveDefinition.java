@@ -13,7 +13,7 @@ public class LayersManagerSaveDefinition implements Serializable {
 	// --------------------------------------
 
 	public final List<SceneTextureLayerSaveDefinition> textureLayers = new ArrayList<>();
-	public final List<SceneAnimationLayerSaveDefinition> animationLayers = new ArrayList<>();
+	public final List<SceneSpritesLayerSaveDefinition> spriteLayers = new ArrayList<>();
 	public final List<SceneNoiseLayerSaveDefinition> noiseLayers = new ArrayList<>();
 
 	// --------------------------------------
