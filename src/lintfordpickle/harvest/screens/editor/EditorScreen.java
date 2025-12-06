@@ -230,10 +230,13 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 
 	@Override
 	protected void createRenderers(LintfordCore core) {
+		
 		mEditorTextureLayerRenderer = new EditorTextureLayerRenderer(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
 		mEditorNoiseLayerRenderer = new EditorNoiseLayerRenderer(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
 		mEditorAnimationLayerRenderer = new EditorAnimationLayerRenderer(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
 
+		
+		
 		mEditorGui = new EditorGui(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
 		mEditorBrushRenderer = new EditorBrushRenderer(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
 		mEditorHashGridRenderer = new EditorHashGridRenderer(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
@@ -253,8 +256,8 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 
 	@Override
 	public void onSave() {
-		final var lDataFilename = mSceneHeader.sceneDataFilePath();
-		mEditorSceneController.saveToFile(lDataFilename);
+		final var dataFilename = mSceneHeader.sceneDataFilePath();
+		mEditorSceneController.saveToFile(dataFilename);
 		mSceneHeader.saveSceneHeaderFile();
 	}
 
@@ -266,7 +269,7 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 
 	@Override
 	public void onSceneNameChanged(String newSceneName) {
-
+		mSceneHeader.sceneName(newSceneName);
 	}
 
 	@Override

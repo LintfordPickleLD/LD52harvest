@@ -260,6 +260,7 @@ public class EditorTextureLayerRenderer extends BaseRenderer {
 				return;
 			}
 
+			// don't keep repeat loading a failed texture until something changes
 			if (layer.texture == null) {
 				layer.textureStatus = SceneTextureLayer.TEXTURE_FAILED;
 			}
@@ -271,8 +272,18 @@ public class EditorTextureLayerRenderer extends BaseRenderer {
 
 			final var srcX = camOffsetX;
 			final var srcY = camOffsetY;
-			final var srcW = layer.texture.getTextureWidth();
-			final var srcH = layer.texture.getTextureHeight();
+
+			final var srcTexW = layer.texture.getTextureWidth();
+			final var srcTexH = layer.texture.getTextureHeight();
+
+			final var srcRatioX = layer.width / srcTexW * srcTexW;
+			final var srcRatioY = layer.height / srcTexH * srcTexH;
+
+			final var scaleX = layer.contentScaleX <= 0.f ? 1.f : layer.contentScaleX;
+			final var scaleY = layer.contentScaleY <= 0.f ? 1.f : layer.contentScaleY;
+
+			final var srcW = srcRatioX / scaleX;
+			final var srcH = srcRatioY / scaleY;
 
 			final var dstX = layer.centerX - layer.width * .5f;
 			final var dstY = layer.centerY - layer.height * .5f;
@@ -281,7 +292,9 @@ public class EditorTextureLayerRenderer extends BaseRenderer {
 
 			spriteBatch.setColorWhite();
 			spriteBatch.begin(core.gameCamera());
-			spriteBatch.draw(layer.texture, srcX, srcY, srcW, srcH, dstX, dstY, dstWidth, dstHeight, .01f);
+
+			final var zDepth = 9.9f - (layer.zDepth * 0.01f);
+			spriteBatch.draw(layer.texture, srcX, srcY, srcW, srcH, dstX, dstY, dstWidth, dstHeight, zDepth);
 			spriteBatch.end();
 			return;
 		}

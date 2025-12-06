@@ -1,7 +1,7 @@
 package lintfordpickle.harvest.screens.menu;
 
 import net.lintfordlib.core.LintfordCore;
-import net.lintfordlib.core.graphics.ColorConstants;
+import net.lintfordlib.core.input.gamepad.GamepadInputCodes;
 import net.lintfordlib.screenmanager.MenuEntry;
 import net.lintfordlib.screenmanager.MenuScreen;
 import net.lintfordlib.screenmanager.ScreenManager;
@@ -10,6 +10,8 @@ import net.lintfordlib.screenmanager.ScreenManagerConstants.LAYOUT_ALIGNMENT;
 import net.lintfordlib.screenmanager.ScreenManagerConstants.LAYOUT_WIDTH;
 import net.lintfordlib.screenmanager.layouts.ListLayout;
 import net.lintfordlib.screenmanager.screens.AudioOptionsScreen;
+import net.lintfordlib.screenmanager.screens.ControllerOptionsScreen;
+import net.lintfordlib.screenmanager.screens.KeyBindOptionsScreen;
 
 public class OptionsScreen extends MenuScreen {
 
@@ -63,11 +65,12 @@ public class OptionsScreen extends MenuScreen {
 		final var backEntry = new MenuEntry(screenManager, this, "Back");
 		backEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
 		backEntry.registerClickListener(this, BUTTON_BACK);
+		backEntry.gamepadMenuIcon.manualGamepadInputCode(GamepadInputCodes.LINTFORD_GAMEPAD_BUTTON_EAST);
 
 		layout.addMenuEntry(gameSettingsEntry);
-		layout.addMenuEntry(keyBindsEntry);
-		layout.addMenuEntry(graphicsEntry);
 		layout.addMenuEntry(audioSettingsEntry);
+		layout.addMenuEntry(graphicsEntry);
+		layout.addMenuEntry(keyBindsEntry);
 		layout.addMenuEntry(controllerSettingsEntry);
 		layout.addMenuEntry(MenuEntry.menuSeparator());
 		layout.addMenuEntry(backEntry);
@@ -105,6 +108,14 @@ public class OptionsScreen extends MenuScreen {
 		switch (mClickAction.consume()) {
 		case BUTTON_AUDIO:
 			screenManager.addScreen(new AudioOptionsScreen(screenManager));
+			break;
+
+		case BUTTON_KEY_BINDS:
+			screenManager.addScreen(new KeyBindOptionsScreen(screenManager));
+			break;
+
+		case BUTTON_CONTROLLER:
+			screenManager.addScreen(new ControllerOptionsScreen(screenManager));
 			break;
 
 		case BUTTON_BACK:

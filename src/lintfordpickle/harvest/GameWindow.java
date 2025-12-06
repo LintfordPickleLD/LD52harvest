@@ -12,7 +12,6 @@ import lintfordpickle.harvest.screens.editor.EditorSceneSelectionScreen;
 import lintfordpickle.harvest.screens.game.TimeTrialGameScreen;
 import lintfordpickle.harvest.screens.menu.MenuBackgroundScreen;
 import net.lintfordlib.GameInfo;
-import net.lintfordlib.GameVersion;
 import net.lintfordlib.assets.ResourceLoader;
 import net.lintfordlib.controllers.music.MusicController;
 import net.lintfordlib.core.LintfordCore;
@@ -142,17 +141,17 @@ public class GameWindow extends LintfordCore {
 		super.onInitializeBitmapFontSources(fontManager);
 
 		ScreenManager.ScreenManagerFonts.AddOrUpdate(ScreenManager.FONT_MENU_TOOLTIP_NAME, "res/fonts/fontNulshock12.json");
-		ScreenManager.ScreenManagerFonts.AddOrUpdate(ScreenManager.FONT_MENU_ENTRY_NAME, "res/fonts/fontNulshock16.json");
-		ScreenManager.ScreenManagerFonts.AddOrUpdate(ScreenManager.FONT_MENU_BOLD_ENTRY_NAME, "res/fonts/fontNulshock16.json");
+		ScreenManager.ScreenManagerFonts.AddOrUpdate(ScreenManager.FONT_MENU_ENTRY_NAME, "res/fonts/fontNulshock12.json");
+		ScreenManager.ScreenManagerFonts.AddOrUpdate(ScreenManager.FONT_MENU_BOLD_ENTRY_NAME, "res/fonts/fontNulshock14.json");
 		ScreenManager.ScreenManagerFonts.AddOrUpdate(ScreenManager.FONT_MENU_TITLE_NAME, "res/fonts/fontNulshock22.json");
 
 		ScreenManager.ScreenManagerFonts.AddOrUpdate(ToastManager.FONT_TOAST_NAME, "res/fonts/fontNulshock16.json");
 
 		SharedResources.RendererManagerFonts.AddOrUpdate(SharedResources.HUD_FONT_TEXT_BOLD_SMALL_NAME, "res/fonts/fontBarlow14.json");
 
-		SharedResources.RendererManagerFonts.AddOrUpdate(SharedResources.UI_FONT_TEXT_NAME, "res/fonts/fontBarlow14.json");
-		SharedResources.RendererManagerFonts.AddOrUpdate(SharedResources.UI_FONT_TEXT_BOLD_NAME, "res/fonts/fontBarlow14.json");
-		SharedResources.RendererManagerFonts.AddOrUpdate(SharedResources.UI_FONT_HEADER_NAME, "res/fonts/fontNulshock16.json");
+		SharedResources.RendererManagerFonts.AddOrUpdate(SharedResources.UI_FONT_TEXT_NAME, "res/fonts/fontNulshock12.json");
+		SharedResources.RendererManagerFonts.AddOrUpdate(SharedResources.UI_FONT_TEXT_BOLD_NAME, "res/fonts/fontNulshock12.json");
+		SharedResources.RendererManagerFonts.AddOrUpdate(SharedResources.UI_FONT_HEADER_NAME, "res/fonts/fontNulshock14.json");
 		SharedResources.RendererManagerFonts.AddOrUpdate(SharedResources.UI_FONT_TITLE_NAME, "res/fonts/fontNulshock22.json");
 	}
 
@@ -170,7 +169,8 @@ public class GameWindow extends LintfordCore {
 	protected void onInitializePaths(ResourcePathsConfig pathsConfig) {
 		super.onInitializePaths(pathsConfig);
 
-		pathsConfig.insertOrUpdateValue(SceneManager.SCENE_DIRECTORY, "res/def/scenes/");
+		pathsConfig.insertOrUpdateValue(SceneManager.SCENE_MAIN_DIRECTORY, ConstantsGame.CAMPAIGN_SCENES_DIRECTORY);
+		pathsConfig.insertOrUpdateValue(SceneManager.SCENE_CUSTOM_DIRECTORY, ConstantsGame.CUSTOM_SCENES_DIRECTORY);
 	}
 
 	@Override
@@ -266,7 +266,7 @@ public class GameWindow extends LintfordCore {
 	}
 
 	private void setGameVersion() {
-		GameVersion.setGameVersion(APP_VERSION_MAJ, APP_VERSION_MIN, APP_VERSION_BUILD, APP_POSTFIX);
+
 	}
 
 	@Override

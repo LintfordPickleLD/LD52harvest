@@ -136,7 +136,7 @@ public class TimeTrialHudRenderer extends UiWindow {
 		mHealthBar.setDestRectangle(hudBoundingBox.right() - 10 - lHealthBarWidth - 32, hudBoundingBox.top() + 12, lHealthBarWidth, 20);
 		mHealthBar.setCurrentValue(lShip.health);
 		mHealthBar.setMinMax(0, 100);
-		mHealthBar.draw(core, spriteBatch, fontUnit, -0.01f);
+		mHealthBar.draw(core, spriteBatch, fontUnit, .01f);
 
 		fontUnit.end();
 		spriteBatch.end();

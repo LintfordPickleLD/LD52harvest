@@ -55,36 +55,38 @@ public class MainMenu extends MenuScreen {
 		mMainMenuListBox.setDrawBackground(true, ColorConstants.getColor(.7f, .3f, .7f, .5f));
 		mMainMenuListBox.layoutWidth(LAYOUT_WIDTH.HALF);
 		mMainMenuListBox.layoutFillType(FILLTYPE.TAKE_WHATS_NEEDED);
+		mMainMenuListBox.paddingTop(5.f);
+		mMainMenuListBox.paddingBottom(5.f);
 
-		final var lStartGameEntry = new MenuEntry(screenManager, this, "Start Game");
-		lStartGameEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
-		lStartGameEntry.registerClickListener(this, SCREEN_BUTTON_PLAY);
-		lStartGameEntry.setToolTip("Harvest and deliver food from each of the farms in the fastest time.");
+		final var startGameEntry = new MenuEntry(screenManager, this, "Start Game");
+		startGameEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
+		startGameEntry.registerClickListener(this, SCREEN_BUTTON_PLAY);
+		startGameEntry.setToolTip("Harvest and deliver food from each of the farms in the fastest time.");
 
-		final var lEditorEntry = new MenuEntry(screenManager, this, "Editor");
-		lEditorEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
-		lEditorEntry.registerClickListener(this, SCREEN_BUTTON_EDITOR);
+		final var editorEntry = new MenuEntry(screenManager, this, "Editor");
+		editorEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
+		editorEntry.registerClickListener(this, SCREEN_BUTTON_EDITOR);
 
-		final var lHelpButton = new MenuEntry(screenManager, this, "Instructions");
-		lHelpButton.horizontalFillType(FILLTYPE.FILL_CONTAINER);
-		lHelpButton.registerClickListener(this, SCREEN_BUTTON_HELP);
+		final var helpButton = new MenuEntry(screenManager, this, "Instructions");
+		helpButton.horizontalFillType(FILLTYPE.FILL_CONTAINER);
+		helpButton.registerClickListener(this, SCREEN_BUTTON_HELP);
 
-		final var lOptionsEntry = new MenuEntry(screenManager, this, "Options");
-		lOptionsEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
-		lOptionsEntry.registerClickListener(this, SCREEN_BUTTON_OPTIONS);
+		final var optionsEntry = new MenuEntry(screenManager, this, "Options");
+		optionsEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
+		optionsEntry.registerClickListener(this, SCREEN_BUTTON_OPTIONS);
 
-		final var lExitEntry = new MenuEntry(screenManager, this, "Exit");
-		lExitEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
-		lExitEntry.registerClickListener(this, SCREEN_BUTTON_EXIT);
+		final var exitEntry = new MenuEntry(screenManager, this, "Exit");
+		exitEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);
+		exitEntry.registerClickListener(this, SCREEN_BUTTON_EXIT);
 
-		mMainMenuListBox.addMenuEntry(lStartGameEntry);
+		mMainMenuListBox.addMenuEntry(startGameEntry);
 		mMainMenuListBox.addMenuEntry(MenuEntry.menuSeparator());
-		mMainMenuListBox.addMenuEntry(lEditorEntry);
+		mMainMenuListBox.addMenuEntry(editorEntry);
 		mMainMenuListBox.addMenuEntry(MenuEntry.menuSeparator());
-		mMainMenuListBox.addMenuEntry(lHelpButton);
-		mMainMenuListBox.addMenuEntry(lOptionsEntry);
+		mMainMenuListBox.addMenuEntry(helpButton);
+		mMainMenuListBox.addMenuEntry(optionsEntry);
 		mMainMenuListBox.addMenuEntry(MenuEntry.menuSeparator());
-		mMainMenuListBox.addMenuEntry(lExitEntry);
+		mMainMenuListBox.addMenuEntry(exitEntry);
 
 		mLayouts.add(mMainMenuListBox);
 
@@ -184,8 +186,6 @@ public class MainMenu extends MenuScreen {
 			final var pathsConfig = screenManager.core().config().resourcePaths();
 
 			screenManager.addScreen(new EditorSceneSelectionScreen(screenManager, pathsConfig, true));
-			
-
 
 			break;
 		}

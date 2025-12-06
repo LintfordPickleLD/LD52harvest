@@ -31,8 +31,11 @@ public class LayerTexturePanel extends LayerPanel<SceneTextureLayer> implements 
 	private final static int SLIDER_CENTER_X = 17;
 	private final static int SLIDER_CENTER_Y = 18;
 
-	private final static int SLIDER_SCALE_X = 19;
-	private final static int SLIDER_SCALE_Y = 20;
+	private final static int SLIDER_WIDTH = 19;
+	private final static int SLIDER_HEIGHT = 20;
+
+	private final static int SLIDER_SCALE_X = 21;
+	private final static int SLIDER_SCALE_Y = 22;
 
 	private static final int INPUT_NAME_KEY_UID = 100;
 
@@ -58,6 +61,9 @@ public class LayerTexturePanel extends LayerPanel<SceneTextureLayer> implements 
 
 	private UiInputFloat mWidth;
 	private UiInputFloat mHeight;
+
+	private UiInputFloat mScaleW;
+	private UiInputFloat mScaleH;
 
 	private EditorTextureLayerRenderer mEditorTextureLayerRenderer;
 
@@ -111,28 +117,39 @@ public class LayerTexturePanel extends LayerPanel<SceneTextureLayer> implements 
 		mCenterYInput.label("CenterY");
 		mCenterYInput.setMinMax(0, 0);
 
-		mTranslationSpeedModX = new UiInputFloat();
+		mTranslationSpeedModX = new UiInputFloat("Mod X");
 		mTranslationSpeedModX.setUiWidgetListener(this, SLIDER_TRANSLATION_SPEED_X);
-		mTranslationSpeedModX.label("Mod X");
 		mTranslationSpeedModX.setMinMax(-20.f, 20.f);
 		mTranslationSpeedModX.stepSize(.1f);
 
-		mTranslationSpeedModY = new UiInputFloat();
+		mTranslationSpeedModY = new UiInputFloat("Mod Y");
 		mTranslationSpeedModY.setUiWidgetListener(this, SLIDER_TRANSLATION_SPEED_Y);
-		mTranslationSpeedModY.label("Mod Y");
 		mTranslationSpeedModY.setMinMax(0.f, 10.f);
 		mTranslationSpeedModY.stepSize(.1f);
 
-		mWidth = new UiInputFloat();
-		mWidth.setUiWidgetListener(this, SLIDER_SCALE_X);
-		mWidth.label("Width");
-		mWidth.setMinMax(0.f, 10.f);
-		mWidth.stepSize(.1f);
-		mHeight = new UiInputFloat();
-		mHeight.setUiWidgetListener(this, SLIDER_SCALE_Y);
-		mHeight.label("Height");
-		mHeight.setMinMax(0.f, 10.f);
-		mHeight.stepSize(.1f);
+		mWidth = new UiInputFloat("Width");
+		mWidth.setUiWidgetListener(this, SLIDER_WIDTH);
+		mWidth.numDecimalPlaces(0);
+		mWidth.setMinMax(0.f, 10000.f);
+		mWidth.stepSize(1f);
+
+		mHeight = new UiInputFloat("Height");
+		mHeight.setUiWidgetListener(this, SLIDER_HEIGHT);
+		mHeight.numDecimalPlaces(0);
+		mHeight.setMinMax(0.f, 10000.f);
+		mHeight.stepSize(1f);
+
+		mScaleW = new UiInputFloat("ScaleW");
+		mScaleW.setUiWidgetListener(this, SLIDER_SCALE_X);
+		mScaleW.numDecimalPlaces(2);
+		mScaleW.setMinMax(0.f, 100.f);
+		mScaleW.stepSize(1f);
+
+		mScaleH = new UiInputFloat("ScaleH");
+		mScaleH.setUiWidgetListener(this, SLIDER_SCALE_Y);
+		mScaleH.numDecimalPlaces(2);
+		mScaleH.setMinMax(0.f, 100.f);
+		mScaleH.stepSize(1f);
 
 		final var lHorizontalGroup0 = new UiHorizontalEntryGroup();
 		lHorizontalGroup0.widgets().add(mCenterXInput);
@@ -145,6 +162,10 @@ public class LayerTexturePanel extends LayerPanel<SceneTextureLayer> implements 
 		final var lHorizontalGroup2 = new UiHorizontalEntryGroup();
 		lHorizontalGroup2.widgets().add(mWidth);
 		lHorizontalGroup2.widgets().add(mHeight);
+
+		final var lHorizontalGroup3 = new UiHorizontalEntryGroup();
+		lHorizontalGroup3.widgets().add(mScaleW);
+		lHorizontalGroup3.widgets().add(mScaleH);
 
 		addWidget(mLayerNameLabel);
 		addWidget(mLayerName);
@@ -159,6 +180,7 @@ public class LayerTexturePanel extends LayerPanel<SceneTextureLayer> implements 
 		addWidget(lHorizontalGroup0);
 		addWidget(lHorizontalGroup1);
 		addWidget(lHorizontalGroup2);
+		addWidget(lHorizontalGroup3);
 	}
 
 	// --------------------------------------
@@ -195,6 +217,14 @@ public class LayerTexturePanel extends LayerPanel<SceneTextureLayer> implements 
 			if (mHeight.hasFocus() == false && mHeight.currentValue() != lSelectedLayer.height) {
 				mHeight.inputString(lSelectedLayer.height);
 			}
+
+			if (mScaleW.hasFocus() == false && mScaleW.currentValue() != lSelectedLayer.contentScaleX) {
+				mScaleW.inputString(lSelectedLayer.contentScaleX);
+			}
+
+			if (mScaleH.hasFocus() == false && mScaleH.currentValue() != lSelectedLayer.contentScaleY) {
+				mScaleH.inputString(lSelectedLayer.contentScaleY);
+			}
 		}
 	}
 
@@ -222,6 +252,9 @@ public class LayerTexturePanel extends LayerPanel<SceneTextureLayer> implements 
 		mWidth.inputString(selectedLayer.width);
 		mHeight.inputString(selectedLayer.height);
 
+		mScaleW.inputString(selectedLayer.contentScaleX);
+		mScaleH.inputString(selectedLayer.contentScaleY);
+
 	}
 
 	// --------------------------------------
@@ -238,6 +271,7 @@ public class LayerTexturePanel extends LayerPanel<SceneTextureLayer> implements 
 			mSelectedLayer.setTextureName(mTextureName.inputString().toString());
 			mSelectedLayer.setTextureFilepath(mTexturePath.inputString().toString());
 			mSelectedLayer.texture = null;
+			mSelectedLayer.textureStatus = SceneTextureLayer.TEXTURE_UNLOADED;
 
 			break;
 
@@ -268,18 +302,32 @@ public class LayerTexturePanel extends LayerPanel<SceneTextureLayer> implements 
 			mSelectedLayer.setTextureFilepath(mTexturePath.inputString().toString());
 			break;
 
-		case SLIDER_SCALE_X:
+		case SLIDER_WIDTH:
 			if (mSelectedLayer == null)
 				return;
 
 			mSelectedLayer.width = mWidth.currentValue();
 			break;
 
-		case SLIDER_SCALE_Y:
+		case SLIDER_HEIGHT:
 			if (mSelectedLayer == null)
 				return;
 
 			mSelectedLayer.height = mHeight.currentValue();
+			break;
+
+		case SLIDER_SCALE_X:
+			if (mSelectedLayer == null)
+				return;
+
+			mSelectedLayer.contentScaleX = mScaleW.currentValue();
+			break;
+
+		case SLIDER_SCALE_Y:
+			if (mSelectedLayer == null)
+				return;
+
+			mSelectedLayer.contentScaleY = mScaleH.currentValue();
 			break;
 
 		case SLIDER_CENTER_X:

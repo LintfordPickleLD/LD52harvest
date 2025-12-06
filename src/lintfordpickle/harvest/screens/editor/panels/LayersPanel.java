@@ -1,7 +1,6 @@
 package lintfordpickle.harvest.screens.editor.panels;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import lintfordpickle.harvest.controllers.editor.EditorLayerController;
@@ -183,31 +182,13 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 			return;
 
 		case BUTTON_MOVE_LAYER_UP: {
-			final var lSelectedListBoxItem = mLayerListWidget.getSelectedItem();
-			if (lSelectedListBoxItem == null)
-				return;
-
-			final var lIndex = mLayerListWidget.selectedItemIndex();
-
-			if (lIndex > 0) {
-				Collections.swap(mLayerListWidget.items(), lIndex, lIndex - 1);
-				mLayerListWidget.selectedItemIndex(lIndex - 1);
-			}
+			mLayerListWidget.moveSelectedIndexUp();
 
 			break;
 		}
 
 		case BUTTON_MOVE_LAYER_DOWN: {
-			final var lSelectedListBoxItem = mLayerListWidget.getSelectedItem();
-			if (lSelectedListBoxItem == null)
-				return;
-
-			final var lIndex = mLayerListWidget.selectedItemIndex();
-
-			if (lIndex < mLayerListWidget.items().size() - 1) {
-				Collections.swap(mLayerListWidget.items(), lIndex, lIndex + 1);
-				mLayerListWidget.selectedItemIndex(lIndex + 1);
-			}
+			mLayerListWidget.moveSelectedIndexDown();
 
 			break;
 		}

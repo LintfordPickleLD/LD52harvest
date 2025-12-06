@@ -7,6 +7,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import lintfordpickle.harvest.ConstantsGame;
+import net.lintfordlib.EngineVersion;
 import net.lintfordlib.assets.ResourceManager;
 import net.lintfordlib.controllers.core.particles.ParticleFrameworkController;
 import net.lintfordlib.core.LintfordCore;
@@ -219,10 +220,10 @@ public class MenuBackgroundScreen extends Screen {
 			mLowerGreen.vehicles.add(vehicle02);
 		}
 
-		points.add(new Vector2f(-100.f, 75.f));
-		points.add(new Vector2f(-100.f, -20.f));
-		points.add(new Vector2f(0.f, -28.f));
-		points.add(new Vector2f(0.f, 85.f));
+		points.add(new Vector2f(-100.f, 45.f));
+		points.add(new Vector2f(-100.f, -70.f));
+		points.add(new Vector2f(0.f, -70.f));
+		points.add(new Vector2f(0.f, 65.f));
 
 		mJetParticleSystem = mParticleFrameworkController.particleFrameworkData().particleSystemManager().createNewParticleSystemFromDefinitionName("PARTICLESYSTEM_JET");
 		mJetIntenseParticleSystem = mParticleFrameworkController.particleFrameworkData().particleSystemManager().createNewParticleSystemFromDefinitionName("PARTICLESYSTEM_JET_INTENSE");
@@ -281,8 +282,6 @@ public class MenuBackgroundScreen extends Screen {
 
 	@Override
 	public void draw(LintfordCore core) {
-
-		// super.draw(core);
 
 		final var lCanvasBox = core.gameCamera().boundingRectangle();
 		final var textureBatch = core.sharedResources().uiSpriteBatch();
@@ -345,7 +344,7 @@ public class MenuBackgroundScreen extends Screen {
 		lTitleFont.begin(core.HUD());
 		lTitleFont.drawShadowedText(ConstantsGame.FOOTER_TEXT, lHudBoundingBox.left() + 5.f, lHudBoundingBox.bottom() - 2.f - fontHeightScaled, .01f, 1, 1, textScale);
 
-		final var versionText = "v1.2.0 - ENGINE 20251201_02";
+		final var versionText = "v1.2.0 - ENGINE " + EngineVersion.ENGINE_VERSION;
 		lTitleFont.drawShadowedText(versionText, lHudBoundingBox.left() + 5.f, lHudBoundingBox.bottom() - 2.f - fontHeightScaled * 2.f, .01f, 1, 1, textScale);
 
 		lTitleFont.end();
@@ -370,6 +369,10 @@ public class MenuBackgroundScreen extends Screen {
 		spriteBatch.begin(core.gameCamera());
 		spriteBatch.drawQuadrilateral(mAdWallSpritesheet, mAdWallSoup, points, .8f);
 		spriteBatch.draw(mPropsSpritesheet, mAirCondAnim, .01f);
+		
+		mAirCondAnim.setPosition(-127, 147);
+		spriteBatch.draw(mPropsSpritesheet, mAirCondAnim, .01f);
+		
 		spriteBatch.end();
 
 	}

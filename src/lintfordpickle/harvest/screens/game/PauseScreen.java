@@ -3,6 +3,7 @@ package lintfordpickle.harvest.screens.game;
 import lintfordpickle.harvest.data.players.PlayerManager;
 import lintfordpickle.harvest.screens.MainMenu;
 import lintfordpickle.harvest.screens.menu.MenuBackgroundScreen;
+import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.graphics.ColorConstants;
 import net.lintfordlib.data.scene.SceneHeader;
 import net.lintfordlib.screenmanager.MenuEntry;
@@ -39,33 +40,39 @@ public class PauseScreen extends MenuScreen {
 		mSceneHeader = sceneHeader;
 		mPlayerManager = playerManager;
 
-		final var lLayout = new ListLayout(this);
-		lLayout.layoutFillType(FILLTYPE.TAKE_WHATS_NEEDED);
-		lLayout.setDrawBackground(true, ColorConstants.WHITE());
-		lLayout.showTitle(true);
-		lLayout.title("Paused");
+		final var layout = new ListLayout(this);
+		layout.layoutFillType(FILLTYPE.TAKE_WHATS_NEEDED);
+		layout.setDrawBackground(true, ColorConstants.WHITE());
+		layout.showTitle(true);
+		layout.title("Paused");
 
 		// ---
-		final var lPlayEntry = new MenuEntry(screenManager, this, "Continue");
-		lPlayEntry.registerClickListener(this, SCREEN_BUTTON_CONTINUE);
+		final var playEntry = new MenuEntry(screenManager, this, "Continue");
+		playEntry.registerClickListener(this, SCREEN_BUTTON_CONTINUE);
 
-		final var lOptionsEntry = new MenuEntry(screenManager, this, "Restart");
-		lOptionsEntry.registerClickListener(this, SCREEN_BUTTON_RESTART);
+		final var optionsEntry = new MenuEntry(screenManager, this, "Restart");
+		optionsEntry.registerClickListener(this, SCREEN_BUTTON_RESTART);
 
-		final var lCreditsEntry = new MenuEntry(screenManager, this, "Exit");
-		lCreditsEntry.registerClickListener(this, SCREEN_BUTTON_EXIT);
+		final var creditsEntry = new MenuEntry(screenManager, this, "Exit");
+		creditsEntry.registerClickListener(this, SCREEN_BUTTON_EXIT);
 
-		lLayout.addMenuEntry(lPlayEntry);
-		lLayout.addMenuEntry(lOptionsEntry);
-		lLayout.addMenuEntry(lCreditsEntry);
-		lLayout.addMenuEntry(MenuEntry.menuSeparator());
+		layout.addMenuEntry(playEntry);
+		layout.addMenuEntry(optionsEntry);
+		layout.addMenuEntry(creditsEntry);
+		
 
-		mLayouts.add(lLayout);
+		mLayouts.add(layout);
 
 		mIsPopup = true;
 		mShowBackgroundScreens = true;
 
 		mShowContextualKeyHints = false;
+	}
+
+	@Override
+	public void draw(LintfordCore core) {
+		super.draw(core);
+
 	}
 
 	@Override

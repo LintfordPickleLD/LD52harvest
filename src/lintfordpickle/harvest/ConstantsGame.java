@@ -20,6 +20,9 @@ public class ConstantsGame {
 
 	public static final int GAME_RESOURCE_GROUP_ID = ResourceGroupProvider.getRollingEntityNumber();
 
+	public static final String CAMPAIGN_SCENES_DIRECTORY = "res/scenes/campaign";
+	public static final String CUSTOM_SCENES_DIRECTORY = "res/scenes/custom";
+
 	// ---------------------------------------------
 	// Game
 	// ---------------------------------------------
@@ -45,7 +48,7 @@ public class ConstantsGame {
 
 	public static final boolean IS_DEBUG_MODE = true;
 	public static final boolean CAMERA_DEBUG_MODE = true;
-	public static final boolean PHYICS_DEBUG_MODE = true;
+	public static final boolean PHYICS_DEBUG_MODE = false;
 	public static final boolean SHIP_DEBUG_MODE = true;
 
 	// produces a lot of log data

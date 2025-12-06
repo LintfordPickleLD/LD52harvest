@@ -21,6 +21,9 @@ public abstract class SceneBaseLayer {
 	public float width;
 	public float height;
 
+	public float contentScaleX;
+	public float contentScaleY;
+
 	// --------------------------------------
 	// Constructor
 	// --------------------------------------
@@ -28,8 +31,11 @@ public abstract class SceneBaseLayer {
 	public SceneBaseLayer(int uid) {
 		layerUid = uid;
 
-		width = 1.f;
-		height = 1.f;
+		width = 64.f;
+		height = 64.f;
+
+		contentScaleX = 1.f;
+		contentScaleY = 1.f;
 	}
 
 	// --------------------------------------
