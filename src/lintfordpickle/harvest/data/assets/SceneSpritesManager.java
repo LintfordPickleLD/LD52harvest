@@ -88,17 +88,19 @@ public class SceneSpritesManager extends BaseInstanceManager {
 	// ---------------------------------------------
 
 	public SceneSpriteInstance createAssetInstanceFromDefinitionName(String definitionName, float worldX, float worldY) {
-		final var lDefinition = mDefinitionManager.getByName(definitionName);
+		final var assetDefinition = mDefinitionManager.getByName(definitionName);
 
-		if (lDefinition == null)
+		if (assetDefinition == null)
 			return null;
 
-		final var lAssetInstance = createNewAsset();
-		lAssetInstance.initialize(lDefinition, worldX, worldY, 32, 32, 0, 16);
+		final var assetInstance = createNewAsset();
 
-		mAssetInstances.add(lAssetInstance);
+		// values coming from json?
+		assetInstance.initialize(assetDefinition, worldX, worldY, 32, 32, 0, 16);
 
-		return lAssetInstance;
+		mAssetInstances.add(assetInstance);
+
+		return assetInstance;
 	}
 
 	private SceneSpriteInstance createNewAsset() {

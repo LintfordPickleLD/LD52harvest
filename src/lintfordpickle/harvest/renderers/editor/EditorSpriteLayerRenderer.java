@@ -4,6 +4,7 @@ import org.lwjgl.glfw.GLFW;
 
 import lintfordpickle.harvest.controllers.editor.EditorLayerController;
 import lintfordpickle.harvest.controllers.editor.EditorSceneController;
+import lintfordpickle.harvest.data.assets.SceneSpriteInstance;
 import lintfordpickle.harvest.data.editor.EditorLayersData;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneSpriteLayer;
@@ -30,6 +31,8 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 
 	private EditorLayerController mEditorLayerController;
 	private EditorBrushController mEditorBrushController;
+
+	private ResourceManager mResourceManager;
 
 	private float mMouseX;
 	private float mMouseY;
@@ -75,6 +78,7 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 	}
 
 	public void loadResources(ResourceManager resourceManager) {
+		mResourceManager = resourceManager;
 
 	}
 
@@ -211,7 +215,7 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 
 					// TODO: rework this
 					if (lAsset.spriteInstance == null) {
-						if (lAsset.spriteStatus < 2) {
+//						if (lAsset.spriteStatus < 2) {
 //							final var lAssetDef = lAsset.definition;
 //							final var lSpritesheetDef = core.resources().spriteSheetManager().getSpriteSheet(lAssetDef.spritesheetDefinitionName, mEntityGroupUid);
 //							if (lSpritesheetDef != null) {
@@ -219,7 +223,7 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 //							} else {
 //								lAsset.spriteStatus = SceneAssetInstance.TEXTURE_FAILED;
 //							}
-						}
+//						}
 
 						continue;
 					}
@@ -238,24 +242,71 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 		if (!mRenderSpriteLayer)
 			return;
 
-		final var lSpriteBatch = core.sharedResources().uiSpriteBatch();
+		final var spriteBatch = core.sharedResources().uiSpriteBatch();
 
-		lSpriteBatch.begin(core.gameCamera());
+		spriteBatch.begin(core.gameCamera());
 
-		final var lLayerAnimations = layer.spriteAssets();
-		final var lNumAnimations = lLayerAnimations.size();
-		for (int i = 0; i < lNumAnimations; i++) {
-			final var lAssetInstance = lLayerAnimations.get(i);
+		final var layerAnimations = layer.spriteAssets();
+		final var numAnimations = layerAnimations.size();
+		for (int i = 0; i < numAnimations; i++) {
+			final var assetInstance = layerAnimations.get(i);
 
-			lSpriteBatch.begin(core.gameCamera());
-			Debug.debugManager().drawers().drawRectImmediate(core.gameCamera(), lAssetInstance.destRect);
-			// lSpriteBatch.draw(layer.texture, lSrcX, lSrcY, lSrcW, lSrcH, lDstX, lDstY, lDstWidth, lDstHeight, -.01f, ColorConstants.WHITE);
-			lSpriteBatch.end();
+			if (!validateSpriteSheetDefinition(assetInstance))
+				continue;
 
-			// lSpriteBatch.draw(mPropsSpritesheetDefintion, lSprite, lSprite, 2.f, -0.01f, ColorConstants.WHITE);
+			if (!validateSpriteInstance(assetInstance))
+				continue;
+
+			spriteBatch.begin(core.gameCamera());
+			Debug.debugManager().drawers().drawRectImmediate(core.gameCamera(), assetInstance.destRect);
+			spriteBatch.draw(assetInstance.spriteSheetDefinition, assetInstance.spriteInstance, .01f);
+			spriteBatch.end();
 		}
 
-		lSpriteBatch.end();
+		spriteBatch.end();
+	}
+
+	private boolean validateSpriteSheetDefinition(SceneSpriteInstance assetInstance) {
+		if (assetInstance.spriteSheetStatus == SceneSpriteInstance.STATUS_LOADED)
+			return true;
+
+		if (assetInstance.spriteSheetStatus == SceneSpriteInstance.STATUS_FAILED)
+			return false;
+
+		final var assetDefinition = assetInstance.definition;
+		final var spriteAssetDefintion = assetDefinition.sceneSpriteContainer;
+
+		assetInstance.spriteSheetDefinition = mResourceManager.spriteSheetManager().loadSpriteSheet(spriteAssetDefintion.spritesheetDefinitionName, spriteAssetDefintion.spritesheetDefinitionFilename, mEntityGroupUid);
+		if (assetInstance.spriteSheetDefinition == null) {
+			assetInstance.spriteSheetStatus = SceneSpriteInstance.STATUS_FAILED;
+			Debug.debugManager().logger().e(getClass().getSimpleName(), "Failed to resolve SpriteAsset '" + assetDefinition.name + "' - SpriteSheetDefinition: " + spriteAssetDefintion.spritesheetDefinitionFilename);
+			return false;
+		}
+
+		assetInstance.spriteSheetStatus = SceneSpriteInstance.STATUS_LOADED;
+		return true;
+	}
+
+	private boolean validateSpriteInstance(SceneSpriteInstance assetInstance) {
+		if (assetInstance.spriteInstStatus == SceneSpriteInstance.STATUS_LOADED)
+			return true;
+
+		if (assetInstance.spriteInstStatus == SceneSpriteInstance.STATUS_FAILED)
+			return false;
+
+		final var assetDefinition = assetInstance.definition;
+		final var spriteAssetDefintion = assetDefinition.sceneSpriteContainer;
+		final var assetSpriteSheetDefinition = assetInstance.spriteSheetDefinition;
+
+		assetInstance.spriteInstance = assetSpriteSheetDefinition.getSpriteInstance(spriteAssetDefintion.spriteName);
+		if (assetInstance.spriteInstance == null) {
+			assetInstance.spriteInstStatus = SceneSpriteInstance.STATUS_FAILED;
+			Debug.debugManager().logger().e(getClass().getSimpleName(), "Failed to create sprite instance '" + assetDefinition.name + "' - SpriteSheetDefinition: " + spriteAssetDefintion.spriteName);
+			return false;
+		}
+
+		assetInstance.spriteInstStatus = SceneSpriteInstance.STATUS_LOADED;
+		return true;
 	}
 
 	public void drawSelectedLayerDebug(LintfordCore core, SceneBaseLayer layer) {
