@@ -47,8 +47,4 @@ public class ReplayController extends BaseController {
 
 	}
 
-	// ---------------------------------------------
-	// Methods
-	// ---------------------------------------------
-
 }

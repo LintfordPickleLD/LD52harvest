@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/LintfordLib"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -42,5 +41,6 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/LintfordLib/libs/javadoc/lwjgl-stb-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/LintfordLib"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

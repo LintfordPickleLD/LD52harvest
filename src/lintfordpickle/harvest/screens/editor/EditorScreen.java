@@ -7,7 +7,7 @@ import lintfordpickle.harvest.controllers.editor.EditorAssetsController;
 import lintfordpickle.harvest.controllers.editor.EditorLayerController;
 import lintfordpickle.harvest.controllers.editor.EditorPhysicsController;
 import lintfordpickle.harvest.controllers.editor.EditorSceneController;
-import lintfordpickle.harvest.data.assets.SceneAssetsManager;
+import lintfordpickle.harvest.data.assets.SceneSpritesManager;
 import lintfordpickle.harvest.data.editor.EditorSceneData;
 import lintfordpickle.harvest.data.scene.SceneSaveDefinition;
 import lintfordpickle.harvest.renderers.editor.EditorLayersRenderer;
@@ -48,7 +48,7 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 	// Data
 	private EditorLayerBrush mEditorBrush;
 	private EditorSceneData mEditorSceneData;
-	private SceneAssetsManager mSceneAssetManager; // TODO: make this generic
+	private SceneSpritesManager mSceneAssetManager; // TODO: make this generic
 	private SceneHeader mSceneHeader;
 
 	// Controllers
@@ -139,7 +139,7 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 		mEditorSceneData.finalizeAfterLoading();
 
 		mEditorBrush = new EditorLayerBrush();
-		mSceneAssetManager = new SceneAssetsManager();
+		mSceneAssetManager = new SceneSpritesManager();
 	}
 
 	public void loadTrackDefinitionFromFile(String filename) {

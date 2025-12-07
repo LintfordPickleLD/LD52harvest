@@ -1,7 +1,7 @@
 package lintfordpickle.harvest.controllers.editor;
 
-import lintfordpickle.harvest.data.assets.SceneAssetInstance;
-import lintfordpickle.harvest.data.assets.SceneAssetsManager;
+import lintfordpickle.harvest.data.assets.SceneSpriteInstance;
+import lintfordpickle.harvest.data.assets.SceneSpritesManager;
 import net.lintfordlib.controllers.BaseController;
 import net.lintfordlib.controllers.ControllerManager;
 
@@ -17,15 +17,15 @@ public class EditorAssetsController extends BaseController {
 	// Variables
 	// --------------------------------------
 
-	private SceneAssetsManager mSceneAssetsManager;
+	private SceneSpritesManager mSceneAssetsManager;
 
-	private SceneAssetInstance mSelectedAssetInstance;
+	private SceneSpriteInstance mSelectedAssetInstance;
 
 	// --------------------------------------
 	// Properties
 	// --------------------------------------
 
-	public SceneAssetsManager sceneAssetsManager() {
+	public SceneSpritesManager sceneAssetsManager() {
 		return mSceneAssetsManager;
 	}
 
@@ -33,7 +33,7 @@ public class EditorAssetsController extends BaseController {
 	// Constructor
 	// --------------------------------------
 
-	public EditorAssetsController(ControllerManager controllerManager, SceneAssetsManager sceneAssetManager, int entityGroupUid) {
+	public EditorAssetsController(ControllerManager controllerManager, SceneSpritesManager sceneAssetManager, int entityGroupUid) {
 		super(controllerManager, CONTROLLER_NAME, entityGroupUid);
 
 		mSceneAssetsManager = sceneAssetManager;
@@ -43,11 +43,11 @@ public class EditorAssetsController extends BaseController {
 	// Methods
 	// --------------------------------------
 
-	public void selectedAssetinstance(SceneAssetInstance assetInstance) {
+	public void selectedAssetinstance(SceneSpriteInstance assetInstance) {
 		mSelectedAssetInstance = assetInstance;
 	}
 
-	public SceneAssetInstance selectedAssetinstance() {
+	public SceneSpriteInstance selectedAssetinstance() {
 		return mSelectedAssetInstance;
 	}
 

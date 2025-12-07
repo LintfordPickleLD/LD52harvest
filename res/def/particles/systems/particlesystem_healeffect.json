@@ -9,24 +9,19 @@
 	"initializers" : [ 
 	
 		{ 
-			"className":"ParticleSourceRegionInitializer",
+			"className":"ParticleSetSourceRegionInitializer",
 			"srcX":16,
 			"srcY":2,
 			"srcW":16,
 			"srcH":7
 		}, 
-		
-		{ 
-			"className":"ParticleDestinationRegionInitializer",
-			"width":16,
-			"height":7
-		}, 
-		
+				
 		{
 			"className":"ParticleRandomSizeInitializer",
 			"minValue":0.5,
 			"maxValue":1.0
 		},
+		
 		{
 			"className":"ParticleRandomOffsetInitializer",
 			"minValue0":-10,
@@ -40,7 +35,7 @@
 	"modifiers" : [
 	
 		{
-			"className":"ParticleLifetimeAlphaFadeOutModifier"
+			"className":"ParticleAlphaInOutModifier"
 		},
 		{
 			"className":"ParticlePhysicsModifier"

@@ -3,7 +3,7 @@ package lintfordpickle.harvest.data.scene.layers;
 import java.util.ArrayList;
 import java.util.List;
 
-import lintfordpickle.harvest.data.assets.SceneAssetInstance;
+import lintfordpickle.harvest.data.assets.SceneSpriteInstance;
 import lintfordpickle.harvest.data.scene.layers.savedefinitions.BaseSceneLayerSaveDefinition;
 import lintfordpickle.harvest.data.scene.layers.savedefinitions.SceneSpritesLayerSaveDefinition;
 
@@ -14,13 +14,13 @@ public class SceneSpriteLayer extends SceneBaseLayer {
 	// --------------------------------------
 
 	private List<Integer> mLayerAssetUids = new ArrayList<>();
-	private transient List<SceneAssetInstance> mSprites = new ArrayList<>();
+	private transient List<SceneSpriteInstance> mSprites = new ArrayList<>();
 
 	// --------------------------------------
 	// Properties
 	// --------------------------------------
 
-	public List<SceneAssetInstance> spriteAssets() {
+	public List<SceneSpriteInstance> spriteAssets() {
 		return mSprites;
 	}
 
@@ -36,7 +36,7 @@ public class SceneSpriteLayer extends SceneBaseLayer {
 	// Methods
 	// --------------------------------------
 
-	public void addAssetToLayer(SceneAssetInstance assetInstance) {
+	public void addAssetToLayer(SceneSpriteInstance assetInstance) {
 		if (assetInstance == null)
 			return;
 
@@ -49,7 +49,7 @@ public class SceneSpriteLayer extends SceneBaseLayer {
 
 	}
 
-	public void removeAssetInstance(SceneAssetInstance assetInstance) {
+	public void removeAssetInstance(SceneSpriteInstance assetInstance) {
 		final var lAssetUid = assetInstance.uid;
 
 		mLayerAssetUids.remove(lAssetUid);

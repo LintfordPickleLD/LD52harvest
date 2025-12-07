@@ -183,9 +183,9 @@ public class LayerSpritesPanel extends LayerPanel<SceneSpriteLayer> implements I
 	}
 
 	private void loadAssets(LintfordCore core) {
-		final var lAssetDefinitionManager = mEditorAssetsController.sceneAssetsManager().definitionManager();
-		final var lAssetDefinitionList = lAssetDefinitionManager.definitions();
-		final var lListCollectionIterator = lAssetDefinitionList.iterator();
+		final var assetDefinitionManager = mEditorAssetsController.sceneAssetsManager().definitionManager();
+		final var assetDefinitionList = assetDefinitionManager.definitions();
+		final var lListCollectionIterator = assetDefinitionList.iterator();
 
 		while (lListCollectionIterator.hasNext()) {
 			final var lAssetDefinition = lListCollectionIterator.next();

@@ -6,11 +6,13 @@ import net.lintfordlib.core.geometry.partitioning.GridEntity;
 import net.lintfordlib.core.geometry.partitioning.SpatialHashGrid;
 import net.lintfordlib.core.graphics.sprites.SpriteInstance;
 
-public class SceneAssetInstance extends GridEntity {
+public class SceneSpriteInstance extends GridEntity {
 
 	// --------------------------------------
 	// Constants
 	// --------------------------------------
+
+	private static final long serialVersionUID = -4978987772107082534L;
 
 	public static final int TEXTURE_UNLOADED = 0;
 	public static final int TEXTURE_LOADED = 1;
@@ -21,7 +23,7 @@ public class SceneAssetInstance extends GridEntity {
 	// --------------------------------------
 
 	public String definitionName;
-	public transient SceneAssetDefinition definition;
+	public transient SceneSpriteDefinition definition;
 	public transient SpriteInstance spriteInstance;
 
 	public final Rectangle destRect = new Rectangle();
@@ -33,7 +35,7 @@ public class SceneAssetInstance extends GridEntity {
 	// Constructor
 	// --------------------------------------
 
-	public SceneAssetInstance(int entityUid) {
+	public SceneSpriteInstance(int entityUid) {
 		super(entityUid, GridCollisionTypes.COLLISION_TYPE_NONE);
 	}
 
@@ -41,7 +43,7 @@ public class SceneAssetInstance extends GridEntity {
 	// Core-Methods
 	// --------------------------------------
 
-	public void initialize(SceneAssetDefinition assetDefinition, float x, float y, float width, float height, float rotation, float radius) {
+	public void initialize(SceneSpriteDefinition assetDefinition, float x, float y, float width, float height, float rotation, float radius) {
 		if (assetDefinition == null) {
 			definitionName = null;
 			definition = null;

@@ -1,10 +1,10 @@
 {
-	"rootDirectory" : "res/def/assets/",
-	"itemFileLocations" : [
+	"AssetRootDirectory" : "res/def/assets/",
+	"ItemFilepaths" : [
 	
-		"asset_aircond",
-		"asset_flyingcars",
-		"asset_soccer"
+		"asset_aircond.json",
+		"asset_flyingcars.json",
+		"asset_soccer.json"
 		
 	]
 }

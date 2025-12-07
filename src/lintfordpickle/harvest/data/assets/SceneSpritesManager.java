@@ -11,7 +11,7 @@ import lintfordpickle.harvest.data.scene.SceneSaveDefinition;
 import net.lintfordlib.core.entities.EntityLocationProvider;
 import net.lintfordlib.core.entities.definitions.DefinitionManager;
 
-public class SceneAssetsManager extends BaseInstanceManager {
+public class SceneSpritesManager extends BaseInstanceManager {
 
 	private static final String META_FILENAME = "res/def/assets/_meta.json";
 
@@ -19,13 +19,13 @@ public class SceneAssetsManager extends BaseInstanceManager {
 	// Inner-Classes
 	// ---------------------------------------------
 
-	public class AssetsDefinitionManager extends DefinitionManager<SceneAssetDefinition> {
+	public class SpriteDefinitionManager extends DefinitionManager<SceneSpriteDefinition> {
 
 		// --------------------------------------
 		// Constructor
 		// --------------------------------------
 
-		public AssetsDefinitionManager() {
+		public SpriteDefinitionManager() {
 			final var lMetaDataFile = new File(META_FILENAME);
 			loadDefinitionsFromMetaFile(lMetaDataFile);
 		}
@@ -37,19 +37,19 @@ public class SceneAssetsManager extends BaseInstanceManager {
 		@Override
 		public void loadDefinitionsFromFolderWatcher(EntityLocationProvider entityLocationProvider) {
 			final var lGson = new GsonBuilder().create();
-			loadDefinitionsFromFolderWatcherItems(entityLocationProvider, lGson, SceneAssetDefinition.class);
+			loadDefinitionsFromFolderWatcherItems(entityLocationProvider, lGson, SceneSpriteDefinition.class);
 		}
 
 		@Override
 		public void loadDefinitionsFromMetaFile(File file) {
 			final var lGson = new GsonBuilder().create();
-			loadDefinitionsFromMetaFileItems(file, lGson, SceneAssetDefinition.class);
+			loadDefinitionsFromMetaFileItems(file, lGson, SceneSpriteDefinition.class);
 		}
 
 		@Override
-		public SceneAssetDefinition loadDefinitionFromFile(File file) {
+		public SceneSpriteDefinition loadDefinitionFromFile(File file) {
 			final var lGson = new GsonBuilder().create();
-			return loadDefinitionFromFile(file, lGson, SceneAssetDefinition.class);
+			return loadDefinitionFromFile(file, lGson, SceneSpriteDefinition.class);
 		}
 
 	}
@@ -58,15 +58,15 @@ public class SceneAssetsManager extends BaseInstanceManager {
 	// Variables
 	// ---------------------------------------------
 
-	private AssetsDefinitionManager mDefinitionManager = new AssetsDefinitionManager();
+	private SpriteDefinitionManager mDefinitionManager = new SpriteDefinitionManager();
 
-	private final List<SceneAssetInstance> mAssetInstances = new ArrayList<>();
+	private final List<SceneSpriteInstance> mAssetInstances = new ArrayList<>();
 
 	// ---------------------------------------------
 	// Properties
 	// ---------------------------------------------
 
-	public AssetsDefinitionManager definitionManager() {
+	public SpriteDefinitionManager definitionManager() {
 		return mDefinitionManager;
 	}
 
@@ -79,7 +79,7 @@ public class SceneAssetsManager extends BaseInstanceManager {
 	// Constructors
 	// ---------------------------------------------
 
-	public SceneAssetsManager() {
+	public SceneSpritesManager() {
 
 	}
 
@@ -87,7 +87,7 @@ public class SceneAssetsManager extends BaseInstanceManager {
 	// Methods
 	// ---------------------------------------------
 
-	public SceneAssetInstance createAssetInstanceFromDefinitionName(String definitionName, float worldX, float worldY) {
+	public SceneSpriteInstance createAssetInstanceFromDefinitionName(String definitionName, float worldX, float worldY) {
 		final var lDefinition = mDefinitionManager.getByName(definitionName);
 
 		if (lDefinition == null)
@@ -101,8 +101,8 @@ public class SceneAssetsManager extends BaseInstanceManager {
 		return lAssetInstance;
 	}
 
-	private SceneAssetInstance createNewAsset() {
-		return new SceneAssetInstance(getNewInstanceUid());
+	private SceneSpriteInstance createNewAsset() {
+		return new SceneSpriteInstance(getNewInstanceUid());
 	}
 
 	// ---------------------------------------------

@@ -197,27 +197,27 @@ public class ShipController extends BaseController {
 
 	@Override
 	public boolean handleInput(LintfordCore core) {
-		final var lShips = mShipManager.ships();
-		final var lNumShips = lShips.size();
-		for (int i = 0; i < lNumShips; i++) {
-			final var lShip = lShips.get(i);
-			final var lPlayerSessions = mPlayerManager.getPlayer(lShip.owningPlayerSessionUid);
-			final var lInputFrame = mActionEventController.actionEventPlayer(lPlayerSessions.actionEventUid());
+		final var ships = mShipManager.ships();
+		final var numShips = ships.size();
+		for (int i = 0; i < numShips; i++) {
+			final var shipInst = ships.get(i);
+			final var playerSessions = mPlayerManager.getPlayer(shipInst.owningPlayerSessionUid);
+			final var actionManager = mActionEventController.actionEventPlayer(playerSessions.actionEventUid());
 
-			lShip.inputs.isLeftThrottle = lInputFrame.currentActionEvents.isThrottleLeftDown;
-			lShip.inputs.isRightThrottle = lInputFrame.currentActionEvents.isThrottleRightDown;
-			lShip.inputs.isUpThrottle = lInputFrame.currentActionEvents.isThrottleDown;
+			shipInst.inputs.isLeftThrottle = actionManager.currentActionEvents.isThrottleLeftDown;
+			shipInst.inputs.isRightThrottle = actionManager.currentActionEvents.isThrottleRightDown;
+			shipInst.inputs.isUpThrottle = actionManager.currentActionEvents.isThrottleDown;
 
-			final float lThrottleRollingAmt = 0.5f;
-			if (lShip.inputs.isUpThrottle) {
-				lShip.rollingThrottle += core.gameTime().elapsedTimeMilli() * lThrottleRollingAmt;
-				if (lShip.rollingThrottle >= lShip.rollingThrottleMax)
-					lShip.rollingThrottle = lShip.rollingThrottleMax;
+			final float throttleRollingAmt = 0.5f;
+			if (shipInst.inputs.isUpThrottle) {
+				shipInst.rollingThrottle += core.gameTime().elapsedTimeMilli() * throttleRollingAmt;
+				if (shipInst.rollingThrottle >= shipInst.rollingThrottleMax)
+					shipInst.rollingThrottle = shipInst.rollingThrottleMax;
 
 			} else {
-				lShip.rollingThrottle -= core.gameTime().elapsedTimeMilli() * lThrottleRollingAmt;
-				if (lShip.rollingThrottle <= lShip.rollingThrottleMin)
-					lShip.rollingThrottle = lShip.rollingThrottleMin;
+				shipInst.rollingThrottle -= core.gameTime().elapsedTimeMilli() * throttleRollingAmt;
+				if (shipInst.rollingThrottle <= shipInst.rollingThrottleMin)
+					shipInst.rollingThrottle = shipInst.rollingThrottleMin;
 
 			}
 

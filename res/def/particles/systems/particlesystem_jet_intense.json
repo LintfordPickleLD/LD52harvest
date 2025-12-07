@@ -9,36 +9,33 @@
 	"initializers" : [ 
 	
 		{ 
-			"className":"ParticleSourceRegionInitializer",
+			"className":"ParticleSetSourceRegionInitializer",
 			"srcX":30,
 			"srcY":19,
 			"srcW":14,
 			"srcH":14
 		}, 
-		{ 
-			"className":"ParticleDestinationRegionInitializer",
-			"width":7,
-			"height":7
-		}, 
+
 		{
 			"className":"ParticleRandomSizeInitializer",
 			"minValue":1.0,
 			"maxValue":1.0
 		},
+		
 		{
-			"className":"ParticleRGBColorInitializer",
-			"redMin":"255",
-			"redMax":"255",
-			"greenMin":"255",
-			"greenMax":"255",
-			"blueMin":"255",
-			"blueMax":"255"
+			"className":"ParticleRandomColorInitializer",
+			"minValue0":"255",
+			"maxValue0":"255",
+			"minValue1":"255",
+			"maxValue1":"255",
+			"minValue2":"255",
+			"maxValue2":"255"
 		}
 	],
 	
 	"modifiers" : [
 		{
-			"className":"ParticleLifetimeAlphaFadeOutModifier"
+			"className":"ParticleAlphaInOutModifier"
 		}, 
 		{
 			"className":"ParticlePhysicsModifier"

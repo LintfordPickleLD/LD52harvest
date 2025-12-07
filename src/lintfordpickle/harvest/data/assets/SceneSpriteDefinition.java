@@ -3,7 +3,7 @@ package lintfordpickle.harvest.data.assets;
 import net.lintfordlib.core.entities.definitions.BaseDefinition;
 import net.lintfordlib.core.graphics.sprites.SpriteContainer;
 
-public class SceneAssetDefinition extends BaseDefinition {
+public class SceneSpriteDefinition extends BaseDefinition {
 
 	// --------------------------------------
 	// Constants

@@ -1,9 +1,9 @@
 {
-	"rootDirectory":"res//def//particles//systems//",
-	"itemFileLocations" : [
+	"AssetRootDirectory":"res//def//particles//systems//",
+	"ItemFilepaths" : [
 	
-		"particlesystem_jet",
-		"particlesystem_jet_intense",
-		"particlesystem_engineair"
+		"particlesystem_jet.json",
+		"particlesystem_jet_intense.json",
+		"particlesystem_engineair.json"
 	]
 }

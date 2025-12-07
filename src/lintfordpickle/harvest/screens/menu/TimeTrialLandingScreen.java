@@ -148,22 +148,22 @@ public class TimeTrialLandingScreen extends MenuScreen {
 		case SCREEN_BUTTON_PLAY_TIME_TRIAL: {
 
 			// TODO: Default player is created automatically - and will be controlled by the player.
-			final var lPlayerManager = new PlayerManager();
-			lPlayerManager.getPlayer(PlayerManager.DEFAULT_PLAYER_SESSION_UID).setRecorder("player.lmp");
-			lPlayerManager.getPlayer(PlayerManager.DEFAULT_PLAYER_SESSION_UID).setPlayerControlled(true);
+			final var playerManager = new PlayerManager();
+			playerManager.getPlayer(PlayerManager.DEFAULT_PLAYER_SESSION_UID).setRecorder("player.lmp");
+			playerManager.getPlayer(PlayerManager.DEFAULT_PLAYER_SESSION_UID).setPlayerControlled(true);
 
 			if (mGhostEnabled.isChecked()) {
 				final var lReplayManager = mReplayController.replayManager();
 				if (lReplayManager.isRecordedGameAvailable()) {
-					final var lGhostPlayer = lPlayerManager.addNewPlayer();
-					lGhostPlayer.setPlayback(ReplayManager.RecordedGameFilename);
-					lGhostPlayer.setPlayerControlled(false);
-					lGhostPlayer.isGhostMode(true);
+					final var ghostPlayer = playerManager.addNewPlayer();
+					ghostPlayer.setPlayback(ReplayManager.RecordedGameFilename);
+					ghostPlayer.setPlayerControlled(false);
+					ghostPlayer.isGhostMode(true);
 				}
 			}
 
 			final var lSceneHeader = mSceneManager.loadSceneHeader("level1");
-			final var timeTrialGameScreen = new TimeTrialGameScreen(screenManager, lSceneHeader, lPlayerManager);
+			final var timeTrialGameScreen = new TimeTrialGameScreen(screenManager, lSceneHeader, playerManager);
 			screenManager.initiateLoadingScreen(new LoadingScreen(screenManager, true, true, timeTrialGameScreen));
 			break;
 		}
