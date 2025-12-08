@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lintfordpickle.harvest.data.scene.BaseInstanceManager;
+import lintfordpickle.harvest.data.scene.SceneData;
 import lintfordpickle.harvest.data.scene.SceneSaveDefinition;
 import net.lintfordlib.ConstantsPhysics;
 
@@ -46,12 +47,12 @@ public class PhysicsObjectsManager extends BaseInstanceManager {
 	}
 
 	@Override
-	public void storeInTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void storeInTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		// physics objects not generated in normal game mode - hence no saving
 	}
 
 	@Override
-	public void loadFromTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void loadFromTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		final var lFloorDefinitions = sceneSaveDefinition.physicsObjects().physicsObjects;
 		final var lNumFloorDefinitions = lFloorDefinitions.size();
 
@@ -79,7 +80,7 @@ public class PhysicsObjectsManager extends BaseInstanceManager {
 	}
 
 	@Override
-	public void finalizeAfterLoading() {
+	public void finalizeAfterLoading(SceneData sceneData) {
 		// finalized in SceneController
 	}
 }

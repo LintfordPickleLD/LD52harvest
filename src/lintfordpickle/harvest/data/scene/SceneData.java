@@ -1,5 +1,6 @@
 package lintfordpickle.harvest.data.scene;
 
+import lintfordpickle.harvest.data.assets.SceneSpriteManager;
 import lintfordpickle.harvest.data.game.GameState;
 import lintfordpickle.harvest.data.game.GameState.GameMode;
 import lintfordpickle.harvest.data.scene.cargo.CargoManager;
@@ -26,12 +27,16 @@ public class SceneData {
 	private ShipManager mShipManager;
 	private PhysicsSettingsManager mPhysicsSettingsManager;
 	private PhysicsObjectsManager mPhysicsObjectsManager;
-
+	private SceneSpriteManager mSceneSpriteManager;
 	private CargoManager mCargoManager;
 
 	// --------------------------------------
 	// Properties
 	// --------------------------------------
+
+	public SceneSpriteManager spriteManager() {
+		return mSceneSpriteManager;
+	}
 
 	public SceneSettingsManager sceneSettingsManager() {
 		return mSceneSettingsManager;
@@ -93,6 +98,7 @@ public class SceneData {
 		mPhysicsSettingsManager = new PhysicsSettingsManager();
 		mPhysicsObjectsManager = new PhysicsObjectsManager();
 
+		mSceneSpriteManager = new SceneSpriteManager();
 		mCargoManager = new CargoManager();
 
 	}
@@ -104,45 +110,44 @@ public class SceneData {
 	public SceneSaveDefinition getSceneDefinitionToSave() {
 		final var lSceneSaveDefinition = new SceneSaveDefinition();
 
-		mSceneSettingsManager.storeInTrackDefinition(lSceneSaveDefinition);
-		mGameState.storeInTrackDefinition(lSceneSaveDefinition);
-		mHashGridManager.storeInTrackDefinition(lSceneSaveDefinition);
-		mLayersManager.storeInTrackDefinition(lSceneSaveDefinition);
-		mPlatformManager.storeInTrackDefinition(lSceneSaveDefinition);
-		mShipManager.storeInTrackDefinition(lSceneSaveDefinition);
-		mPhysicsSettingsManager.storeInTrackDefinition(lSceneSaveDefinition);
-		mPhysicsObjectsManager.storeInTrackDefinition(lSceneSaveDefinition);
+		mSceneSettingsManager.storeInTrackSaveDefinition(lSceneSaveDefinition);
+		mGameState.storeInTrackSaveDefinition(lSceneSaveDefinition);
+		mHashGridManager.storeInTrackSaveDefinition(lSceneSaveDefinition);
+		mLayersManager.storeInTrackSaveDefinition(lSceneSaveDefinition);
+		mPlatformManager.storeInTrackSaveDefinition(lSceneSaveDefinition);
+		mShipManager.storeInTrackSaveDefinition(lSceneSaveDefinition);
+		mPhysicsSettingsManager.storeInTrackSaveDefinition(lSceneSaveDefinition);
+		mPhysicsObjectsManager.storeInTrackSaveDefinition(lSceneSaveDefinition);
 
-		mCargoManager.storeInTrackDefinition(lSceneSaveDefinition);
+		mCargoManager.storeInTrackSaveDefinition(lSceneSaveDefinition);
 
 		return lSceneSaveDefinition;
 	}
 
 	public void createSceneFromSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
-		mSceneSettingsManager.loadFromTrackDefinition(sceneSaveDefinition);
-		mGameState.loadFromTrackDefinition(sceneSaveDefinition);
-		mHashGridManager.loadFromTrackDefinition(sceneSaveDefinition);
-		mLayersManager.loadFromTrackDefinition(sceneSaveDefinition);
-		mPlatformManager.loadFromTrackDefinition(sceneSaveDefinition);
-		mShipManager.loadFromTrackDefinition(sceneSaveDefinition);
-		mPhysicsSettingsManager.loadFromTrackDefinition(sceneSaveDefinition);
-		mPhysicsObjectsManager.loadFromTrackDefinition(sceneSaveDefinition);
+		mSceneSettingsManager.loadFromTrackSaveDefinition(sceneSaveDefinition);
+		mGameState.loadFromTrackSaveDefinition(sceneSaveDefinition);
+		mHashGridManager.loadFromTrackSaveDefinition(sceneSaveDefinition);
+		mLayersManager.loadFromTrackSaveDefinition(sceneSaveDefinition);
+		mPlatformManager.loadFromTrackSaveDefinition(sceneSaveDefinition);
+		mShipManager.loadFromTrackSaveDefinition(sceneSaveDefinition);
+		mPhysicsSettingsManager.loadFromTrackSaveDefinition(sceneSaveDefinition);
+		mPhysicsObjectsManager.loadFromTrackSaveDefinition(sceneSaveDefinition);
 
-		mCargoManager.loadFromTrackDefinition(sceneSaveDefinition);
+		mCargoManager.loadFromTrackSaveDefinition(sceneSaveDefinition);
 
 	}
 
 	public void finalizeAfterLoading() {
-		mSceneSettingsManager.finalizeAfterLoading();
-		mGameState.finalizeAfterLoading();
-		mHashGridManager.finalizeAfterLoading();
-		mLayersManager.finalizeAfterLoading();
-		mPlatformManager.finalizeAfterLoading();
-		mShipManager.finalizeAfterLoading();
-		mPhysicsSettingsManager.finalizeAfterLoading();
-		mPhysicsObjectsManager.finalizeAfterLoading();
-
-		mCargoManager.finalizeAfterLoading();
+		mSceneSettingsManager.finalizeAfterLoading(this);
+		mGameState.finalizeAfterLoading(this);
+		mHashGridManager.finalizeAfterLoading(this);
+		mLayersManager.finalizeAfterLoading(this);
+		mPlatformManager.finalizeAfterLoading(this);
+		mShipManager.finalizeAfterLoading(this);
+		mPhysicsSettingsManager.finalizeAfterLoading(this);
+		mPhysicsObjectsManager.finalizeAfterLoading(this);
+		mCargoManager.finalizeAfterLoading(this);
 	}
 
 }

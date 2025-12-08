@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lintfordpickle.harvest.data.scene.BaseInstanceManager;
+import lintfordpickle.harvest.data.scene.SceneData;
 import lintfordpickle.harvest.data.scene.SceneSaveDefinition;
-import lintfordpickle.harvest.data.scene.layers.savedefinitions.SceneSpritesLayerSaveDefinition;
 import lintfordpickle.harvest.data.scene.layers.savedefinitions.SceneNoiseLayerSaveDefinition;
+import lintfordpickle.harvest.data.scene.layers.savedefinitions.SceneSpritesLayerSaveDefinition;
 import lintfordpickle.harvest.data.scene.layers.savedefinitions.SceneTextureLayerSaveDefinition;
 
 public class LayersManager extends BaseInstanceManager {
@@ -67,12 +68,11 @@ public class LayersManager extends BaseInstanceManager {
 
 	@Override
 	public void initializeManager() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void storeInTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void storeInTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 
 		final int lNumLayers = mLayers.size();
 		for (int i = 0; i < lNumLayers; i++) {
@@ -93,7 +93,7 @@ public class LayersManager extends BaseInstanceManager {
 	}
 
 	@Override
-	public void loadFromTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void loadFromTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		final var layerSaveManager = sceneSaveDefinition.layers();
 
 		final var textureLayers = layerSaveManager.textureLayers;
@@ -130,7 +130,12 @@ public class LayersManager extends BaseInstanceManager {
 	}
 
 	@Override
-	public void finalizeAfterLoading() {
+	public void finalizeAfterLoading(SceneData sceneData) {
+		final var numLayers = mLayers.size();
+		for (int i = 0; i < numLayers; i++) {
+			final var layerToFinalize = mLayers.get(i);
+			layerToFinalize.finalizeAfterLoading(sceneData.spriteManager());
+		}
 
 	}
 

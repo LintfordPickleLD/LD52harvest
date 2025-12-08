@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lintfordpickle.harvest.data.scene.BaseInstanceManager;
+import lintfordpickle.harvest.data.scene.SceneData;
 import lintfordpickle.harvest.data.scene.SceneSaveDefinition;
 
 public class CargoManager extends BaseInstanceManager {
@@ -50,12 +51,12 @@ public class CargoManager extends BaseInstanceManager {
 	}
 
 	@Override
-	public void storeInTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void storeInTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 
 	}
 
 	@Override
-	public void finalizeAfterLoading() {
+	public void finalizeAfterLoading(SceneData sceneData) {
 
 	}
 

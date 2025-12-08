@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lintfordpickle.harvest.data.scene.BaseInstanceManager;
+import lintfordpickle.harvest.data.scene.SceneData;
 import lintfordpickle.harvest.data.scene.SceneSaveDefinition;
 
 public class PlatformManager extends BaseInstanceManager {
@@ -60,19 +61,19 @@ public class PlatformManager extends BaseInstanceManager {
 	}
 
 	@Override
-	public void storeInTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void storeInTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void loadFromTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void loadFromTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void finalizeAfterLoading() {
+	public void finalizeAfterLoading(SceneData sceneData) {
 		// TODO Auto-generated method stub
 
 	}

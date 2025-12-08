@@ -1,15 +1,14 @@
 package lintfordpickle.harvest.data.editor;
 
+import lintfordpickle.harvest.data.assets.SceneSpriteManager;
 import lintfordpickle.harvest.data.editor.physics.EditorPhysicsObjectsManager;
 import lintfordpickle.harvest.data.editor.platforms.EditorPlatformManager;
-import lintfordpickle.harvest.data.game.GameState;
-import lintfordpickle.harvest.data.game.GameState.GameMode;
-import lintfordpickle.harvest.data.scene.HashGridManager;
+import lintfordpickle.harvest.data.scene.EditorHashGridManager;
+import lintfordpickle.harvest.data.scene.EditorSceneSettingsManager;
 import lintfordpickle.harvest.data.scene.SceneSaveDefinition;
-import lintfordpickle.harvest.data.scene.SceneSettingsManager;
-import lintfordpickle.harvest.data.scene.layers.LayersManager;
-import lintfordpickle.harvest.data.scene.physics.PhysicsSettingsManager;
-import lintfordpickle.harvest.data.scene.ships.ShipManager;
+import lintfordpickle.harvest.data.scene.layers.EditorLayersManager;
+import lintfordpickle.harvest.data.scene.physics.EditorPhysicsSettingsManager;
+import lintfordpickle.harvest.data.scene.ships.EditorShipManager;
 
 public class EditorSceneData {
 
@@ -17,32 +16,28 @@ public class EditorSceneData {
 	// Variables
 	// --------------------------------------
 
-	private SceneSettingsManager mSceneSettingsManager;
-	private GameState mGameState;
-	private HashGridManager mHashGridManager;
-	private LayersManager mLayersManager;
+	private EditorSceneSettingsManager mSceneSettingsManager;
+	private EditorHashGridManager mHashGridManager;
+	private EditorLayersManager mLayersManager;
 	private EditorPlatformManager mPlatformManager;
-	private ShipManager mShipManager;
-	private PhysicsSettingsManager mPhysicsSettingsManager;
+	private EditorShipManager mShipManager;
+	private EditorPhysicsSettingsManager mPhysicsSettingsManager;
 	private EditorPhysicsObjectsManager mPhysicsManager;
+	private SceneSpriteManager mSceneSpriteManager;
 
 	// --------------------------------------
 	// Properties
 	// --------------------------------------
 
-	public SceneSettingsManager sceneSettingsManager() {
+	public EditorSceneSettingsManager sceneSettingsManager() {
 		return mSceneSettingsManager;
 	}
 
-	public GameState gameState() {
-		return mGameState;
-	}
-
-	public HashGridManager hashGridManager() {
+	public EditorHashGridManager hashGridManager() {
 		return mHashGridManager;
 	}
 
-	public LayersManager layersManager() {
+	public EditorLayersManager layersManager() {
 		return mLayersManager;
 	}
 
@@ -50,11 +45,11 @@ public class EditorSceneData {
 		return mPlatformManager;
 	}
 
-	public ShipManager shipManager() {
+	public EditorShipManager shipManager() {
 		return mShipManager;
 	}
 
-	public PhysicsSettingsManager physicsSettingsManager() {
+	public EditorPhysicsSettingsManager physicsSettingsManager() {
 		return mPhysicsSettingsManager;
 	}
 
@@ -62,21 +57,23 @@ public class EditorSceneData {
 		return mPhysicsManager;
 	}
 
+	public SceneSpriteManager spriteManager() {
+		return mSceneSpriteManager;
+	}
+
 	// --------------------------------------
 	// Constructor
 	// --------------------------------------
 
 	public EditorSceneData() {
-		mGameState = new GameState();
-		mGameState.startNewGame(GameMode.TimeTrial);
-
-		mSceneSettingsManager = new SceneSettingsManager();
-		mHashGridManager = new HashGridManager();
-		mLayersManager = new LayersManager();
+		mSceneSettingsManager = new EditorSceneSettingsManager();
+		mHashGridManager = new EditorHashGridManager();
+		mLayersManager = new EditorLayersManager();
 		mPlatformManager = new EditorPlatformManager();
-		mShipManager = new ShipManager();
-		mPhysicsSettingsManager = new PhysicsSettingsManager();
+		mShipManager = new EditorShipManager();
+		mPhysicsSettingsManager = new EditorPhysicsSettingsManager();
 		mPhysicsManager = new EditorPhysicsObjectsManager();
+		mSceneSpriteManager = new SceneSpriteManager();
 	}
 
 	// --------------------------------------
@@ -87,7 +84,6 @@ public class EditorSceneData {
 		final var lSceneSaveDefinition = new SceneSaveDefinition();
 
 		mSceneSettingsManager.storeInTrackDefinition(lSceneSaveDefinition);
-		mGameState.storeInTrackDefinition(lSceneSaveDefinition);
 		mHashGridManager.storeInTrackDefinition(lSceneSaveDefinition);
 		mLayersManager.storeInTrackDefinition(lSceneSaveDefinition);
 		mPlatformManager.storeInTrackDefinition(lSceneSaveDefinition);
@@ -100,7 +96,6 @@ public class EditorSceneData {
 
 	public void createSceneFromSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		mSceneSettingsManager.loadFromTrackDefinition(sceneSaveDefinition);
-		mGameState.loadFromTrackDefinition(sceneSaveDefinition);
 		mHashGridManager.loadFromTrackDefinition(sceneSaveDefinition);
 		mLayersManager.loadFromTrackDefinition(sceneSaveDefinition);
 		mPlatformManager.loadFromTrackDefinition(sceneSaveDefinition);
@@ -110,13 +105,12 @@ public class EditorSceneData {
 	}
 
 	public void finalizeAfterLoading() {
-		mSceneSettingsManager.finalizeAfterLoading();
-		mGameState.finalizeAfterLoading();
-		mHashGridManager.finalizeAfterLoading();
-		mLayersManager.finalizeAfterLoading();
+		mSceneSettingsManager.finalizeAfterLoading(this);
+		mHashGridManager.finalizeAfterLoading(this);
+		mLayersManager.finalizeAfterLoading(this);
 		mPlatformManager.finalizeAfterLoading(this);
-		mShipManager.finalizeAfterLoading();
-		mPhysicsSettingsManager.finalizeAfterLoading();
+		mShipManager.finalizeAfterLoading(this);
+		mPhysicsSettingsManager.finalizeAfterLoading(this);
 		mPhysicsManager.finalizeAfterLoading(this);
 	}
 

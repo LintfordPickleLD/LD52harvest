@@ -1,5 +1,6 @@
 package lintfordpickle.harvest.data.scene.layers;
 
+import lintfordpickle.harvest.data.assets.SceneSpriteManager;
 import lintfordpickle.harvest.data.scene.layers.savedefinitions.BaseSceneLayerSaveDefinition;
 
 public abstract class SceneBaseLayer {
@@ -43,6 +44,14 @@ public abstract class SceneBaseLayer {
 	// --------------------------------------
 	// Methods
 	// --------------------------------------
+
+	public void resetInput() {
+
+	}
+
+	public void finalizeAfterLoading(SceneSpriteManager spriteManager) {
+
+	}
 
 	public abstract BaseSceneLayerSaveDefinition getSaveDefinition();
 

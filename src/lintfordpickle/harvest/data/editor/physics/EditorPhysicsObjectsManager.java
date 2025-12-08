@@ -12,10 +12,6 @@ import net.lintfordlib.core.maths.Vector2f;
 public class EditorPhysicsObjectsManager extends BaseEditorInstanceManager {
 
 	// --------------------------------------
-	// Constants
-	// --------------------------------------
-
-	// --------------------------------------
 	// Variables
 	// --------------------------------------
 
@@ -117,14 +113,14 @@ public class EditorPhysicsObjectsManager extends BaseEditorInstanceManager {
 	}
 
 	@Override
-	public void finalizeAfterLoading(EditorSceneData editorSceneInstance) {
-		final var lHashGrid = editorSceneInstance.hashGridManager().hashGrid();
+	public void finalizeAfterLoading(EditorSceneData sceneData) {
+		final var hashGrid = sceneData.hashGridManager().hashGrid();
 
 		final int lNumPhysicsObjectInstances = mPhysicsObjects.size();
 		for (int i = 0; i < lNumPhysicsObjectInstances; i++) {
 			final var lPhysicsObject = mPhysicsObjects.get(i);
 
-			lHashGrid.addEntity(lPhysicsObject);
+			hashGrid.addEntity(lPhysicsObject);
 		}
 	}
 

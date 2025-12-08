@@ -1,6 +1,9 @@
 package lintfordpickle.harvest.data.assets;
 
+import com.google.gson.annotations.SerializedName;
+
 import lintfordpickle.harvest.data.GridCollisionTypes;
+import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.geometry.Rectangle;
 import net.lintfordlib.core.geometry.partitioning.GridEntity;
 import net.lintfordlib.core.geometry.partitioning.SpatialHashGrid;
@@ -23,6 +26,7 @@ public class SceneSpriteInstance extends GridEntity {
 	// Variables
 	// --------------------------------------
 
+	@SerializedName("SceneDefinitionName")
 	public String definitionName;
 	public transient SceneSpriteDefinition definition;
 
@@ -56,8 +60,17 @@ public class SceneSpriteInstance extends GridEntity {
 		definitionName = assetDefinition.definitionName();
 		definition = assetDefinition;
 
-		destRect.setPosition(x, y);
-		destRect.setDimensions(width, height);
+		destRect.setCenter(x, y, width, height);
+
+	}
+
+	public void update(LintfordCore core) {
+		if (spriteInstance == null) {
+			return;
+		}
+
+		spriteInstance.set(destRect);
+		spriteInstance.update(core);
 
 	}
 

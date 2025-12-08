@@ -33,29 +33,29 @@ public class SceneTextureLayerSaveDefinition extends BaseSceneLayerSaveDefinitio
 
 	@Override
 	public SceneBaseLayer getSceneLayer() {
-		final var lTextureLayer = new SceneTextureLayer(layerUid);
-		lTextureLayer.zDepth = layerZDepth;
-		lTextureLayer.name = layerName;
+		final var textureLayer = new SceneTextureLayer(layerUid);
+		textureLayer.zDepth = layerZDepth;
+		textureLayer.name = layerName;
 
-		lTextureLayer.setTextureName(textureName);
-		lTextureLayer.setTextureFilepath(texturePath);
+		textureLayer.setTextureName(textureName);
+		textureLayer.setTextureFilepath(texturePath);
 
-		lTextureLayer.translationSpeedModX = translationSpeedModX;
-		lTextureLayer.translationSpeedModY = translationSpeedModY;
+		textureLayer.translationSpeedModX = translationSpeedModX;
+		textureLayer.translationSpeedModY = translationSpeedModY;
 
-		lTextureLayer.centerX = centerX;
-		lTextureLayer.centerY = centerY;
+		textureLayer.centerX = centerX;
+		textureLayer.centerY = centerY;
 
-		lTextureLayer.width = width;
-		lTextureLayer.height = height;
+		textureLayer.width = width;
+		textureLayer.height = height;
 
 		// ensure some sane defaults:
-		if (lTextureLayer.width <= 0.f)
-			lTextureLayer.width = 32.f;
+		if (textureLayer.width <= 0.f)
+			textureLayer.width = 32.f;
 
-		if (lTextureLayer.height <= 0.f)
-			lTextureLayer.height = 32.f;
+		if (textureLayer.height <= 0.f)
+			textureLayer.height = 32.f;
 
-		return lTextureLayer;
+		return textureLayer;
 	}
 }

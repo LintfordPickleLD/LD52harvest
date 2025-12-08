@@ -2,7 +2,7 @@ package lintfordpickle.harvest.screens.editor.panels;
 
 import lintfordpickle.harvest.controllers.editor.EditorSceneController;
 import lintfordpickle.harvest.data.editor.EditorLayersData;
-import lintfordpickle.harvest.data.scene.physics.PhysicsSettingsManager;
+import lintfordpickle.harvest.data.scene.physics.EditorPhysicsSettingsManager;
 import lintfordpickle.harvest.renderers.editor.EditorPhysicsSettingsRenderer;
 import net.lintfordlib.ConstantsPhysics;
 import net.lintfordlib.controllers.editor.EditorBrushController;
@@ -36,7 +36,7 @@ public class LayerPhysicsScene extends UiPanel {
 	// --------------------------------------
 
 	private EditorSceneController mEditorSceneController;
-	private PhysicsSettingsManager mPhysicsSettingsManager;
+	private EditorPhysicsSettingsManager mPhysicsSettingsManager;
 	private EditorPhysicsSettingsRenderer mEditorPhysicsSettingsRenderer;
 	private EditorHashGridController mHashGridController;
 

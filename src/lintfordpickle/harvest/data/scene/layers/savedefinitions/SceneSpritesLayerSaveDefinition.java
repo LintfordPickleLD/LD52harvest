@@ -1,7 +1,11 @@
 package lintfordpickle.harvest.data.scene.layers.savedefinitions;
 
-import lintfordpickle.harvest.data.scene.layers.SceneSpriteLayer;
+import java.util.ArrayList;
+import java.util.List;
+
+import lintfordpickle.harvest.data.assets.SceneSpriteInstance;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
+import lintfordpickle.harvest.data.scene.layers.SceneSpriteLayer;
 
 public class SceneSpritesLayerSaveDefinition extends BaseSceneLayerSaveDefinition {
 
@@ -10,6 +14,12 @@ public class SceneSpritesLayerSaveDefinition extends BaseSceneLayerSaveDefinitio
 	// --------------------------------------
 
 	private static final long serialVersionUID = 7569238335511621943L;
+
+	// --------------------------------------
+	// Variables
+	// --------------------------------------
+
+	public final List<SceneSpriteInstanceSaveDefinition> spriteInstances = new ArrayList<>();
 
 	// --------------------------------------
 	// Constructor
@@ -24,11 +34,23 @@ public class SceneSpritesLayerSaveDefinition extends BaseSceneLayerSaveDefinitio
 
 	@Override
 	public SceneBaseLayer getSceneLayer() {
-		final var lAnimationLayer = new SceneSpriteLayer(layerUid);
-		lAnimationLayer.zDepth = layerZDepth;
-		lAnimationLayer.name = layerName;
+		final var spriteLayer = new SceneSpriteLayer(layerUid);
+		spriteLayer.zDepth = layerZDepth;
+		spriteLayer.name = layerName;
 
-		return lAnimationLayer;
+		final var numSprites = spriteInstances.size();
+		for (int i = 0; i < numSprites; i++) {
+			final var spriteToLoad = spriteInstances.get(i);
+			final var spriteInstance = new SceneSpriteInstance(spriteToLoad.entityUid);
+
+			// TODO: Restore the sprite to its original glory
+			spriteInstance.definitionName = spriteToLoad.assetDefinitionName;
+			spriteInstance.destRect.set(spriteToLoad.destinationRectangle);
+
+			spriteLayer.addAssetToLayer(spriteInstance);
+		}
+
+		return spriteLayer;
 	}
 
 }

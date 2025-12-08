@@ -1,17 +1,13 @@
 package lintfordpickle.harvest.data.assets;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.google.gson.GsonBuilder;
 
-import lintfordpickle.harvest.data.scene.BaseInstanceManager;
-import lintfordpickle.harvest.data.scene.SceneSaveDefinition;
 import net.lintfordlib.core.entities.EntityLocationProvider;
 import net.lintfordlib.core.entities.definitions.DefinitionManager;
 
-public class SceneSpritesManager extends BaseInstanceManager {
+public class SceneSpriteManager {
 
 	private static final String META_FILENAME = "res/def/assets/_meta.json";
 
@@ -60,8 +56,6 @@ public class SceneSpritesManager extends BaseInstanceManager {
 
 	private SpriteDefinitionManager mDefinitionManager = new SpriteDefinitionManager();
 
-	private final List<SceneSpriteInstance> mAssetInstances = new ArrayList<>();
-
 	// ---------------------------------------------
 	// Properties
 	// ---------------------------------------------
@@ -70,16 +64,11 @@ public class SceneSpritesManager extends BaseInstanceManager {
 		return mDefinitionManager;
 	}
 
-	@Override
-	public void initializeInstanceCounter() {
-		// TODO: unimplemented
-	}
-
 	// ---------------------------------------------
 	// Constructors
 	// ---------------------------------------------
 
-	public SceneSpritesManager() {
+	public SceneSpriteManager() {
 
 	}
 
@@ -98,41 +87,11 @@ public class SceneSpritesManager extends BaseInstanceManager {
 		// values coming from json?
 		assetInstance.initialize(assetDefinition, worldX, worldY, 32, 32, 0, 16);
 
-		mAssetInstances.add(assetInstance);
-
 		return assetInstance;
 	}
 
 	private SceneSpriteInstance createNewAsset() {
-		return new SceneSpriteInstance(getNewInstanceUid());
-	}
-
-	// ---------------------------------------------
-	// Inherited-Methods
-	// ---------------------------------------------
-
-	@Override
-	public void initializeManager() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void storeInTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void loadFromTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void finalizeAfterLoading() {
-		// TODO Auto-generated method stub
-
+		return new SceneSpriteInstance(0);
 	}
 
 }

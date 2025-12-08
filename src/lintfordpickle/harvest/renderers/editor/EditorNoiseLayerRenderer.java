@@ -44,6 +44,8 @@ public class EditorNoiseLayerRenderer implements IInputProcessor {
 	private boolean mRenderNoiseLayer;
 	private int mEntityGroupUid;
 
+	private float mInputTimer;
+
 	// ---------------------------------------------
 	// Properties
 	// ---------------------------------------------
@@ -89,7 +91,11 @@ public class EditorNoiseLayerRenderer implements IInputProcessor {
 		mTexturedQuad.unloadResources();
 	}
 
-	public boolean handleInput(LintfordCore core) {
+	public void resetInput() {
+
+	}
+
+	public boolean handleInput(LintfordCore core, SceneNoiseLayer layer) {
 
 		if (!mEditorBrushController.isLayerActive(EditorLayersData.Layer_Noise))
 			return false;
@@ -202,7 +208,12 @@ public class EditorNoiseLayerRenderer implements IInputProcessor {
 		return false;
 	}
 
-	public void update(LintfordCore core) {
+	public void update(LintfordCore core, SceneNoiseLayer layer) {
+		if (mInputTimer > 0)
+			mInputTimer -= core.gameTime().elapsedTimeMilli();
+
+		if (!layer.visible)
+			return;
 
 	}
 
@@ -243,7 +254,7 @@ public class EditorNoiseLayerRenderer implements IInputProcessor {
 	// Methods
 	// ---------------------------------------------
 
-	private void drawSelectedLayerDebug(LintfordCore core, SceneBaseLayer layer) {
+	public void drawSelectedLayerDebug(LintfordCore core, SceneBaseLayer layer) {
 		final var x = layer.centerX - layer.width * .5f;
 		final var y = layer.centerY - layer.height * .5f;
 
@@ -261,25 +272,22 @@ public class EditorNoiseLayerRenderer implements IInputProcessor {
 
 	@Override
 	public boolean isCoolDownElapsed() {
-		// TODO Auto-generated method stub
-		return false;
+		return mInputTimer <= 0;
 	}
 
 	@Override
 	public void resetCoolDownTimer(float cooldownInMs) {
-		// TODO Auto-generated method stub
+		mInputTimer = 300;
 
 	}
 
 	@Override
 	public boolean allowGamepadInput() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean allowMouseInput() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 }

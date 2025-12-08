@@ -9,6 +9,7 @@ import lintfordpickle.harvest.ConstantsGame;
 import lintfordpickle.harvest.controllers.AudioController;
 import lintfordpickle.harvest.controllers.CargoController;
 import lintfordpickle.harvest.controllers.EnvironmentController;
+import lintfordpickle.harvest.controllers.LayerController;
 import lintfordpickle.harvest.controllers.LevelController;
 import lintfordpickle.harvest.controllers.PlatformController;
 import lintfordpickle.harvest.controllers.SceneController;
@@ -76,6 +77,7 @@ public class TimeTrialGameScreen extends BaseGameScreen implements IPhysicsContr
 	private LevelController mLevelController;
 	private ShipController mShipController;
 	private SceneController mSceneController;
+	private LayerController mLayerController;
 	private PlatformController mPlatformsController;
 	private TimeTrialGameStateController mGameStateController;
 	private PhysicsController mPhysicsController;
@@ -259,6 +261,7 @@ public class TimeTrialGameScreen extends BaseGameScreen implements IPhysicsContr
 		mGameActionEventController = new GameActionEventController(controllerManager, mPlayerManager, inputCounter(), entityGroupUid());
 		mPhysicsController = new PhysicsController(controllerManager, this, entityGroupUid());
 		mLevelController = new LevelController(controllerManager, entityGroupUid());
+		mLayerController = new LayerController(controllerManager, mSceneData.layersManager(), entityGroupUid());
 		mCameraShipChaseController = new CameraShipChaseController(controllerManager, mGameCamera, null, entityGroupUid());
 		mSceneController = new SceneController(controllerManager, mSceneHeader, mSceneData, entityGroupUid());
 		mGameStateController = new TimeTrialGameStateController(controllerManager, mSceneData, mPlayerManager, entityGroupUid());
@@ -276,6 +279,7 @@ public class TimeTrialGameScreen extends BaseGameScreen implements IPhysicsContr
 		mParticleFrameworkController.initialize(core);
 		mGameActionEventController.initialize(core);
 		mPhysicsController.initialize(core);
+		mLayerController.initialize(core);
 		mLevelController.initialize(core);
 		mCameraShipChaseController.initialize(core);
 		mSceneController.initialize(core);

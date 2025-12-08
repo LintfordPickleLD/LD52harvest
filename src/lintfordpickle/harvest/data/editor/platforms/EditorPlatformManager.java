@@ -65,9 +65,8 @@ public class EditorPlatformManager extends BaseEditorInstanceManager {
 	}
 
 	@Override
-	public void finalizeAfterLoading(EditorSceneData editorSceneInstance) {
-		// TODO Auto-generated method stub
-		
+	public void finalizeAfterLoading(EditorSceneData sceneData) {
+
 	}
 
 }

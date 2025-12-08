@@ -52,19 +52,19 @@ public class ShipManager extends BaseInstanceManager {
 	}
 
 	@Override
-	public void storeInTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void storeInTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void loadFromTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void loadFromTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void finalizeAfterLoading() {
+	public void finalizeAfterLoading(SceneData sceenData) {
 
 	}
 

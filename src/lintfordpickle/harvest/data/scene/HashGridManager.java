@@ -51,7 +51,7 @@ public class HashGridManager extends BaseInstanceManager {
 	}
 
 	@Override
-	public void storeInTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void storeInTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		final var lHashGridSettings = sceneSaveDefinition.gridSettings();
 
 		lHashGridSettings.hashGridWidth = mHashGrid.boundaryWidth();
@@ -62,7 +62,7 @@ public class HashGridManager extends BaseInstanceManager {
 	}
 
 	@Override
-	public void loadFromTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void loadFromTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		final var lGridSettings = sceneSaveDefinition.gridSettings();
 
 		if (lGridSettings.isInitialized() == false) {
@@ -79,10 +79,11 @@ public class HashGridManager extends BaseInstanceManager {
 	}
 
 	@Override
-	public void finalizeAfterLoading() {
+	public void finalizeAfterLoading(SceneData sceneData) {
 		if (mHashGrid == null) {
 			createNewHashGrid(1000, 1000, 5, 5);
 		}
+
 	}
 
 }

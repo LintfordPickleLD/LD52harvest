@@ -22,7 +22,9 @@
         "centerX": 0.0,
         "centerY": 0.0,
         "width": 2048.0,
-        "height": 2048.0
+        "height": 2048.0,
+        "contentScaleX": 1.0,
+        "contentScaleY": 1.0
       },
       {
         "textureName": "TEXTURE_FARGROUND",
@@ -35,7 +37,9 @@
         "centerX": 0.0,
         "centerY": 0.0,
         "width": 2048.0,
-        "height": 2048.0
+        "height": 2048.0,
+        "contentScaleX": 1.0,
+        "contentScaleY": 1.0
       },
       {
         "textureName": "TEXTURE_MIDGROUND",
@@ -48,7 +52,9 @@
         "centerX": 0.0,
         "centerY": 0.0,
         "width": 2048.0,
-        "height": 2048.0
+        "height": 2048.0,
+        "contentScaleX": 1.0,
+        "contentScaleY": 1.0
       },
       {
         "textureName": "TEXTURE_COLLIDABLES",
@@ -61,44 +67,84 @@
         "centerX": 0.0,
         "centerY": 0.0,
         "width": 2048.0,
-        "height": 2048.0
+        "height": 2048.0,
+        "contentScaleX": 1.0,
+        "contentScaleY": 1.0
       }
     ],
-    "animationLayers": [
+    "spriteLayers": [
       {
-        "layerUid": 9,
-        "layerZDepth": 4,
-        "layerName": "Animations",
+        "spriteInstances": [],
+        "layerUid": 0,
+        "layerZDepth": 6,
+        "layerName": "Anim Layer 0",
         "translationSpeedModX": 0.0,
         "translationSpeedModY": 0.0,
         "centerX": 0.0,
         "centerY": 0.0,
-        "width": 0.0,
-        "height": 0.0
+        "width": 64.0,
+        "height": 64.0,
+        "contentScaleX": 1.0,
+        "contentScaleY": 1.0
+      },
+      {
+        "spriteInstances": [
+          {
+            "assetDefinitionName": "ASSET_AIRCOND",
+            "destinationRectangle": {
+              "x": 242.0,
+              "y": -220.5,
+              "w": 32.0,
+              "h": 32.0,
+              "scaleX": 1.0,
+              "scaleY": 1.0,
+              "pivotX": 0.0,
+              "pivotY": 0.0,
+              "mFlipHorizontal": false,
+              "mFlipVertical": false
+            },
+            "entityUid": 0
+          }
+        ],
+        "layerUid": 1,
+        "layerZDepth": 7,
+        "layerName": "Anim Layer 1",
+        "translationSpeedModX": 0.0,
+        "translationSpeedModY": 0.0,
+        "centerX": 0.0,
+        "centerY": 0.0,
+        "width": 64.0,
+        "height": 64.0,
+        "contentScaleX": 1.0,
+        "contentScaleY": 1.0
       }
     ],
     "noiseLayers": [
       {
         "layerUid": 10,
-        "layerZDepth": 5,
+        "layerZDepth": 4,
         "layerName": "Noise Layer 10",
         "translationSpeedModX": 0.0,
         "translationSpeedModY": 0.0,
         "centerX": 297.90945,
         "centerY": -42.51082,
         "width": 214.22595,
-        "height": 167.55493
+        "height": 167.55493,
+        "contentScaleX": 1.0,
+        "contentScaleY": 1.0
       },
       {
         "layerUid": 8,
-        "layerZDepth": 6,
+        "layerZDepth": 5,
         "layerName": "Sewer Clouds",
         "translationSpeedModX": 0.0,
         "translationSpeedModY": 0.0,
         "centerX": -4.4979553,
         "centerY": 741.77185,
         "width": 2122.9817,
-        "height": 604.30676
+        "height": 604.30676,
+        "contentScaleX": 1.0,
+        "contentScaleY": 1.0
       }
     ]
   },

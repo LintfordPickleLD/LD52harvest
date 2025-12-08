@@ -1,6 +1,7 @@
 package lintfordpickle.harvest.data.scene.physics;
 
 import lintfordpickle.harvest.data.scene.BaseInstanceManager;
+import lintfordpickle.harvest.data.scene.SceneData;
 import lintfordpickle.harvest.data.scene.SceneSaveDefinition;
 import net.lintfordlib.ConstantsPhysics;
 import net.lintfordlib.core.maths.MathHelper;
@@ -67,7 +68,7 @@ public class PhysicsSettingsManager extends BaseInstanceManager {
 	// --------------------------------------
 
 	@Override
-	public void storeInTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void storeInTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		final var lSceneSettingsSaveDefinition = sceneSaveDefinition.physicsSettings();
 		lSceneSettingsSaveDefinition.gravity.set(mPhysicsSettings.gravityX, mPhysicsSettings.gravityY);
 		lSceneSettingsSaveDefinition.hashGridWidthInUnits = mPhysicsSettings.hashGridWidthInUnits;
@@ -77,7 +78,7 @@ public class PhysicsSettingsManager extends BaseInstanceManager {
 	}
 
 	@Override
-	public void loadFromTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void loadFromTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		final var lSceneSettingsSaveDefinition = sceneSaveDefinition.physicsSettings();
 		mPhysicsSettings.gravityX = lSceneSettingsSaveDefinition.gravity.x;
 		mPhysicsSettings.gravityY = lSceneSettingsSaveDefinition.gravity.y;
@@ -110,7 +111,7 @@ public class PhysicsSettingsManager extends BaseInstanceManager {
 	}
 
 	@Override
-	public void finalizeAfterLoading() {
+	public void finalizeAfterLoading(SceneData sceneData) {
 
 	}
 

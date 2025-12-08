@@ -236,6 +236,8 @@ public class LayerSpritesPanel extends LayerPanel<SceneSpriteLayer> implements I
 				final var lWorldX = mEditorBrushController.cursorWorldX();
 				final var lWorldY = mEditorBrushController.cursorWorldY();
 
+				
+				
 				final var lNewAssetInstance = mEditorAssetsController.sceneAssetsManager().createAssetInstanceFromDefinitionName(lAssetDefinitionName, lWorldX, lWorldY);
 
 				if (lNewAssetInstance != null)

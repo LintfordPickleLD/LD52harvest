@@ -7,7 +7,6 @@ import lintfordpickle.harvest.controllers.editor.EditorAssetsController;
 import lintfordpickle.harvest.controllers.editor.EditorLayerController;
 import lintfordpickle.harvest.controllers.editor.EditorPhysicsController;
 import lintfordpickle.harvest.controllers.editor.EditorSceneController;
-import lintfordpickle.harvest.data.assets.SceneSpritesManager;
 import lintfordpickle.harvest.data.editor.EditorSceneData;
 import lintfordpickle.harvest.data.scene.SceneSaveDefinition;
 import lintfordpickle.harvest.renderers.editor.EditorLayersRenderer;
@@ -48,7 +47,6 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 	// Data
 	private EditorLayerBrush mEditorBrush;
 	private EditorSceneData mEditorSceneData;
-	private SceneSpritesManager mSceneAssetManager; // TODO: make this generic
 	private SceneHeader mSceneHeader;
 
 	// Controllers
@@ -58,12 +56,11 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 	private SpatialHashGridController mSpatialHashGridController;
 	private EditorSceneController mEditorSceneController;
 	private EditorPhysicsSettingsController mEditorPhysicsSettingsController;
-	private EditorAssetsController mEditorAssetsController;
 	private EditorPhysicsController mEditorPhysicsController;
 	private EditorHashGridController mHashGridController;
 	private EditorBrushController mEditorBrushController;
 	private EditorFileController mEditorFileController;
-
+	private EditorAssetsController mEditorAssetsController;
 	private EditorLayerController mEditorLayerController;
 
 	// Renderers
@@ -72,9 +69,9 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 	private EditorHashGridRenderer mEditorHashGridRenderer;
 	private EditorPhysicsSettingsRenderer mEditorPhysicsSettingsRenderer;
 	private EditorPhysicsRenderer mEditorPhysicsRenderer;
-	private DebugCameraBoundsDrawer mDebugCameraBoundsDrawer;
-
 	private EditorLayersRenderer mEditorLayersRenderer;
+
+	private DebugCameraBoundsDrawer mDebugCameraBoundsDrawer;
 
 	// ---------------------------------------------
 	// Constructor
@@ -130,38 +127,37 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 
 	@Override
 	protected void createData(DataManager dataManager) {
-		// This creates an empty scene
-		mEditorSceneData = new EditorSceneData();
 
+		mEditorSceneData = new EditorSceneData();
 		if (mSceneHeader != null && mSceneHeader.isSceneValid()) {
 			loadTrackDefinitionFromFile(mSceneHeader.sceneDataFilePath());
+			mEditorSceneData.finalizeAfterLoading();
 		}
-		mEditorSceneData.finalizeAfterLoading();
 
 		mEditorBrush = new EditorLayerBrush();
-		mSceneAssetManager = new SceneSpritesManager();
+
 	}
 
 	public void loadTrackDefinitionFromFile(String filename) {
-		final var lGson = new GsonBuilder().create();
+		final var gson = new GsonBuilder().create();
 
-		String lSceneRawFileContents = null;
-		SceneSaveDefinition lSceneSaveDefinition = null;
+		String sceneRawFileContents = null;
+		SceneSaveDefinition sceneSaveDefinition = null;
 
 		try {
-			lSceneRawFileContents = FileUtils.loadString(filename);
-			lSceneSaveDefinition = lGson.fromJson(lSceneRawFileContents, SceneSaveDefinition.class);
+			sceneRawFileContents = FileUtils.loadString(filename);
+			sceneSaveDefinition = gson.fromJson(sceneRawFileContents, SceneSaveDefinition.class);
 
 		} catch (JsonSyntaxException ex) {
 			Debug.debugManager().logger().printException(getClass().getSimpleName(), ex);
 		}
 
-		if (lSceneSaveDefinition == null) {
+		if (sceneSaveDefinition == null) {
 			Debug.debugManager().logger().e(getClass().getSimpleName(), "There was an error reading the scene save definition file (" + filename + ")");
 			return;
 		}
 
-		mEditorSceneData.createSceneFromSaveDefinition(lSceneSaveDefinition);
+		mEditorSceneData.createSceneFromSaveDefinition(sceneSaveDefinition);
 	}
 
 	// ---------------------------------------------
@@ -169,6 +165,7 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 	@Override
 	protected void createControllers(ControllerManager controllerManager) {
 
+		final var assetsManager = mEditorSceneData.spriteManager();
 		final var hashGrid = mEditorSceneData.hashGridManager().hashGrid();
 
 		mCameraMoveController = new EditorCameraMovementController(controllerManager, mGameCamera, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
@@ -182,9 +179,7 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 		mHashGridController = new EditorHashGridController(controllerManager, hashGrid, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
 		mEditorFileController = new EditorFileController(controllerManager, mSceneHeader, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
 		mEditorLayerController = new EditorLayerController(controllerManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-
-		mEditorAssetsController = new EditorAssetsController(controllerManager, mSceneAssetManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-
+		mEditorAssetsController = new EditorAssetsController(controllerManager, assetsManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
 		mEditorFileController.setCallbackListener(this);
 	}
 

@@ -1,6 +1,7 @@
 {
   "spriteSheetName": "SPRITESHEET_PROPS",
   "textureName": "TEXTURE_PROPS",
+  "textureFileName": "res/textures/textureProps.png",
   "spriteFrames": [
     {
       "name": "CARS_BACKGROUND1",

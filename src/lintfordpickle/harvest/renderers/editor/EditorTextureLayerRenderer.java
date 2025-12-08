@@ -89,8 +89,12 @@ public class EditorTextureLayerRenderer implements IInputProcessor {
 		mTexturedQuad.unloadResources();
 		mResourceManager = null;
 	}
+	
+	public void resetInput() {
 
-	public boolean handleInput(LintfordCore core) {
+	}
+
+	public boolean handleInput(LintfordCore core, SceneTextureLayer layer) {
 		if (mEditorBrushController.isLayerActive(EditorLayersData.Layer_Texture) == false)
 			return false;
 
@@ -202,7 +206,9 @@ public class EditorTextureLayerRenderer implements IInputProcessor {
 		return false;
 	}
 
-	public void update(LintfordCore core) {
+	public void update(LintfordCore core, SceneTextureLayer layer) {
+		if (!layer.visible)
+			return;
 
 	}
 

@@ -2,7 +2,6 @@ package lintfordpickle.harvest.renderers.editor;
 
 import lintfordpickle.harvest.controllers.editor.EditorLayerController;
 import lintfordpickle.harvest.controllers.editor.EditorSceneController;
-import lintfordpickle.harvest.data.editor.EditorLayersData;
 import lintfordpickle.harvest.data.scene.layers.SceneNoiseLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneSpriteLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneTextureLayer;
@@ -105,16 +104,45 @@ public class EditorLayersRenderer extends BaseRenderer {
 
 	@Override
 	public boolean handleInput(LintfordCore core) {
-		var lInputHandled = super.handleInput(core);
+		if (super.handleInput(core))
+			return true;
 
-		if (mEditorBrushController.isLayerActive(EditorLayersData.Layer_Texture) == false)
-			return lInputHandled;
+		// iterate through visible layers, front to back
+		final var layers = mEditorLayerController.layersManager().layers();
+		final var numLayers = layers.size();
+		for (int i = numLayers - 1; i >= 0; i--) {
+			final var sceneLayer = layers.get(i);
 
-		// TODO: Thsi depends on the currently selected layer type
+			if (sceneLayer == null || !sceneLayer.visible)
+				continue;
 
-		mEditorTextureLayerRenderer.handleInput(core);
-		mEditorNoiseLayerRenderer.handleInput(core);
-		mEditorSpriteLayerRenderer.handleInput(core);
+			switch (sceneLayer) {
+			case SceneNoiseLayer layer: {
+				if (mEditorNoiseLayerRenderer.handleInput(core, layer))
+					return true;
+
+				break;
+			}
+
+			case SceneTextureLayer layer: {
+				if (mEditorTextureLayerRenderer.handleInput(core, layer))
+					return true;
+
+				break;
+			}
+
+			case SceneSpriteLayer layer: {
+				if (mEditorSpriteLayerRenderer.handleInput(core, layer))
+					return true;
+
+				break;
+			}
+
+			default: {
+				/* ignore */ }
+
+			}
+		}
 
 		return false;
 	}
@@ -123,9 +151,23 @@ public class EditorLayersRenderer extends BaseRenderer {
 	public void update(LintfordCore core) {
 		super.update(core);
 
-		mEditorTextureLayerRenderer.update(core);
-		mEditorNoiseLayerRenderer.update(core);
-		mEditorSpriteLayerRenderer.update(core);
+		final var layers = mEditorLayerController.layersManager().layers();
+		final var numLayers = layers.size();
+		for (int i = 0; i < numLayers; i++) {
+			final var sceneLayer = layers.get(i);
+
+			if (sceneLayer == null)
+				continue;
+
+			switch (sceneLayer) {
+			case SceneNoiseLayer s -> mEditorNoiseLayerRenderer.update(core, s);
+			case SceneTextureLayer z -> mEditorTextureLayerRenderer.update(core, z);
+			case SceneSpriteLayer t -> mEditorSpriteLayerRenderer.update(core, t);
+			default -> {
+				/* ignore */ }
+
+			}
+		}
 	}
 
 	@Override
@@ -146,10 +188,6 @@ public class EditorLayersRenderer extends BaseRenderer {
 				/* ignore */ }
 
 			}
-			;
-
 		}
-
 	}
-
 }

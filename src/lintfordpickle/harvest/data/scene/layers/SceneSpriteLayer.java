@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lintfordpickle.harvest.data.assets.SceneSpriteInstance;
+import lintfordpickle.harvest.data.assets.SceneSpriteManager;
 import lintfordpickle.harvest.data.scene.layers.savedefinitions.BaseSceneLayerSaveDefinition;
+import lintfordpickle.harvest.data.scene.layers.savedefinitions.SceneSpriteInstanceSaveDefinition;
 import lintfordpickle.harvest.data.scene.layers.savedefinitions.SceneSpritesLayerSaveDefinition;
 
 public class SceneSpriteLayer extends SceneBaseLayer {
@@ -58,13 +60,37 @@ public class SceneSpriteLayer extends SceneBaseLayer {
 
 	@Override
 	public BaseSceneLayerSaveDefinition getSaveDefinition() {
-		final var lSaveDefinition = new SceneSpritesLayerSaveDefinition();
+		final var saveDefinition = new SceneSpritesLayerSaveDefinition();
 
-		fillBaseSceneLayerInfo(lSaveDefinition);
+		fillBaseSceneLayerInfo(saveDefinition);
 
-		// TODO Auto-generated method stub
+		final int numSprites = mSprites.size();
+		for (int i = 0; i < numSprites; i++) {
+			final var spriteToSave = mSprites.get(i);
+			final var spriteSaveDef = new SceneSpriteInstanceSaveDefinition();
 
-		return lSaveDefinition;
+			spriteSaveDef.entityUid = spriteToSave.uid;
+			spriteSaveDef.destinationRectangle = spriteToSave.destRect;
+			spriteSaveDef.assetDefinitionName = spriteToSave.definitionName;
+
+			saveDefinition.spriteInstances.add(spriteSaveDef);
+		}
+
+		return saveDefinition;
+	}
+
+	@Override
+	public void finalizeAfterLoading(SceneSpriteManager spriteManager) {
+		super.finalizeAfterLoading(spriteManager);
+
+		final var numSprites = mSprites.size();
+		for (int i = 0; i < numSprites; i++) {
+			final var sprite = mSprites.get(i);
+
+			final var spriteDefinition = spriteManager.definitionManager().getByName(sprite.definitionName);
+			sprite.definition = spriteDefinition;
+		}
+
 	}
 
 }

@@ -17,9 +17,9 @@
         "layerUid": 7,
         "layerZDepth": 0,
         "layerName": "Tex SKY",
-        "translationSpeedModX": 0.0,
-        "translationSpeedModY": 0.0,
-        "centerX": 100.0,
+        "translationSpeedModX": 0.3,
+        "translationSpeedModY": 0.3,
+        "centerX": 0.0,
         "centerY": 0.0,
         "width": 2000.0,
         "height": 2000.0,
@@ -57,7 +57,39 @@
         "contentScaleY": 1.0
       }
     ],
-    "animationLayers": [],
+    "spriteLayers": [
+      {
+        "spriteInstances": [
+          {
+            "assetDefinitionName": "ASSET_AIRCOND",
+            "destinationRectangle": {
+              "x": 424.0,
+              "y": -218.50003,
+              "w": 32.0,
+              "h": 32.0,
+              "scaleX": 1.0,
+              "scaleY": 1.0,
+              "pivotX": 0.0,
+              "pivotY": 0.0,
+              "mFlipHorizontal": false,
+              "mFlipVertical": false
+            },
+            "entityUid": 0
+          }
+        ],
+        "layerUid": 9,
+        "layerZDepth": 3,
+        "layerName": "Anim Layer 9",
+        "translationSpeedModX": 0.0,
+        "translationSpeedModY": 0.0,
+        "centerX": 0.0,
+        "centerY": 0.0,
+        "width": 64.0,
+        "height": 64.0,
+        "contentScaleX": 1.0,
+        "contentScaleY": 1.0
+      }
+    ],
     "noiseLayers": []
   },
   "PhysicsSettings": {

@@ -3,7 +3,6 @@ package lintfordpickle.harvest.renderers.editor;
 import org.lwjgl.glfw.GLFW;
 
 import lintfordpickle.harvest.controllers.editor.EditorLayerController;
-import lintfordpickle.harvest.controllers.editor.EditorSceneController;
 import lintfordpickle.harvest.data.assets.SceneSpriteInstance;
 import lintfordpickle.harvest.data.editor.EditorLayersData;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
@@ -27,12 +26,11 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 	// Variables
 	// ---------------------------------------------
 
-	private EditorSceneController mSceneController;
-
 	private EditorLayerController mEditorLayerController;
 	private EditorBrushController mEditorBrushController;
 
 	private ResourceManager mResourceManager;
+	private SceneSpriteInstance mSelectedSceneSpriteInstance;
 
 	private float mMouseX;
 	private float mMouseY;
@@ -44,6 +42,8 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 
 	private boolean mRenderSpriteLayer;
 	private int mEntityGroupUid;
+
+	protected float mInputTimer;
 
 	// ---------------------------------------------
 	// Properties
@@ -72,9 +72,9 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 	public void initialize(LintfordCore core) {
 		final var lControllerManager = core.controllerManager();
 
-		mSceneController = (EditorSceneController) lControllerManager.getControllerByNameRequired(EditorSceneController.CONTROLLER_NAME, mEntityGroupUid);
 		mEditorBrushController = (EditorBrushController) lControllerManager.getControllerByNameRequired(EditorBrushController.CONTROLLER_NAME, mEntityGroupUid);
 		mEditorLayerController = (EditorLayerController) lControllerManager.getControllerByNameRequired(EditorLayerController.CONTROLLER_NAME, mEntityGroupUid);
+
 	}
 
 	public void loadResources(ResourceManager resourceManager) {
@@ -86,7 +86,7 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 
 	}
 
-	public boolean handleInput(LintfordCore core) {
+	public boolean handleInput(LintfordCore core, SceneSpriteLayer layer) {
 		if (!mEditorBrushController.isLayerActive(EditorLayersData.Layer_Animation))
 			return false;
 
@@ -96,13 +96,12 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 
 		// --- ACTIONS
 		if (mEditorBrushController.brush().isActionSet() == false) {
-			final var lSelectedLayer = mEditorLayerController.selectedLayer();
-			final var lIsLayerSelected = lSelectedLayer != null;
+			final var lIsSpriteSelected = mSelectedSceneSpriteInstance != null;
 
 			if (core.input().keyboard().isKeyDownTimed(GLFW.GLFW_KEY_G, this)) {
 				mIsNewLeftClick = false;
 
-				if (lIsLayerSelected) {
+				if (lIsSpriteSelected) {
 					mEditorBrushController.setAction(EditorLayerController.ACTION_OBJECT_TRANSLATE_SELECTED_LAYER, "Translate Layer", hashCode());
 
 					mMouseDownX = mMouseX;
@@ -111,7 +110,7 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 			} else if (core.input().keyboard().isKeyDownTimed(GLFW.GLFW_KEY_W, this)) {
 				mIsNewLeftClick = false;
 
-				if (lIsLayerSelected) {
+				if (lIsSpriteSelected) {
 					mEditorBrushController.setAction(EditorLayerController.ACTION_OBJECT_SCALE_SELECTED_LAYER_X, "Scale Width", hashCode());
 
 					mMouseDownX = mMouseX;
@@ -120,7 +119,7 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 			} else if (core.input().keyboard().isKeyDownTimed(GLFW.GLFW_KEY_H, this)) {
 				mIsNewLeftClick = false;
 
-				if (lIsLayerSelected) {
+				if (lIsSpriteSelected) {
 					mEditorBrushController.setAction(EditorLayerController.ACTION_OBJECT_SCALE_SELECTED_LAYER_Y, "Scale Height", hashCode());
 
 					mMouseDownX = mMouseX;
@@ -141,7 +140,7 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 
 		if (lCurrentBrushAction != EditorLayerBrush.NO_ACTION_UID) {
 
-			final var lSelectedLayer = mEditorLayerController.selectedLayer();
+			final var selectedSpriteInstance = mSelectedSceneSpriteInstance;
 
 			// do something with mouse
 			switch (lCurrentBrushAction) {
@@ -152,8 +151,11 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 				mMouseDownX = mMouseX;
 				mMouseDownY = mMouseY;
 
-				lSelectedLayer.centerX += lTranslationAmtX;
-				lSelectedLayer.centerY += lTranslationAmtY;
+				final var curX = selectedSpriteInstance.destRect.x();
+				final var curY = selectedSpriteInstance.destRect.y();
+
+				selectedSpriteInstance.destRect.x(curX + lTranslationAmtX);
+				selectedSpriteInstance.destRect.y(curY + lTranslationAmtY);
 			}
 
 				break;
@@ -164,7 +166,8 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 				mMouseDownX = mMouseX;
 				mMouseDownY = mMouseY;
 
-				lSelectedLayer.width += lTranslationAmtX;
+				final var curW = selectedSpriteInstance.destRect.width();
+				selectedSpriteInstance.destRect.width(curW + lTranslationAmtX);
 				break;
 			}
 
@@ -174,7 +177,8 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 				mMouseDownX = mMouseX;
 				mMouseDownY = mMouseY;
 
-				lSelectedLayer.height += lTranslationAmtY;
+				final var curH = selectedSpriteInstance.destRect.height();
+				selectedSpriteInstance.destRect.height(curH + lTranslationAmtY);
 				break;
 			}
 
@@ -185,7 +189,22 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 			}
 
 		} else if (leftMouseDown) {
-			// mEditorLayerController.selectedLayer(null);
+
+			mSelectedSceneSpriteInstance = null;
+
+			final var lLayerAnimations = layer.spriteAssets();
+			final var lNumAnimations = lLayerAnimations.size();
+			for (int j = 0; j < lNumAnimations; j++) {
+				final var assetInstance = lLayerAnimations.get(j);
+
+				if (assetInstance.spriteInstance == null)
+					continue;
+
+				if (assetInstance.destRect.intersectsAA(mMouseX, mMouseY)) {
+					mSelectedSceneSpriteInstance = assetInstance;
+					break;
+				}
+			}
 		}
 
 		// ----
@@ -198,39 +217,22 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 		return false;
 	}
 
-	public void update(LintfordCore core) {
+	public void update(LintfordCore core, SceneSpriteLayer layer) {
+		if (mInputTimer > 0)
+			mInputTimer -= core.gameTime().elapsedTimeMilli();
 
-		final var lLayersManager = mSceneController.sceneData().layersManager();
-		final var lLayers = lLayersManager.layers();
-		final var lNumLayers = lLayers.size();
-		for (int i = 0; i < lNumLayers; i++) {
-			final var lSceneLayer = lLayers.get(i);
-			if (lSceneLayer instanceof SceneSpriteLayer) {
-				var lAnimationSceneLayer = (SceneSpriteLayer) lSceneLayer;
+		if (!layer.visible)
+			return;
 
-				final var lLayerAnimations = lAnimationSceneLayer.spriteAssets();
-				final var lNumAnimations = lLayerAnimations.size();
-				for (int j = 0; j < lNumAnimations; j++) {
-					final var lAsset = lLayerAnimations.get(j);
+		final var lLayerAnimations = layer.spriteAssets();
+		final var lNumAnimations = lLayerAnimations.size();
+		for (int j = 0; j < lNumAnimations; j++) {
+			final var lAsset = lLayerAnimations.get(j);
 
-					// TODO: rework this
-					if (lAsset.spriteInstance == null) {
-//						if (lAsset.spriteStatus < 2) {
-//							final var lAssetDef = lAsset.definition;
-//							final var lSpritesheetDef = core.resources().spriteSheetManager().getSpriteSheet(lAssetDef.spritesheetDefinitionName, mEntityGroupUid);
-//							if (lSpritesheetDef != null) {
-//								lAsset.spriteInstance = lSpritesheetDef.getSpriteInstance(lAssetDef.spriteName);
-//							} else {
-//								lAsset.spriteStatus = SceneAssetInstance.TEXTURE_FAILED;
-//							}
-//						}
+			if (lAsset.spriteInstance == null)
+				continue;
 
-						continue;
-					}
-
-					lAsset.spriteInstance.update(core);
-				}
-			}
+			lAsset.update(core);
 		}
 	}
 
@@ -240,6 +242,9 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 
 	public void drawSpriteLayer(LintfordCore core, SceneSpriteLayer layer) {
 		if (!mRenderSpriteLayer)
+			return;
+
+		if (!layer.visible)
 			return;
 
 		final var spriteBatch = core.sharedResources().uiSpriteBatch();
@@ -258,9 +263,13 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 				continue;
 
 			spriteBatch.begin(core.gameCamera());
-			Debug.debugManager().drawers().drawRectImmediate(core.gameCamera(), assetInstance.destRect);
 			spriteBatch.draw(assetInstance.spriteSheetDefinition, assetInstance.spriteInstance, .01f);
 			spriteBatch.end();
+
+			// TODO: Don't use the fucking debug drawers for this, they're not always available.
+			if (mSelectedSceneSpriteInstance == assetInstance) {
+				Debug.debugManager().drawers().drawRectImmediate(core.gameCamera(), assetInstance.destRect);
+			}
 		}
 
 		spriteBatch.end();
@@ -327,26 +336,23 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 
 	@Override
 	public boolean isCoolDownElapsed() {
-		// TODO Auto-generated method stub
-		return false;
+		return mInputTimer <= 0;
 	}
 
 	@Override
 	public void resetCoolDownTimer(float cooldownInMs) {
-		// TODO Auto-generated method stub
+		mInputTimer = 300;
 
 	}
 
 	@Override
 	public boolean allowGamepadInput() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean allowMouseInput() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }

@@ -1,6 +1,6 @@
 package lintfordpickle.harvest.controllers.editor;
 
-import lintfordpickle.harvest.data.scene.layers.LayersManager;
+import lintfordpickle.harvest.data.scene.layers.EditorLayersManager;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneNoiseLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneSpriteLayer;
@@ -25,7 +25,7 @@ public class EditorLayerController extends BaseController {
 	// Variables
 	// --------------------------------------
 
-	private LayersManager mLayersManager;
+	private EditorLayersManager mLayersManager;
 	private SceneBaseLayer mSelectedLayer;
 
 	// --------------------------------------
@@ -50,7 +50,7 @@ public class EditorLayerController extends BaseController {
 		mSelectedLayer = newSelectedLayer;
 	}
 
-	public LayersManager layersManager() {
+	public EditorLayersManager layersManager() {
 		return mLayersManager;
 	}
 
