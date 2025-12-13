@@ -1,4 +1,5 @@
 {
-  "SceneName": "happy land",
-  "SceneDataFilePath": "res\\scenes\\campaign\\level1\\scene.data"
+  "Values": {
+    "SCENE_NAME": "N_DI"
+  }
 }

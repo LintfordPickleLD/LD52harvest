@@ -3,14 +3,13 @@ package lintfordpickle.harvest.screens.editor;
 import java.io.File;
 
 import lintfordpickle.harvest.ConstantsGame;
-import lintfordpickle.harvest.data.scene.GameSceneHeader;
-import lintfordpickle.harvest.data.scene.GameSceneHeaderIoService;
 import net.lintfordlib.ConstantsApp;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.debug.Debug;
 import net.lintfordlib.core.graphics.ColorConstants;
 import net.lintfordlib.core.graphics.batching.SpriteBatch;
 import net.lintfordlib.core.graphics.fonts.FontUnit;
+import net.lintfordlib.core.graphics.fonts.FontUnit.WrapType;
 import net.lintfordlib.core.graphics.sprites.spritesheet.SpriteSheetDefinition;
 import net.lintfordlib.core.graphics.textures.CoreTextureNames;
 import net.lintfordlib.core.storage.FileUtils;
@@ -35,13 +34,13 @@ public class EditorSceneSelectionScreen extends BaseEditorSceneSelectionScreen<S
 
 		private static final long serialVersionUID = -8020079885315963287L;
 
-		private final GameSceneHeader mSceneHeader;
+		private final SceneHeader mSceneHeader;
 
-		public GameSceneHeader sceneHeader() {
+		public SceneHeader sceneHeader() {
 			return mSceneHeader;
 		}
 
-		public SceneMenuListItem(ScreenManager screenManager, MenuListBox parentListBox, GameSceneHeader sceneHeader, int entityGroupUid) {
+		public SceneMenuListItem(ScreenManager screenManager, MenuListBox parentListBox, SceneHeader sceneHeader, int entityGroupUid) {
 			super(screenManager, parentListBox, entityGroupUid);
 
 			mSceneHeader = sceneHeader;
@@ -74,8 +73,23 @@ public class EditorSceneSelectionScreen extends BaseEditorSceneSelectionScreen<S
 
 				font.begin(core.HUD());
 				font.setTextColor(textColor);
-				font.drawText(mLabelValue, transitionOffset.x + mX, transitionOffset.y + mY, zDepth, textScale, -1);
-				font.drawText(mTextValue, transitionOffset.x + mX + mW / 2, transitionOffset.y + mY, zDepth, textScale, -1);
+				font.drawText("Name:", transitionOffset.x + mX + 5.f, transitionOffset.y + mY, zDepth, textScale, -1);
+
+				var maxWidth = mW - font.getStringWidth("Name:", textScale);
+				var sceneName = mSceneHeader.sceneName();
+
+				font.setWrapType(WrapType.WORD_WRAP_TRIM);
+				font.drawText(sceneName, transitionOffset.x + mX + 64, transitionOffset.y + mY, zDepth, textScale, maxWidth);
+
+				var sceneFolderName = mSceneHeader.sceneParentDirectory();
+				var detailsTextScale = 0.7f;
+				var sceneFolderNameWidth = font.getStringWidth(sceneFolderName, detailsTextScale);
+				font.drawText(sceneFolderName, transitionOffset.x + mX + mW - 2 - sceneFolderNameWidth, transitionOffset.y + mY + mH - font.fontHeight() * detailsTextScale, zDepth, detailsTextScale, -1);
+
+				var folderName = mSceneHeader.sceneFolderName();
+				var folderNameWidth = font.getStringWidth(folderName, detailsTextScale);
+				font.drawText(folderName, transitionOffset.x + mX + mW - 2 - folderNameWidth, transitionOffset.y + mY + mH - font.fontHeight() * 2 * detailsTextScale, zDepth, detailsTextScale, -1);
+
 				font.end();
 			}
 
@@ -155,7 +169,8 @@ public class EditorSceneSelectionScreen extends BaseEditorSceneSelectionScreen<S
 		if (newSceneName == null || newSceneName.length() == 0)
 			return;
 
-		final var gameSceneHeader = new GameSceneHeader(newSceneName);
+		final var sceneDirectory = getSceneDirectory();
+		final var gameSceneHeader = SceneHeader.createNewSceneHeader(newSceneName, sceneDirectory);
 
 		final var editorScreen = new EditorScreen(screenManager, gameSceneHeader);
 		screenManager.initiateLoadingScreen(new LoadingScreen(screenManager, true, true, editorScreen));
@@ -191,7 +206,8 @@ public class EditorSceneSelectionScreen extends BaseEditorSceneSelectionScreen<S
 			}
 
 			// need the load the fucker so we know its valid
-			final var sceneHeader = GameSceneHeaderIoService.loadSceneHeaderFileFromFilepath(sceneHeaderFile.toString());
+			final var sceneFolderName = sceneHeaderFileName.getParent().getFileName().toString();
+			final var sceneHeader = SceneHeader.loadSceneHeaderFileFromFilepath(sceneFolderName, scenesDirectory);
 
 			if (sceneHeader == null) {
 				Debug.debugManager().logger().w(getClass().getSimpleName(), "Failed to load scene header: " + sceneHeaderFile.toString());
@@ -211,6 +227,20 @@ public class EditorSceneSelectionScreen extends BaseEditorSceneSelectionScreen<S
 
 	}
 
+	private String getSceneDirectory() {
+		final var campaignMaps = mCampaignMapsToggle.isChecked();
+		final var gameResourcePaths = mResourcePathsConfig;
+		
+		String scenesDirectory;
+		if (campaignMaps) {
+			scenesDirectory = gameResourcePaths.getKeyValue(SceneManager.SCENE_MAIN_DIRECTORY, ConstantsGame.CAMPAIGN_SCENES_DIRECTORY);
+
+		} else {
+			scenesDirectory = gameResourcePaths.getKeyValue(SceneManager.SCENE_CUSTOM_DIRECTORY, ConstantsGame.CUSTOM_SCENES_DIRECTORY);
+		}
+		return scenesDirectory;
+	}
+
 	// --------------------------------------
 	// Inherited-Methods
 	// --------------------------------------
@@ -219,21 +249,10 @@ public class EditorSceneSelectionScreen extends BaseEditorSceneSelectionScreen<S
 	protected void handleOnClick() {
 		switch (mClickAction.consume()) {
 		case TOGGLE_ENTRY_CLICKED:
-			final var campaignMaps = mCampaignMapsToggle.isChecked();
-			if (campaignMaps) {
-				final var gameResourcePaths = mResourcePathsConfig;
-				final var campaignScenesDirectory = gameResourcePaths.getKeyValue(SceneManager.SCENE_MAIN_DIRECTORY, ConstantsGame.CAMPAIGN_SCENES_DIRECTORY);
+			populateDropDownListWithSceneFilenames(mSceneFilenameEntries, getSceneDirectory());
 
-				populateDropDownListWithSceneFilenames(mSceneFilenameEntries, campaignScenesDirectory);
-			} else {
-				// Custom maps
-
-				final var gameResourcePaths = mResourcePathsConfig;
-				final var customScenesDirectory = gameResourcePaths.getKeyValue(SceneManager.SCENE_CUSTOM_DIRECTORY, ConstantsGame.CUSTOM_SCENES_DIRECTORY);
-
-				populateDropDownListWithSceneFilenames(mSceneFilenameEntries, customScenesDirectory);
-			}
-
+			// intermediate update to setup the positions before then next draw
+			mSceneFilenameEntries.update(screenManager.core(), this);
 			return;
 		}
 

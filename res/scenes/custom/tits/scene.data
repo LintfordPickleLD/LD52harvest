@@ -1,0 +1,46 @@
+{
+  "SceneSettings": {
+    "sceneWidth": 2048,
+    "sceneHeight": 2048
+  },
+  "HashGrid": {
+    "Width": 1000,
+    "Height": 1000,
+    "TilesWide": 5,
+    "TilesHigh": 5
+  },
+  "Layers": {
+    "textureLayers": [
+      {
+        "textureName": "SKY",
+        "texturePath": "res/textures/scene/texturescenesky.png",
+        "layerUid": 0,
+        "layerZDepth": 0,
+        "layerName": "Tex Layer 0",
+        "translationSpeedModX": 0.0,
+        "translationSpeedModY": 0.0,
+        "centerX": 0.0,
+        "centerY": 0.0,
+        "width": 1024.0,
+        "height": 1024.0,
+        "contentScaleX": 1.0,
+        "contentScaleY": 1.0
+      }
+    ],
+    "spriteLayers": [],
+    "noiseLayers": []
+  },
+  "PhysicsSettings": {
+    "Gravity": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "GridWidthUnits": 32.0,
+    "GridHeightUnits": 32.0,
+    "GridCellsWide": 5,
+    "GridCellsHigh": 5
+  },
+  "PhysicsObjects": {
+    "ObjectInstances": []
+  }
+}

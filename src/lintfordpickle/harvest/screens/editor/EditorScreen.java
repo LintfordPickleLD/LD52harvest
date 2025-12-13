@@ -131,8 +131,15 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 		mEditorSceneData = new EditorSceneData();
 		if (mSceneHeader != null && mSceneHeader.isSceneValid()) {
 			loadTrackDefinitionFromFile(mSceneHeader.sceneDataFilePath());
-			mEditorSceneData.finalizeAfterLoading();
+
+		} else {
+			if (!mSceneHeader.dataExistsOnDisk()) {
+				// need to do something with a new scene ?
+
+			}
 		}
+
+		mEditorSceneData.finalizeAfterLoading();
 
 		mEditorBrush = new EditorLayerBrush();
 
@@ -140,6 +147,8 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 
 	public void loadTrackDefinitionFromFile(String filename) {
 		final var gson = new GsonBuilder().create();
+		
+		// TODO: this is getting called twice
 
 		String sceneRawFileContents = null;
 		SceneSaveDefinition sceneSaveDefinition = null;
@@ -168,18 +177,18 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 		final var assetsManager = mEditorSceneData.spriteManager();
 		final var hashGrid = mEditorSceneData.hashGridManager().hashGrid();
 
-		mCameraMoveController = new EditorCameraMovementController(controllerManager, mGameCamera, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mCameraZoomController = new CameraZoomController(controllerManager, mGameCamera, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mCameraBoundsController = new CameraBoundsController(controllerManager, mGameCamera, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mEditorPhysicsSettingsController = new EditorPhysicsSettingsController(controllerManager, mEditorSceneData.physicsSettingsManager().physicsSettings(), ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mSpatialHashGridController = new SpatialHashGridController(controllerManager, hashGrid, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mEditorSceneController = new EditorSceneController(controllerManager, mSceneHeader, mEditorSceneData, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mEditorPhysicsController = new EditorPhysicsController(controllerManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mEditorBrushController = new EditorBrushController(controllerManager, mEditorBrush, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mHashGridController = new EditorHashGridController(controllerManager, hashGrid, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mEditorFileController = new EditorFileController(controllerManager, mSceneHeader, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mEditorLayerController = new EditorLayerController(controllerManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mEditorAssetsController = new EditorAssetsController(controllerManager, assetsManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
+		mCameraMoveController = new EditorCameraMovementController(controllerManager, mGameCamera, entityGroupUid());
+		mCameraZoomController = new CameraZoomController(controllerManager, mGameCamera, entityGroupUid());
+		mCameraBoundsController = new CameraBoundsController(controllerManager, mGameCamera, entityGroupUid());
+		mEditorPhysicsSettingsController = new EditorPhysicsSettingsController(controllerManager, mEditorSceneData.physicsSettingsManager().physicsSettings(), entityGroupUid());
+		mSpatialHashGridController = new SpatialHashGridController(controllerManager, hashGrid, entityGroupUid());
+		mEditorSceneController = new EditorSceneController(controllerManager, mSceneHeader, mEditorSceneData, entityGroupUid());
+		mEditorPhysicsController = new EditorPhysicsController(controllerManager, entityGroupUid());
+		mEditorBrushController = new EditorBrushController(controllerManager, mEditorBrush, entityGroupUid());
+		mHashGridController = new EditorHashGridController(controllerManager, hashGrid, entityGroupUid());
+		mEditorFileController = new EditorFileController(controllerManager, mSceneHeader, entityGroupUid());
+		mEditorLayerController = new EditorLayerController(controllerManager, entityGroupUid());
+		mEditorAssetsController = new EditorAssetsController(controllerManager, assetsManager, entityGroupUid());
 		mEditorFileController.setCallbackListener(this);
 	}
 
@@ -206,19 +215,21 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 	@Override
 	protected void createRenderers(LintfordCore core) {
 
-		mEditorLayersRenderer = new EditorLayersRenderer(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
+		mEditorLayersRenderer = new EditorLayersRenderer(mRendererManager, entityGroupUid());
 
-		mEditorGui = new EditorGui(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mEditorBrushRenderer = new EditorBrushRenderer(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mEditorHashGridRenderer = new EditorHashGridRenderer(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mEditorPhysicsSettingsRenderer = new EditorPhysicsSettingsRenderer(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mEditorPhysicsRenderer = new EditorPhysicsRenderer(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
-		mDebugCameraBoundsDrawer = new DebugCameraBoundsDrawer(mRendererManager, ConstantsEditor.EDITOR_RESOURCE_GROUP_ID);
+		mEditorGui = new EditorGui(mRendererManager, entityGroupUid());
+		mEditorBrushRenderer = new EditorBrushRenderer(mRendererManager, entityGroupUid());
+		mEditorHashGridRenderer = new EditorHashGridRenderer(mRendererManager, entityGroupUid());
+		mEditorPhysicsSettingsRenderer = new EditorPhysicsSettingsRenderer(mRendererManager, entityGroupUid());
+		mEditorPhysicsRenderer = new EditorPhysicsRenderer(mRendererManager, entityGroupUid());
+		mDebugCameraBoundsDrawer = new DebugCameraBoundsDrawer(mRendererManager, entityGroupUid());
 	}
 
 	@Override
 	protected void createRendererStructure(LintfordCore core) {
+
 		// ignored (automatic in the SimpleRendererManagare).
+
 	}
 
 	// ---------------------------------------------
@@ -244,7 +255,14 @@ public class EditorScreen extends BaseGameScreen implements IEditorFileControlle
 	}
 
 	@Override
-	public void onFilepathChanged(String newBaseSceneDirectory) {
+	public void onSceneFileNameChanged(String newScenename) {
+		// TODO: Auto-generated method stub
+
+	}
+
+	@Override
+	public void onSceneDirectoryChanged(String newDirectory) {
+		// TODO: Auto-generated method stub
 
 	}
 

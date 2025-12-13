@@ -8,7 +8,6 @@ import net.lintfordlib.core.input.InputManager;
 import net.lintfordlib.renderers.editor.EditorBrushRenderer;
 import net.lintfordlib.renderers.editor.panels.UiPanel;
 import net.lintfordlib.renderers.windows.UiWindow;
-import net.lintfordlib.renderers.windows.components.UiButtonToggle;
 import net.lintfordlib.renderers.windows.components.UiInputText;
 
 public class ScenePanel extends UiPanel {
@@ -20,8 +19,6 @@ public class ScenePanel extends UiPanel {
 	public static final int SCENE_WIDTH_IN_PX = 10;
 	public static final int SCENE_HEIGHT_IN_PX = 11;
 
-	public static final int BUTTON__DRAW_SCENE_BORDER = 12;
-
 	// --------------------------------------
 	// Variables
 	// --------------------------------------
@@ -29,7 +26,6 @@ public class ScenePanel extends UiPanel {
 	private EditorBrushRenderer mEditorBrushRenderer;
 	private EditorBrushController mEditorBrushController;
 
-	private UiButtonToggle mToggleSceneBoundRendering;
 	private UiInputText mSceneWidth;
 	private UiInputText mSceneHeight;
 
@@ -53,13 +49,10 @@ public class ScenePanel extends UiPanel {
 		super(parentWindow, "Scene Panel", entityGroupUid);
 
 		mShowActiveLayerButton = false;
-		mShowShowLayerButton = false;
+		mShowShowLayerButton = true;
 
 		mRenderPanelTitle = true;
 		mPanelTitle = "Scene";
-
-		mToggleSceneBoundRendering = new UiButtonToggle("Toggle Scene Border");
-		mToggleSceneBoundRendering.setUiWidgetListener(this, BUTTON__DRAW_SCENE_BORDER);
 
 		mSceneWidth = new UiInputText("Width in Px");
 		mSceneWidth.numericInputOnly(true);
@@ -71,7 +64,6 @@ public class ScenePanel extends UiPanel {
 
 		addWidget(mSceneWidth);
 		addWidget(mSceneHeight);
-		addWidget(mToggleSceneBoundRendering);
 
 		isLayerVisible(true);
 	}
@@ -102,6 +94,8 @@ public class ScenePanel extends UiPanel {
 			mSceneHeight.inputString(String.valueOf(lSceneSettings.sceneHeightInPx()));
 		}
 
+		isLayerVisible(mCameraBoundsController.drawBounds());
+
 	}
 
 	// --------------------------------------
@@ -117,9 +111,8 @@ public class ScenePanel extends UiPanel {
 
 		case BUTTON_SHOW_LAYER:
 			mEditorBrushRenderer.renderBrush(isLayerVisible());
-			break;
 
-		case BUTTON__DRAW_SCENE_BORDER:
+			// toggle
 			final var lCurrent = mCameraBoundsController.drawBounds();
 			mCameraBoundsController.drawBounds(!lCurrent);
 			break;
