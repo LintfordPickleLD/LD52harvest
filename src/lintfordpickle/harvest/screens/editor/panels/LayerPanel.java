@@ -58,7 +58,6 @@ public abstract class LayerPanel<T extends SceneBaseLayer> extends UiPanel {
 		final var lCurrentlySelectedLayer = (SceneBaseLayer) mEditorLayerController.selectedLayer();
 
 		if (lCurrentlySelectedLayer != null) {
-
 			if (lCurrentlySelectedLayer.equals(mSelectedLayer))
 				return;
 

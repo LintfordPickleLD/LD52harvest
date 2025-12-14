@@ -9,7 +9,7 @@ public abstract class SceneBaseLayer {
 	// Variables
 	// --------------------------------------
 
-	public final int layerUid;
+	public transient int layerUid;
 
 	public int zDepth;
 	public String name;
@@ -26,6 +26,7 @@ public abstract class SceneBaseLayer {
 	public float contentScaleY;
 
 	public transient boolean visible;
+	public transient boolean editMode;
 
 	// --------------------------------------
 	// Constructor

@@ -76,7 +76,7 @@ public class SceneLayerSpriteRenderer {
 			if (lSpriteInstance.spriteInstStatus != SceneSpriteInstance.STATUS_LOADED)
 				continue;
 
-			spriteBatch.draw(lSpriteInstance.spriteSheetDefinition, lSpriteInstance.spriteInstance, .001f);
+			spriteBatch.draw(lSpriteInstance.spriteSheetDefinition, lSpriteInstance.spriteInstance, lSpriteInstance.destRect, .01f);
 		}
 
 		spriteBatch.end();

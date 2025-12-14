@@ -2,6 +2,8 @@ package lintfordpickle.harvest.renderers.editor;
 
 import lintfordpickle.harvest.controllers.editor.EditorLayerController;
 import lintfordpickle.harvest.controllers.editor.EditorSceneController;
+import lintfordpickle.harvest.controllers.editor.ILayerSelectionListener;
+import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneNoiseLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneSpriteLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneTextureLayer;
@@ -12,7 +14,7 @@ import net.lintfordlib.core.rendering.RenderPass;
 import net.lintfordlib.renderers.BaseRenderer;
 import net.lintfordlib.renderers.RendererManagerBase;
 
-public class EditorLayersRenderer extends BaseRenderer {
+public class EditorLayersRenderer extends BaseRenderer implements ILayerSelectionListener {
 
 	// ---------------------------------------------
 	// Constants
@@ -78,6 +80,7 @@ public class EditorLayersRenderer extends BaseRenderer {
 		mSceneController = (EditorSceneController) lControllerManager.getControllerByNameRequired(EditorSceneController.CONTROLLER_NAME, entityGroupUid());
 		mEditorBrushController = (EditorBrushController) lControllerManager.getControllerByNameRequired(EditorBrushController.CONTROLLER_NAME, entityGroupUid());
 		mEditorLayerController = (EditorLayerController) lControllerManager.getControllerByNameRequired(EditorLayerController.CONTROLLER_NAME, entityGroupUid());
+		mEditorLayerController.selectionListener(this);
 
 		mEditorTextureLayerRenderer.initialize(core);
 		mEditorNoiseLayerRenderer.initialize(core);
@@ -107,16 +110,14 @@ public class EditorLayersRenderer extends BaseRenderer {
 		if (super.handleInput(core))
 			return true;
 
-		// iterate through visible layers, front to back
-		final var layers = mEditorLayerController.layersManager().layers();
-		final var numLayers = layers.size();
-		for (int i = numLayers - 1; i >= 0; i--) {
-			final var sceneLayer = layers.get(i);
+		final var selectedLayer = mEditorLayerController.selectedLayer();
 
-			if (sceneLayer == null || !sceneLayer.visible)
-				continue;
+		// handle input on the selected layer only
+		if (selectedLayer != null) {
+			if (selectedLayer == null || !selectedLayer.visible)
+				return false;
 
-			switch (sceneLayer) {
+			switch (selectedLayer) {
 			case SceneNoiseLayer layer: {
 				if (mEditorNoiseLayerRenderer.handleInput(core, layer))
 					return true;
@@ -189,5 +190,21 @@ public class EditorLayersRenderer extends BaseRenderer {
 
 			}
 		}
+	}
+
+	// ---------------------------------------------
+	// Inherited-Methods
+	// ---------------------------------------------
+
+	@Override
+	public void OnLayerSelected(SceneBaseLayer layer) {
+		mEditorTextureLayerRenderer.onLayerDeselected();
+		mEditorNoiseLayerRenderer.onLayerDeselected();
+		mEditorSpriteLayerRenderer.onLayerDeselected();
+	}
+
+	@Override
+	public void OnLayerDeselected(SceneBaseLayer layer) {
+
 	}
 }

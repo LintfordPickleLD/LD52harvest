@@ -1,6 +1,7 @@
 {
   "spriteSheetName": "SPRITESHEET_ASSETS",
   "textureName": "TEXTURE_ASSETS",
+  "textureFileName": "res/textures/textureAssets.png",
   "spriteFrames": [
     {
       "name": "ICON_AIRCON",

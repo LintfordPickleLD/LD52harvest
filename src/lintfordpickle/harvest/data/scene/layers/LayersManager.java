@@ -44,14 +44,6 @@ public class LayersManager extends BaseInstanceManager {
 	// Methods
 	// ---------------------------------------------
 
-	private void setLayerUidCounter() {
-		final var lNumLayers = mLayers.size();
-		for (int i = 0; i < lNumLayers; i++) {
-			if (mLayers.get(i).layerUid >= mInstanceUidCounter)
-				mInstanceUidCounter = mLayers.get(i).layerUid + 1;
-		}
-	}
-
 	public void addLayer(SceneBaseLayer layerToAd) {
 		if (mLayers.contains(layerToAd) == false) {
 			mLayers.add(layerToAd);
@@ -107,8 +99,8 @@ public class LayersManager extends BaseInstanceManager {
 		}
 
 		final var spriteLayers = layerSaveManager.spriteLayers;
-		final var lNumAnimationLayers = spriteLayers.size();
-		for (int i = 0; i < lNumAnimationLayers; i++) {
+		final var numAnimationLayers = spriteLayers.size();
+		for (int i = 0; i < numAnimationLayers; i++) {
 			final var layerToImport = spriteLayers.get(i);
 			final var sceneLayer = layerToImport.getSceneLayer();
 			sceneLayer.visible = true;
@@ -116,17 +108,15 @@ public class LayersManager extends BaseInstanceManager {
 			layers().add(sceneLayer);
 		}
 
-		final var lNoiseLayers = layerSaveManager.noiseLayers;
-		final var numNoiseLayers = lNoiseLayers.size();
+		final var noiseLayers = layerSaveManager.noiseLayers;
+		final var numNoiseLayers = noiseLayers.size();
 		for (int i = 0; i < numNoiseLayers; i++) {
-			final var layerToImport = lNoiseLayers.get(i);
+			final var layerToImport = noiseLayers.get(i);
 			final var sceneLayer = layerToImport.getSceneLayer();
 			sceneLayer.visible = true;
 
 			layers().add(sceneLayer);
 		}
-
-		setLayerUidCounter();
 	}
 
 	@Override

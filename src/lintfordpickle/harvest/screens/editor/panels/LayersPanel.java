@@ -276,7 +276,7 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 	@Override
 	public void onItemSelected(UiListBoxItem selectedItem) {
 		if (selectedItem == null) {
-			mEditorLayerController.setSelectedLayer(-1);
+			mEditorLayerController.setSelectedLayer(-1); // reset previous selection
 			return;
 		}
 

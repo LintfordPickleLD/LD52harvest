@@ -15,7 +15,6 @@ public class SceneSpriteLayer extends SceneBaseLayer {
 	// Variables
 	// --------------------------------------
 
-	private List<Integer> mLayerAssetUids = new ArrayList<>();
 	private transient List<SceneSpriteInstance> mSprites = new ArrayList<>();
 
 	// --------------------------------------
@@ -42,20 +41,15 @@ public class SceneSpriteLayer extends SceneBaseLayer {
 		if (assetInstance == null)
 			return;
 
-		final var lAssetUid = assetInstance.uid;
-		if (mLayerAssetUids.contains(lAssetUid))
-			return;
-
-		mLayerAssetUids.add(lAssetUid);
-		mSprites.add(assetInstance);
+		if (!mSprites.contains(assetInstance))
+			mSprites.add(assetInstance);
 
 	}
 
 	public void removeAssetInstance(SceneSpriteInstance assetInstance) {
-		final var lAssetUid = assetInstance.uid;
+		if (mSprites.contains(assetInstance))
+			mSprites.remove(assetInstance);
 
-		mLayerAssetUids.remove(lAssetUid);
-		mSprites.remove(assetInstance);
 	}
 
 	@Override

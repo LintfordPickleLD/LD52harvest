@@ -6,12 +6,10 @@ import lintfordpickle.harvest.controllers.editor.EditorLayerController;
 import lintfordpickle.harvest.data.editor.EditorLayersData;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneTextureLayer;
-import lintfordpickle.harvest.renderers.scene.NoiseLayerShader;
 import net.lintfordlib.assets.ResourceManager;
 import net.lintfordlib.controllers.editor.EditorBrushController;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.debug.Debug;
-import net.lintfordlib.core.graphics.geometry.FullScreenTexturedQuad;
 import net.lintfordlib.core.input.mouse.IInputProcessor;
 import net.lintfordlib.data.editor.EditorLayerBrush;
 
@@ -25,9 +23,6 @@ public class EditorTextureLayerRenderer implements IInputProcessor {
 
 	private EditorLayerController mEditorLayerController;
 	private EditorBrushController mEditorBrushController;
-
-	private FullScreenTexturedQuad mTexturedQuad;
-	private NoiseLayerShader mNoiseLayerShader;
 
 	private float mMouseX;
 	private float mMouseY;
@@ -57,11 +52,7 @@ public class EditorTextureLayerRenderer implements IInputProcessor {
 	// ---------------------------------------------
 
 	public EditorTextureLayerRenderer(int entityGroupID) {
-
 		mEntityGroupUid = entityGroupID;
-
-		mTexturedQuad = new FullScreenTexturedQuad();
-		mNoiseLayerShader = new NoiseLayerShader();
 
 	}
 
@@ -78,18 +69,13 @@ public class EditorTextureLayerRenderer implements IInputProcessor {
 	}
 
 	public void loadResources(ResourceManager resourceManager) {
-		mNoiseLayerShader.loadResources(resourceManager);
-		mTexturedQuad.loadResources(resourceManager);
 		mResourceManager = resourceManager;
 	}
 
 	public void unloadResources() {
-
-		mNoiseLayerShader.unbind();
-		mTexturedQuad.unloadResources();
 		mResourceManager = null;
 	}
-	
+
 	public void resetInput() {
 
 	}
@@ -289,6 +275,10 @@ public class EditorTextureLayerRenderer implements IInputProcessor {
 	@Override
 	public boolean allowKeyboardInput() {
 		return true;
+	}
+
+	public void onLayerDeselected() {
+
 	}
 
 	// ---------------------------------------------

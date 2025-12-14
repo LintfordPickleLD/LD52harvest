@@ -14,7 +14,7 @@
       {
         "textureName": "TEXTURE_SKY",
         "texturePath": "res/textures/scene/textureSceneSky.png",
-        "layerUid": 7,
+        "layerUid": 0,
         "layerZDepth": 0,
         "layerName": "Sky",
         "translationSpeedModX": 0.3,
@@ -29,7 +29,7 @@
       {
         "textureName": "TEXTURE_FARGROUND",
         "texturePath": "res/textures/scene/textureSceneBackgroundfar.png",
-        "layerUid": 6,
+        "layerUid": 1,
         "layerZDepth": 1,
         "layerName": "Background Far",
         "translationSpeedModX": 0.2,
@@ -44,7 +44,7 @@
       {
         "textureName": "TEXTURE_MIDGROUND",
         "texturePath": "res/textures/scene/textureSceneBackgroundMid.png",
-        "layerUid": 4,
+        "layerUid": 2,
         "layerZDepth": 2,
         "layerName": "Background Mid",
         "translationSpeedModX": 0.1,
@@ -59,7 +59,7 @@
       {
         "textureName": "TEXTURE_COLLIDABLES",
         "texturePath": "res/textures/scene/textureSceneCollidables.png",
-        "layerUid": 0,
+        "layerUid": 3,
         "layerZDepth": 3,
         "layerName": "Foreground",
         "translationSpeedModX": 0.0,
@@ -75,7 +75,7 @@
     "spriteLayers": [
       {
         "spriteInstances": [],
-        "layerUid": 0,
+        "layerUid": 4,
         "layerZDepth": 4,
         "layerName": "Anim Layer 0",
         "translationSpeedModX": 0.0,
@@ -92,8 +92,72 @@
           {
             "assetDefinitionName": "ASSET_AIRCOND",
             "destinationRectangle": {
-              "x": 242.0,
-              "y": -220.5,
+              "x": -25.052078,
+              "y": -30.573547,
+              "w": 14.6666565,
+              "h": 12.666672,
+              "scaleX": 1.0,
+              "scaleY": 1.0,
+              "pivotX": 0.0,
+              "pivotY": 0.0,
+              "mFlipHorizontal": false,
+              "mFlipVertical": false
+            },
+            "entityUid": 0
+          },
+          {
+            "assetDefinitionName": "ASSET_FLYINGCARS",
+            "destinationRectangle": {
+              "x": -202.00006,
+              "y": 8.833351,
+              "w": 45.33333,
+              "h": 32.0,
+              "scaleX": 1.0,
+              "scaleY": 1.0,
+              "pivotX": 0.0,
+              "pivotY": 0.0,
+              "mFlipHorizontal": false,
+              "mFlipVertical": false
+            },
+            "entityUid": 0
+          },
+          {
+            "assetDefinitionName": "ASSET_SOCCER",
+            "destinationRectangle": {
+              "x": 0.33328247,
+              "y": 74.16664,
+              "w": 32.0,
+              "h": 32.0,
+              "scaleX": 1.0,
+              "scaleY": 1.0,
+              "pivotX": 0.0,
+              "pivotY": 0.0,
+              "mFlipHorizontal": false,
+              "mFlipVertical": false
+            },
+            "entityUid": 0
+          },
+          {
+            "assetDefinitionName": "ASSET_FLYINGCARS",
+            "destinationRectangle": {
+              "x": 53.781372,
+              "y": 53.024216,
+              "w": 32.0,
+              "h": 32.0,
+              "scaleX": 1.0,
+              "scaleY": 1.0,
+              "pivotX": 0.0,
+              "pivotY": 0.0,
+              "mFlipHorizontal": false,
+              "mFlipVertical": false
+            },
+            "entityUid": 0
+          },
+          {
+            "assetDefinitionName": "ASSET_SOCCER",
+            "destinationRectangle": {
+              "x": 89.114685,
+              "y": 64.024216,
               "w": 32.0,
               "h": 32.0,
               "scaleX": 1.0,
@@ -106,7 +170,7 @@
             "entityUid": 0
           }
         ],
-        "layerUid": 1,
+        "layerUid": 5,
         "layerZDepth": 5,
         "layerName": "Anim Layer 1",
         "translationSpeedModX": 0.0,
@@ -121,7 +185,7 @@
     ],
     "noiseLayers": [
       {
-        "layerUid": 10,
+        "layerUid": 6,
         "layerZDepth": 6,
         "layerName": "Noise Layer 10",
         "translationSpeedModX": 0.0,
@@ -134,7 +198,7 @@
         "contentScaleY": 1.0
       },
       {
-        "layerUid": 8,
+        "layerUid": 7,
         "layerZDepth": 7,
         "layerName": "Sewer Clouds",
         "translationSpeedModX": 0.0,
@@ -216,12 +280,12 @@
             "y": -224.57529
           },
           {
-            "x": -7.2802734,
-            "y": -225.08812
+            "x": -15.94693,
+            "y": -224.42146
           },
           {
-            "x": -6.767456,
-            "y": 105.68109
+            "x": -15.100769,
+            "y": 105.34778
           },
           {
             "x": -80.1008,
@@ -235,20 +299,20 @@
         "rotation": 0.0,
         "localPoints": [
           {
-            "x": -82.1521,
-            "y": -333.80606
+            "x": -80.152115,
+            "y": -332.80612
           },
           {
             "x": -80.1008,
             "y": -304.06247
           },
           {
-            "x": -10.357239,
-            "y": -302.01117
+            "x": -16.023895,
+            "y": -302.34448
           },
           {
             "x": -15.485413,
-            "y": -334.8317
+            "y": -332.8317
           }
         ]
       },
@@ -258,20 +322,20 @@
         "rotation": 0.0,
         "localPoints": [
           {
-            "x": 78.873535,
-            "y": -251.24196
+            "x": 80.873535,
+            "y": -239.5753
           },
           {
-            "x": 75.79663,
-            "y": -127.65222
+            "x": 80.79663,
+            "y": -129.65222
           },
           {
-            "x": 147.07867,
+            "x": 145.0787,
             "y": -129.19067
           },
           {
-            "x": 153.23254,
-            "y": -252.2676
+            "x": 144.89917,
+            "y": -238.93425
           }
         ]
       },
@@ -281,19 +345,19 @@
         "rotation": 0.0,
         "localPoints": [
           {
-            "x": 59.386414,
-            "y": -130.72913
+            "x": 63.386444,
+            "y": -131.06247
           },
           {
-            "x": 130.15564,
+            "x": 128.15561,
             "y": -129.19067
           },
           {
-            "x": 129.12994,
+            "x": 128.7966,
             "y": 13.88623
           },
           {
-            "x": 61.437622,
+            "x": 63.437622,
             "y": 13.373413
           }
         ]
@@ -350,20 +414,20 @@
         "rotation": 0.0,
         "localPoints": [
           {
-            "x": 331.258,
-            "y": -201.76909
+            "x": 336.25797,
+            "y": -200.43576
           },
           {
-            "x": 332.28357,
-            "y": 9.000092
+            "x": 333.28354,
+            "y": 4.3334045
           },
           {
-            "x": 402.53992,
-            "y": 10.025726
+            "x": 403.53992,
+            "y": 4.6924133
           },
           {
-            "x": 404.07843,
-            "y": -204.33324
+            "x": 403.4117,
+            "y": -200.99992
           }
         ]
       },
@@ -381,8 +445,8 @@
             "y": -201.2563
           },
           {
-            "x": 354.8476,
-            "y": -200.74348
+            "x": 352.84763,
+            "y": -201.0768
           },
           {
             "x": 344.5912,
@@ -419,20 +483,20 @@
         "rotation": 0.0,
         "localPoints": [
           {
-            "x": 514.33484,
-            "y": -6.384552
+            "x": 512.0015,
+            "y": -5.717865
           },
           {
-            "x": 453.3092,
-            "y": -7.9229736
+            "x": 454.97586,
+            "y": -5.9229736
           },
           {
-            "x": 453.82196,
-            "y": 11.564178
+            "x": 455.48865,
+            "y": 9.564209
           },
           {
-            "x": 517.92456,
-            "y": 12.076996
+            "x": 512.25793,
+            "y": 11.410339
           }
         ]
       },
@@ -473,8 +537,8 @@
             "y": 8.666672
           },
           {
-            "x": 13.6666565,
-            "y": -6.3333282
+            "x": 12.666641,
+            "y": -4.666641
           },
           {
             "x": -10.333313,
@@ -603,12 +667,12 @@
         "rotation": 0.0,
         "localPoints": [
           {
-            "x": -34.85077,
-            "y": 32.463318
+            "x": -35.517456,
+            "y": 29.79663
           },
           {
-            "x": 46.069763,
-            "y": 31.435638
+            "x": 45.069763,
+            "y": 30.435608
           },
           {
             "x": 45.18167,
@@ -699,7 +763,7 @@
             "y": -37.54512
           },
           {
-            "x": 36.101105,
+            "x": 34.76779,
             "y": -37.906143
           },
           {
@@ -914,8 +978,8 @@
             "y": -35.483887
           },
           {
-            "x": -33.064514,
-            "y": 34.67743
+            "x": -33.73114,
+            "y": 29.344116
           }
         ]
       },

@@ -266,6 +266,10 @@ public class EditorNoiseLayerRenderer implements IInputProcessor {
 		return true;
 	}
 
+	public void onLayerDeselected() {
+
+	}
+
 	// ---------------------------------------------
 	// Inherited-Methods
 	// ---------------------------------------------

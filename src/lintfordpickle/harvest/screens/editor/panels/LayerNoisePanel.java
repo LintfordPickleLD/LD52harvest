@@ -165,6 +165,23 @@ public class LayerNoisePanel extends LayerPanel<SceneNoiseLayer> implements IUiI
 
 	@Override
 	public void widgetOnClick(InputManager inputManager, int entryUid) {
+		switch (entryUid) {
+
+		case BUTTON_SHOW_LAYER:
+			if (mEditorNoiseLayerRenderer != null) {
+				final var curentVisibility = mEditorNoiseLayerRenderer.renderNoiseLayer();
+				mEditorNoiseLayerRenderer.renderNoiseLayer(!curentVisibility);
+			}
+			break;
+
+		case BUTTON_SET_LAYER:
+			if (mSelectedLayer != null) {
+				mSelectedLayer.editMode = isLayerActive();
+			}
+			break;
+
+		}
+
 	}
 
 	@Override

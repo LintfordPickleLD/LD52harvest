@@ -27,10 +27,19 @@ public class EditorLayerController extends BaseController {
 
 	private EditorLayersManager mLayersManager;
 	private SceneBaseLayer mSelectedLayer;
+	private ILayerSelectionListener mSelectionListener;
 
 	// --------------------------------------
 	// Properties
 	// --------------------------------------
+
+	public ILayerSelectionListener selectionListener() {
+		return mSelectionListener;
+	}
+
+	public void selectionListener(ILayerSelectionListener listener) {
+		mSelectionListener = listener;
+	}
 
 	public SceneBaseLayer getLayerByUid(int layerUid) {
 		final var lLayers = mLayersManager.layers();
@@ -129,7 +138,19 @@ public class EditorLayerController extends BaseController {
 	}
 
 	public void setSelectedLayer(int selectedLayerUid) {
-		mSelectedLayer = getLayerByUid(selectedLayerUid);
+		final var newLayer = getLayerByUid(selectedLayerUid);
+
+		if (mSelectedLayer != null && mSelectedLayer != newLayer) {
+			if (mSelectionListener != null) {
+				mSelectionListener.OnLayerDeselected(mSelectedLayer);
+			}
+		}
+
+		mSelectedLayer = newLayer;
+
+		if (mSelectionListener != null) {
+			mSelectionListener.OnLayerSelected(mSelectedLayer);
+		}
 	}
 
 }

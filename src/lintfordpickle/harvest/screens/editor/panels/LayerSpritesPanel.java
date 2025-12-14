@@ -224,24 +224,35 @@ public class LayerSpritesPanel extends LayerPanel<SceneSpriteLayer> implements I
 	@Override
 	public void widgetOnClick(InputManager inputManager, int entryUid) {
 		switch (entryUid) {
+		case BUTTON_SHOW_LAYER:
+			if (mEditorAnimationLayerRenderer != null) {
+				final var curentVisibility = mEditorAnimationLayerRenderer.renderSpritesLayer();
+				mEditorAnimationLayerRenderer.renderSpritesLayer(!curentVisibility);
+			}
+			break;
+
+		case BUTTON_SET_LAYER:
+			if (mSelectedLayer != null) {
+				mSelectedLayer.editMode = isLayerActive();
+			}
+			break;
+
 		// Add from asset list
 		case BUTTON_ADD_SPRITE: {
 			if (mSelectedLayer == null)
 				return;
 
-			final var lSelectedAsset = mAnimationAssetList.getSelectedItem();
-			if (lSelectedAsset != null) {
-				final var lAssetDefinitionName = lSelectedAsset.definitionName;
+			final var selectedAsset = mAnimationAssetList.getSelectedItem();
+			if (selectedAsset != null) {
+				final var assetDefinitionName = selectedAsset.definitionName;
 
-				final var lWorldX = mEditorBrushController.cursorWorldX();
-				final var lWorldY = mEditorBrushController.cursorWorldY();
+				final var worldX = mEditorBrushController.cursorWorldX();
+				final var worldY = mEditorBrushController.cursorWorldY();
 
-				
-				
-				final var lNewAssetInstance = mEditorAssetsController.sceneAssetsManager().createAssetInstanceFromDefinitionName(lAssetDefinitionName, lWorldX, lWorldY);
+				final var newAssetInstance = mEditorAssetsController.sceneAssetsManager().createAssetInstanceFromDefinitionName(assetDefinitionName, worldX, worldY);
 
-				if (lNewAssetInstance != null)
-					mSelectedLayer.addAssetToLayer(lNewAssetInstance);
+				if (newAssetInstance != null)
+					mSelectedLayer.addAssetToLayer(newAssetInstance);
 
 			}
 			break;
@@ -252,9 +263,9 @@ public class LayerSpritesPanel extends LayerPanel<SceneSpriteLayer> implements I
 			if (mSelectedLayer == null)
 				return;
 
-			final var lSelectedAssetInstance = mEditorAssetsController.selectedAssetinstance();
-			if (lSelectedAssetInstance != null) {
-				mSelectedLayer.removeAssetInstance(lSelectedAssetInstance);
+			final var selectedAssetInstance = mEditorAssetsController.selectedAssetinstance();
+			if (selectedAssetInstance != null) {
+				mSelectedLayer.removeAssetInstance(selectedAssetInstance);
 				mEditorAssetsController.selectedAssetinstance(null);
 			}
 		}

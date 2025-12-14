@@ -270,8 +270,8 @@ public class LayerTexturePanel extends LayerPanel<SceneTextureLayer> implements 
 		switch (entryUid) {
 		case BUTTON_SHOW_LAYER:
 			if (mEditorTextureLayerRenderer != null) {
-				final var lCurentVisibility = mEditorTextureLayerRenderer.renderSpriteLayers();
-				mEditorTextureLayerRenderer.renderSpriteLayers(!lCurentVisibility);
+				final var curentVisibility = mEditorTextureLayerRenderer.renderSpriteLayers();
+				mEditorTextureLayerRenderer.renderSpriteLayers(!curentVisibility);
 			}
 			break;
 

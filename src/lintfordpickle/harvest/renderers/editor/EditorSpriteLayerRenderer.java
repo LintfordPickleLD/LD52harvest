@@ -224,15 +224,15 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 		if (!layer.visible)
 			return;
 
-		final var lLayerAnimations = layer.spriteAssets();
-		final var lNumAnimations = lLayerAnimations.size();
-		for (int j = 0; j < lNumAnimations; j++) {
-			final var lAsset = lLayerAnimations.get(j);
+		final var layerSprites = layer.spriteAssets();
+		final var numSprites = layerSprites.size();
+		for (int j = 0; j < numSprites; j++) {
+			final var spriteAsset = layerSprites.get(j);
 
-			if (lAsset.spriteInstance == null)
+			if (spriteAsset.spriteInstance == null)
 				continue;
 
-			lAsset.update(core);
+			spriteAsset.update(core);
 		}
 	}
 
@@ -262,9 +262,7 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 			if (!validateSpriteInstance(assetInstance))
 				continue;
 
-			spriteBatch.begin(core.gameCamera());
-			spriteBatch.draw(assetInstance.spriteSheetDefinition, assetInstance.spriteInstance, .01f);
-			spriteBatch.end();
+			spriteBatch.draw(assetInstance.spriteSheetDefinition, assetInstance.spriteInstance, assetInstance.destRect, .01f);
 
 			// TODO: Don't use the fucking debug drawers for this, they're not always available.
 			if (mSelectedSceneSpriteInstance == assetInstance) {
@@ -323,6 +321,10 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 		final var y = layer.centerY - layer.height * .5f;
 
 		Debug.debugManager().drawers().drawRectImmediate(core.gameCamera(), x, y, layer.width, layer.height, 1f, 1f, 0f);
+	}
+
+	public void onLayerDeselected() {
+		mSelectedSceneSpriteInstance = null;
 	}
 
 	// ---------------------------------------------

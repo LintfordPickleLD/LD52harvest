@@ -27,7 +27,6 @@ public class EditorLayersManager extends BaseEditorInstanceManager {
 		return mLayers;
 	}
 
-	// TODO: This isn't actually being saved with the manager - either do that, or use some other global counter for uids.
 	public int getNewInstanceUid() {
 		return mInstanceUidCounter++;
 	}
@@ -44,12 +43,17 @@ public class EditorLayersManager extends BaseEditorInstanceManager {
 	// Methods
 	// ---------------------------------------------
 
-	private void setLayerUidCounter() {
-//		final var lNumLayers = mLayers.size();
-//		for (int i = 0; i < lNumLayers; i++) {
-//			if (mLayers.get(i).layerUid >= mInstanceUidCounter)
-//				mInstanceUidCounter = mLayers.get(i).layerUid + 1;
-//		}
+	private void setLayerUidCounters() {
+
+		// for synchronizing the layers in the LayerManager to the PanelUi we need to ensure each layer has a unique id.
+
+		final var numLayers = mLayers.size();
+		for (int i = 0; i < numLayers; i++) {
+			mLayers.get(i).layerUid = i;
+
+		}
+
+		mInstanceUidCounter = numLayers + 1;
 	}
 
 	public void addLayer(SceneBaseLayer layerToAd) {
@@ -126,7 +130,7 @@ public class EditorLayersManager extends BaseEditorInstanceManager {
 			layers().add(sceneLayer);
 		}
 
-		setLayerUidCounter();
+		setLayerUidCounters();
 	}
 
 	@Override
