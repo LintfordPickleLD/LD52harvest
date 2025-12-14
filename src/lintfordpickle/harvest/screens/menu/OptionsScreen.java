@@ -39,8 +39,8 @@ public class OptionsScreen extends MenuScreen {
 		layout.layoutFillType(FILLTYPE.TAKE_WHATS_NEEDED);
 
 		layout.showTitle(false);
-		layout.cropPaddingTop(10.f);
-		layout.cropPaddingBottom(10.f);
+		layout.cropPaddingTop(5.f);
+		layout.cropPaddingBottom(5.f);
 
 		final var gameSettingsEntry = new MenuEntry(screenManager, this, "Game");
 		gameSettingsEntry.horizontalFillType(FILLTYPE.FILL_CONTAINER);

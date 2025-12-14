@@ -179,7 +179,7 @@ public class TimeTrialGameScreen extends BaseGameScreen implements IPhysicsContr
 	public void update(LintfordCore core, boolean otherScreenHasFocus, boolean coveredByOtherScreen) {
 		super.update(core, otherScreenHasFocus, coveredByOtherScreen);
 
-		mGameCamera.setZoomFactor(1.f);
+		// mGameCamera.setZoomFactor(1.f);
 
 		if (otherScreenHasFocus == false) {
 //			final var lPlayerScoreCard = mGameState.getScoreCard(0);

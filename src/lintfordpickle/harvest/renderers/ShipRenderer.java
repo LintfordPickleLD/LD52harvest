@@ -125,8 +125,8 @@ public class ShipRenderer extends BaseRenderer {
 			final var unitsToPixels = ConstantsPhysics.UnitsToPixels();
 			final var spriteFrame = mShipSpritesheet.getSpriteFrame("HARVESTER");
 
-			final var destW = spriteFrame.width() * 2;
-			final var destH = spriteFrame.height() * 2;
+			final var destW = spriteFrame.width();
+			final var destH = spriteFrame.height();
 
 			final var lBody = ship.body();
 

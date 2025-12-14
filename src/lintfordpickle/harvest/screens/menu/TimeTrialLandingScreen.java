@@ -82,18 +82,19 @@ public class TimeTrialLandingScreen extends MenuScreen implements IListBoxItemSe
 				final var textScale = mScreenManager.UiStructureController().uiTextScaleFactor();
 				final var font = mParentListBox.parentScreen().font();
 
+				var detailsTextScale = 0.7f;
+
 				font.begin(core.HUD());
 				font.setTextColor(textColor);
-				font.drawText("Name:", transitionOffset.x + mX + 5.f, transitionOffset.y + mY, zDepth, textScale, -1);
-
+				font.drawText("Fastest Time: 1:41:890", transitionOffset.x + mX + 5.f, transitionOffset.y + mY + mH - font.fontHeight() * detailsTextScale, zDepth, detailsTextScale, -1);
 				var maxWidth = mW - font.getStringWidth("Name:", textScale);
-				var sceneName = mSceneHeader.sceneName();
+				var sceneName = mSceneHeader.sceneName() != null ? mSceneHeader.sceneName() : "<no name>";
 
 				font.setWrapType(WrapType.WORD_WRAP_TRIM);
-				font.drawText(sceneName, transitionOffset.x + mX + 64, transitionOffset.y + mY, zDepth, textScale, maxWidth);
+				font.drawText(sceneName, transitionOffset.x + mX + 5.f, transitionOffset.y + mY, zDepth, textScale, maxWidth);
 
 				var sceneFolderName = mSceneHeader.sceneParentDirectory();
-				var detailsTextScale = 0.7f;
+
 				var sceneFolderNameWidth = font.getStringWidth(sceneFolderName, detailsTextScale);
 				font.drawText(sceneFolderName, transitionOffset.x + mX + mW - 2 - sceneFolderNameWidth, transitionOffset.y + mY + mH - font.fontHeight() * detailsTextScale, zDepth, detailsTextScale, -1);
 
@@ -120,6 +121,7 @@ public class TimeTrialLandingScreen extends MenuScreen implements IListBoxItemSe
 
 	private static final int BUTTON_START = 11;
 	private static final int BUTTON_BACK = 12;
+	private static final int BUTTON_CUSTOM = 13;
 
 	// ---------------------------------------------
 	// Variables
@@ -131,6 +133,7 @@ public class TimeTrialLandingScreen extends MenuScreen implements IListBoxItemSe
 
 	private MenuToggleEntry mGhostEnabled;
 	private MenuInputEntry mGhostFatestTime;
+	private MenuToggleEntry mCustomMapsEnabled;
 
 	private SceneManager mSceneManager;
 
@@ -155,20 +158,22 @@ public class TimeTrialLandingScreen extends MenuScreen implements IListBoxItemSe
 		mLayoutSelection.layoutWidth(LAYOUT_WIDTH.HALF);
 		mLayoutSelection.setDrawBackground(true, new Color(0.02f, 0.12f, 0.15f, 0.8f));
 
+		mGhostEnabled = new MenuToggleEntry(pScreenManager, this, "Ghost Racer");
+		mGhostEnabled.showInfoButton(true);
+		mGhostEnabled.setToolTip("The ghost ship replays the actions of the fastest time, but doesn't interfere with the gameplay");
+
 		mGhostFatestTime = new MenuInputEntry(pScreenManager, this);
 		mGhostFatestTime.label("Fastest Time");
 		mGhostFatestTime.horizontalFillType(FILLTYPE.THIRD_PARENT);
 		mGhostFatestTime.readOnly(false);
 		mGhostFatestTime.singleLine(true);
 
-		mGhostEnabled = new MenuToggleEntry(pScreenManager, this);
-		mGhostEnabled.label("Ghost");
-		mGhostEnabled.horizontalFillType(FILLTYPE.TAKE_DESIRED_SIZE);
-		mGhostEnabled.showInfoButton(true);
-		mGhostEnabled.setToolTip("The ghost ship replays the actions of the fastest time, but doesn't interfere with the gameplay");
+		mCustomMapsEnabled = new MenuToggleEntry(pScreenManager, this, "Custom Scenes");
+		mCustomMapsEnabled.registerClickListener(this, BUTTON_CUSTOM);
 
 		mLayoutOptions.addMenuEntry(mGhostEnabled);
 		mLayoutOptions.addMenuEntry(mGhostFatestTime);
+		mLayoutOptions.addMenuEntry(mCustomMapsEnabled);
 
 		mSceneFilenameEntries = new MenuListBox(screenManager, this);
 		mSceneFilenameEntries.setItemSelectedListener(this);
@@ -184,7 +189,7 @@ public class TimeTrialLandingScreen extends MenuScreen implements IListBoxItemSe
 		mBackEntry.registerClickListener(this, BUTTON_BACK);
 		mBackEntry.desiredWidth(200);
 		mBackEntry.horizontalFillType(FILLTYPE.TAKE_DESIRED_SIZE);
-		
+
 		mStartEntry = new MenuEntry(screenManager, this, "Start");
 		mStartEntry.registerClickListener(this, BUTTON_START);
 		mStartEntry.setToolTip("You need ot harvest and deliver food from each of the farms. Fastest time wins.");
@@ -210,7 +215,7 @@ public class TimeTrialLandingScreen extends MenuScreen implements IListBoxItemSe
 
 		mIsPopup = false;
 		mShowBackgroundScreens = true;
-		
+
 		mLayoutOptions.paddingTop(MenuStyles.paddingTop);
 		mLayoutOptions.paddingBottom(MenuStyles.paddingBottom);
 		mLayoutOptions.marginBottom(MenuStyles.marginBottom);

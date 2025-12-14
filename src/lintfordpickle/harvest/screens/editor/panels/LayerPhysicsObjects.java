@@ -1,5 +1,7 @@
 package lintfordpickle.harvest.screens.editor.panels;
 
+import org.lwjgl.glfw.GLFW;
+
 import lintfordpickle.harvest.controllers.editor.EditorPhysicsController;
 import lintfordpickle.harvest.data.editor.EditorLayersData;
 import lintfordpickle.harvest.data.editor.physics.EditorPhysicsObjectInstance;
@@ -113,6 +115,21 @@ public class LayerPhysicsObjects extends UiPanel {
 	}
 
 	@Override
+	public boolean handleInput(LintfordCore core) {
+
+		if (core.input().keyboard().isKeyDown(GLFW.GLFW_KEY_DELETE, this)) {
+			final var lSelectedPhysicsObject = mEditorPhysicsController.selectedPhysicsObject();
+
+			if (lSelectedPhysicsObject != null) {
+				mEditorPhysicsController.deletePhysicsObjectInstance(lSelectedPhysicsObject);
+				mEditorPhysicsRenderer.clearSelectedRegion();
+			}
+		}
+
+		return super.handleInput(core);
+	}
+
+	@Override
 	public void update(LintfordCore core) {
 		super.update(core);
 
@@ -144,6 +161,11 @@ public class LayerPhysicsObjects extends UiPanel {
 	// --------------------------------------
 
 	@Override
+	public boolean allowKeyboardInput() {
+		return true;
+	}
+
+	@Override
 	public void widgetOnClick(InputManager inputManager, int entryUid) {
 		final var lIsLayerActive = mEditorBrushController.isLayerActive(mEditorActiveLayerUid);
 		final var lPhysicsObjectsHashCode = mEditorPhysicsRenderer.hashCode();
@@ -158,6 +180,10 @@ public class LayerPhysicsObjects extends UiPanel {
 		}
 
 		case BUTTON_DELETE_SELECTED: {
+
+			if (!lIsLayerActive)
+				return;
+
 			final var lSelectedPhysicsObject = mEditorPhysicsController.selectedPhysicsObject();
 			mEditorPhysicsController.deletePhysicsObjectInstance(lSelectedPhysicsObject);
 			mEditorPhysicsRenderer.clearSelectedRegion();
@@ -165,10 +191,18 @@ public class LayerPhysicsObjects extends UiPanel {
 		}
 
 		case BUTTON_DELETE_ALL:
+
+			if (!lIsLayerActive)
+				return;
+
 			mEditorPhysicsController.deleteAllPolygons();
 			return;
 
 		case BUTTON_SET_OBJECT_CENTER_TO_CURSOR:
+
+			if (!lIsLayerActive)
+				return;
+
 			mEditorPhysicsController.setSelectedObjectCenterToCursor();
 			return;
 

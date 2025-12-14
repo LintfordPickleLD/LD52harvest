@@ -1,0 +1,30 @@
+{
+  "SceneSettings": {
+    "sceneWidth": 2048,
+    "sceneHeight": 2048
+  },
+  "HashGrid": {
+    "Width": 1000,
+    "Height": 1000,
+    "TilesWide": 5,
+    "TilesHigh": 5
+  },
+  "Layers": {
+    "textureLayers": [],
+    "spriteLayers": [],
+    "noiseLayers": []
+  },
+  "PhysicsSettings": {
+    "Gravity": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "GridWidthUnits": 32.0,
+    "GridHeightUnits": 32.0,
+    "GridCellsWide": 5,
+    "GridCellsHigh": 5
+  },
+  "PhysicsObjects": {
+    "ObjectInstances": []
+  }
+}

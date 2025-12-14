@@ -295,8 +295,10 @@ public class EditorPhysicsRenderer extends BaseRenderer {
 
 		drawPhysicsObjects(core, lineBatch, fontUnit);
 
-		if (mCreationPhysicsObject != null)
+		if (mCreationPhysicsObject != null) {
+			System.out.println("dicks");
 			drawRectangleCreationGuide(core, mCreationPhysicsObject, lineBatch, fontUnit);
+		}
 
 		drawSelectedPoints(core, lineBatch, fontUnit);
 
@@ -386,21 +388,21 @@ public class EditorPhysicsRenderer extends BaseRenderer {
 
 			if (mNextClickForA) {
 				Debug.debugManager().drawers().drawPointImmediate(core.gameCamera(), mMouseX, mMouseY);
-				font.drawText("A", mMouseX, mMouseY, .01f, 0.5f);
+				font.drawText("A", mMouseX, mMouseY - font.fontHeight() * .5f, .01f, 0.5f);
 			} else if (mNextClickForB) {
 				Debug.debugManager().drawers().drawPointImmediate(core.gameCamera(), mMouseX, mMouseY);
-				font.drawText("B", mMouseX, mMouseY, -0.01f, 0.5f);
+				font.drawText("B", mMouseX, mMouseY - font.fontHeight() * .5f, .01f, 0.5f);
 				lLineBatch.draw(a.x, a.y, mMouseX, mMouseY, .01f, 1.f, 1.f, 1.f);
 			} else if (mNextClickForC) {
 				Debug.debugManager().drawers().drawPointImmediate(core.gameCamera(), mMouseX, mMouseY);
-				font.drawText("C", mMouseX, mMouseY, -0.01f, 0.5f);
-				lLineBatch.draw(a.x, a.y, b.x, b.y, -0.01f, 1.f, 1.f, 1.f);
+				font.drawText("C", mMouseX, mMouseY - font.fontHeight() * .5f, .01f, 0.5f);
+				lLineBatch.draw(a.x, a.y, b.x, b.y, .01f, 1.f, 1.f, 1.f);
 				lLineBatch.draw(b.x, b.y, mMouseX, mMouseY, .01f, 1.f, 1.f, 1.f);
 			} else {
 				Debug.debugManager().drawers().drawPointImmediate(core.gameCamera(), mMouseX, mMouseY);
-				font.drawText("D", mMouseX, mMouseY, -0.01f, 0.5f);
-				lLineBatch.draw(a.x, a.y, b.x, b.y, -0.01f, 1.f, 1.f, 1.f);
-				lLineBatch.draw(b.x, b.y, c.x, c.y, -0.01f, 1.f, 1.f, 1.f);
+				font.drawText("D", mMouseX, mMouseY - font.fontHeight() * .5f, .01f, 0.5f);
+				lLineBatch.draw(a.x, a.y, b.x, b.y, .01f, 1.f, 1.f, 1.f);
+				lLineBatch.draw(b.x, b.y, c.x, c.y, .01f, 1.f, 1.f, 1.f);
 				lLineBatch.draw(c.x, c.y, mMouseX, mMouseY, .01f, 1.f, 1.f, 1.f);
 			}
 		}

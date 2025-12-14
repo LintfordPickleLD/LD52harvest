@@ -175,6 +175,7 @@ public class CameraShipChaseController extends BaseController {
 				mPosition.y = lSceneSettings.sceneHeightInPx() * 0.5f - lCamHeight * .5f;
 
 			mGameCamera.setPosition(mPosition.x, mPosition.y);
+			mGameCamera.setZoomFactor(1.75f);
 		}
 	}
 

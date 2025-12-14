@@ -208,6 +208,7 @@ public class ShipController extends BaseController {
 			shipInst.inputs.isRightThrottle = actionManager.currentActionEvents.isThrottleRightDown;
 			shipInst.inputs.isUpThrottle = actionManager.currentActionEvents.isThrottleDown;
 
+			// this shit is for the ship's engine sound synth.
 			final float throttleRollingAmt = 0.5f;
 			if (shipInst.inputs.isUpThrottle) {
 				shipInst.rollingThrottle += core.gameTime().elapsedTimeMilli() * throttleRollingAmt;
@@ -263,172 +264,108 @@ public class ShipController extends BaseController {
 		}
 
 		final var body = ship.body();
-		final var lShipInput = ship.inputs;
+		final var shipInput = ship.inputs;
 
-		final float lThrustUpForce = 100.f;
-		final float lAngularTorque = .003f;
+		// TODO: extract these somehow and make them part of the game mechanics
+		// These two control the responsiveness of the controls almost completely.
+		final var thrustUpForce = 15.f;
+		final var angularTorque = .0015f;
 
-		final float lJetForce = 50.f;
-		final float lSparkForce = 20.f;
+		final var unitsToPixels = ConstantsPhysics.UnitsToPixels();
+		final var shipAngle = body.transform.angle;
 
-		final float lUnitsToPixels = ConstantsPhysics.UnitsToPixels();
+		if (shipInput.isUpThrottle) {
 
-		final float lAngle = body.transform.angle;
-		final float lUpAngleX = body.transform.q.c;
-		final float lUpAngleY = body.transform.q.s;
+			final var lUpAngleX = body.transform.q.c;
+			final var lUpAngleY = body.transform.q.s;
 
-		final float lAdjustedAngle = body.transform.angle + (float) Math.toRadians(90.f);
-		final float lAdjustedAngleX = (float) Math.cos(lAdjustedAngle);
-		final float lAdjustedAngleY = (float) Math.sin(lAdjustedAngle);
-
-		final float lAdjustedVx = body.vx * lUnitsToPixels * .5f;
-		final float lAdjustedVy = body.vy * lUnitsToPixels * .5f;
-
-		final float lSparkChange = 32.8f;
-
-		if (lShipInput.isUpThrottle) {
-			body.accX += -lUpAngleY * -lThrustUpForce * body.invMass();
-			body.accY += lUpAngleX * -lThrustUpForce * body.invMass();
+			body.accX += -lUpAngleY * -thrustUpForce * body.invMass();
+			body.accY += lUpAngleX * -thrustUpForce * body.invMass();
 			body.setAngularVelocity(ship.body().angularVelocity() * .99f);
 
-			if (DEBUG_DISABLE_PARTICLES == false) {
-				final var lFrontEnginePositionX = ship.frontEngine.x * lUnitsToPixels;
-				final var lFrontEnginePositionY = ship.frontEngine.y * lUnitsToPixels;
-				mJetParticleSystem.spawnParticle(lFrontEnginePositionX, lFrontEnginePositionY, -.2f, lAdjustedVx + lAdjustedAngleX * lJetForce, lAdjustedVy + lAdjustedAngleY * lJetForce);
-				mJetIntenseParticleSystem.spawnParticle(lFrontEnginePositionX, lFrontEnginePositionY, -.2f, lAdjustedVx + lAdjustedAngleX * lJetForce, lAdjustedVy + lAdjustedAngleY * lJetForce);
-
-				{
-					if (RandomNumbers.getRandomChance(lSparkChange)) {
-						final float lMaxAngle = 10.f;
-						final float lAngleOffset = RandomNumbers.random(-lMaxAngle, lMaxAngle);
-
-						final float lSparkAngleX = (float) Math.cos(lAngle + lAngleOffset);
-						final float lSparkAngleY = (float) Math.sin(lAngle + lAngleOffset);
-
-						mEngineSparkParticleSystem.spawnParticle(lFrontEnginePositionX, lFrontEnginePositionY, -.2f, (lSparkAngleX) * lSparkForce, (lSparkAngleY) * lSparkForce);
-					}
-
-				}
-
-				final var lRearEnginePositionX = ship.rearEngine.x * lUnitsToPixels;
-				final var lRearEnginePositionY = ship.rearEngine.y * lUnitsToPixels;
-				mJetParticleSystem.spawnParticle(lRearEnginePositionX, lRearEnginePositionY, -.2f, lAdjustedVx + lAdjustedAngleX * lJetForce, lAdjustedVy + lAdjustedAngleY * lJetForce);
-				mJetIntenseParticleSystem.spawnParticle(lRearEnginePositionX, lRearEnginePositionY, -.2f, lAdjustedVx + lAdjustedAngleX * lJetForce, lAdjustedVy + lAdjustedAngleY * lJetForce);
-
-				{
-					if (RandomNumbers.getRandomChance(lSparkChange)) {
-						final float lMaxAngle = 10.f;
-						final float lAngleOffset = RandomNumbers.random(-lMaxAngle, lMaxAngle);
-
-						final float lSparkAngleX = (float) Math.cos(lAngle + lAngleOffset);
-						final float lSparkAngleY = (float) Math.sin(lAngle + lAngleOffset);
-
-						mEngineSparkParticleSystem.spawnParticle(lRearEnginePositionX, lRearEnginePositionY, -.2f, (lSparkAngleX) * lSparkForce, (lSparkAngleY) * lSparkForce);
-					}
-				}
-			}
 		}
 
-		{
-			if (lShipInput.isLeftThrottle) {
-				body.transform.angle -= lAngularTorque * core.gameTime().elapsedTimeMilli();
-				if (body.angularVelocity() > 0.f)
-					body.setAngularVelocity(body.angularVelocity() * .9f);
+		if (shipInput.isLeftThrottle) {
+			body.transform.angle -= angularTorque * core.gameTime().elapsedTimeMilli();
+			if (body.angularVelocity() > 0.f)
+				body.setAngularVelocity(body.angularVelocity() * .9f);
 
-				if (DEBUG_DISABLE_PARTICLES == false) {
-					final var lFrontEnginePositionX = ship.frontEngine.x * lUnitsToPixels;
-					final var lFrontEnginePositionY = ship.frontEngine.y * lUnitsToPixels;
-					mJetParticleSystem.spawnParticle(lFrontEnginePositionX, lFrontEnginePositionY, -.2f, lAdjustedVx + lAdjustedAngleX * lJetForce, lAdjustedVy + lAdjustedAngleY * lJetForce);
-					mJetIntenseParticleSystem.spawnParticle(lFrontEnginePositionX, lFrontEnginePositionY, -.2f, lAdjustedVx + lAdjustedAngleX * lJetForce, lAdjustedVy + lAdjustedAngleY * lJetForce);
-
-					if (RandomNumbers.getRandomChance(lSparkChange)) {
-						final float lMaxAngle = 10.f;
-						final float lAngleOffset = RandomNumbers.random(-lMaxAngle, lMaxAngle);
-
-						final float lSparkAngleX = (float) Math.cos(lAngle + lAngleOffset);
-						final float lSparkAngleY = (float) Math.sin(lAngle + lAngleOffset);
-
-						mEngineSparkParticleSystem.spawnParticle(lFrontEnginePositionX, lFrontEnginePositionY, -.2f, (lSparkAngleX) * lSparkForce, (lSparkAngleY) * lSparkForce);
-					}
-				}
-			}
-
-			if (lShipInput.isRightThrottle) {
-				body.transform.angle += lAngularTorque * core.gameTime().elapsedTimeMilli();
-				if (body.angularVelocity() < 0.f)
-					body.setAngularVelocity(body.angularVelocity() * .9f);
-
-				if (DEBUG_DISABLE_PARTICLES == false) {
-					final var lRearEnginePositionX = ship.rearEngine.x * lUnitsToPixels;
-					final var lRearEnginePositionY = ship.rearEngine.y * lUnitsToPixels;
-					mJetParticleSystem.spawnParticle(lRearEnginePositionX, lRearEnginePositionY, -.2f, lAdjustedVx + lAdjustedAngleX * lJetForce, lAdjustedVy + lAdjustedAngleY * lJetForce);
-					mJetIntenseParticleSystem.spawnParticle(lRearEnginePositionX, lRearEnginePositionY, -.2f, lAdjustedVx + lAdjustedAngleX * lJetForce, lAdjustedVy + lAdjustedAngleY * lJetForce);
-
-					if (RandomNumbers.getRandomChance(lSparkChange)) {
-						final float lMaxAngle = 10.f;
-						final float lAngleOffset = RandomNumbers.random(-lMaxAngle, lMaxAngle);
-
-						final float lSparkAngleX = (float) Math.cos(lAngle + lAngleOffset);
-						final float lSparkAngleY = (float) Math.sin(lAngle + lAngleOffset);
-
-						mEngineSparkParticleSystem.spawnParticle(lRearEnginePositionX, lRearEnginePositionY, -.2f, (lSparkAngleX) * lSparkForce, (lSparkAngleY) * lSparkForce);
-					}
-				}
-			}
 		}
 
-		// TODO: Particles in graphics options
-		if (DEBUG_DISABLE_PARTICLES == false) {
-			final var lStep = ship.maxHealth / 10.f;
-			final var lLowSmokeLevel = ship.maxHealth - lStep;
-			final var lMidSmokeLevel = ship.maxHealth - lStep * 2;
-			final var lHighSmokeLevel = ship.maxHealth - lStep * 3;
+		if (shipInput.isRightThrottle) {
+			body.transform.angle += angularTorque * core.gameTime().elapsedTimeMilli();
+			if (body.angularVelocity() < 0.f)
+				body.setAngularVelocity(body.angularVelocity() * .9f);
 
-//			final float lWorldX = body.transform.p.x * lUnitsToPixels;
-//			final float lWorldY = body.transform.p.y * lUnitsToPixels;
-
-			var lWorldX = ship.rearEngine.x * lUnitsToPixels;
-			var lWorldY = ship.rearEngine.y * lUnitsToPixels;
-			if (RandomNumbers.getRandomChance(50)) {
-				lWorldX = ship.frontEngine.x * lUnitsToPixels;
-				lWorldY = ship.frontEngine.y * lUnitsToPixels;
-			}
-
-			if (ship.health < lHighSmokeLevel && RandomNumbers.getRandomChance(30.f)) {
-				mSmokeParticleSystem.spawnParticle(lWorldX, lWorldY, -.2f, 0, 0);
-				mFireParticleSystem.spawnParticle(lWorldX, lWorldY, -.2f, 0, 0);
-			}
-
-			else if (ship.health < lMidSmokeLevel && RandomNumbers.getRandomChance(20.f)) {
-				mSmokeParticleSystem.spawnParticle(lWorldX, lWorldY, -.2f, 0, 0);
-				mFireParticleSystem.spawnParticle(lWorldX, lWorldY, -.2f, 0, 0);
-			}
-
-			else if (ship.health < lLowSmokeLevel && RandomNumbers.getRandomChance(10.f)) {
-				mSmokeParticleSystem.spawnParticle(lWorldX, lWorldY, -.2f, 0, 0);
-			}
 		}
+
+		updateShipCollisions(ship);
+
+		// Particles
+		if (DEBUG_DISABLE_PARTICLES)
+			return;
+
+		// smoke, fire etc.
+		updateShipStatusParticles(ship);
+
+		if (shipInput.isUpThrottle) {
+			final var frontEnginePositionX = ship.frontEngine.x * unitsToPixels;
+			final var frontEnginePositionY = ship.frontEngine.y * unitsToPixels;
+
+			updateEngineParticles(frontEnginePositionX, frontEnginePositionY, body.vx, body.vy, shipAngle);
+
+			final var rearEnginePositionX = ship.rearEngine.x * unitsToPixels;
+			final var rearEnginePositionY = ship.rearEngine.y * unitsToPixels;
+
+			updateEngineParticles(rearEnginePositionX, rearEnginePositionY, body.vx, body.vy, shipAngle);
+
+		}
+
+		if (shipInput.isLeftThrottle) {
+			final var frontEnginePositionX = ship.frontEngine.x * unitsToPixels;
+			final var frontEnginePositionY = ship.frontEngine.y * unitsToPixels;
+
+			updateEngineParticles(frontEnginePositionX, frontEnginePositionY, body.vx, body.vy, shipAngle);
+		}
+
+		if (shipInput.isRightThrottle) {
+			final var rearEnginePositionX = ship.rearEngine.x * unitsToPixels;
+			final var rearEnginePositionY = ship.rearEngine.y * unitsToPixels;
+			updateEngineParticles(rearEnginePositionX, rearEnginePositionY, body.vx, body.vy, shipAngle);
+		}
+
+	}
+
+	private void updateShipCollisions(Ship ship) {
 
 		// this assumes we can only collide with the level
-		final var lShipUserData = (ShipPhysicsData) ship.body().userData();
-		if (lShipUserData.lastCollisionHandled == false) {
 
-			final float dot = Vector2f.dot(lAdjustedAngleX, lAdjustedAngleY, lShipUserData.lastCollisionNormalX, lShipUserData.lastCollisionNormalY);
+		final var body = ship.body();
+		final var unitsToPixels = ConstantsPhysics.UnitsToPixels();
+
+		final var shipUserData = (ShipPhysicsData) ship.body().userData();
+		if (shipUserData.lastCollisionHandled == false) {
+
+			final float lAdjustedAngle = body.transform.angle + (float) Math.toRadians(90.f);
+			final float lAdjustedAngleX = (float) Math.cos(lAdjustedAngle);
+			final float lAdjustedAngleY = (float) Math.sin(lAdjustedAngle);
+
+			final float dot = Vector2f.dot(lAdjustedAngleX, lAdjustedAngleY, shipUserData.lastCollisionNormalX, shipUserData.lastCollisionNormalY);
 
 			if (dot <= 0) { // top end of ship
-				final int mag = (int) Math.sqrt(lShipUserData.lastCollisionMagnitude2);
+				final int mag = (int) Math.sqrt(shipUserData.lastCollisionMagnitude2);
 				if (mag > DAMAGE_TOP_THREASHOLD) {
 					ship.applyDamage(mag);
 				}
 			} else {
-				final int mag = (int) Math.sqrt(lShipUserData.lastCollisionMagnitude2);
+				final int mag = (int) Math.sqrt(shipUserData.lastCollisionMagnitude2);
 				if (mag > DAMAGE_BOTTOM_THREASHOLD) {
 					ship.applyDamage(mag - DAMAGE_BOTTOM_THREASHOLD);
 				}
 			}
 
-			final float lWorldX = lShipUserData.lastCollisionContactX * lUnitsToPixels;
-			final float lWorldY = lShipUserData.lastCollisionContactY * lUnitsToPixels;
+			final float lWorldX = shipUserData.lastCollisionContactX * unitsToPixels;
+			final float lWorldY = shipUserData.lastCollisionContactY * unitsToPixels;
 
 			final var lLen = 20.f + (float) Math.sqrt(body.vx * body.vx + body.vy * body.vy);
 			final int lNumSparks = RandomNumbers.random(2, 7);
@@ -437,13 +374,79 @@ public class ShipController extends BaseController {
 				final float lOffsetX = RandomNumbers.random(-t, t);
 				final float lOffsetY = RandomNumbers.random(-t, t);
 
-				mSparkParticleSystem.spawnParticle(lWorldX, lWorldY, -.2f, (lShipUserData.lastCollisionNormalX + lOffsetX) * lLen, (lShipUserData.lastCollisionNormalY + lOffsetY) * lLen);
+				mSparkParticleSystem.spawnParticle(lWorldX, lWorldY, -.2f, (shipUserData.lastCollisionNormalX + lOffsetX) * lLen, (shipUserData.lastCollisionNormalY + lOffsetY) * lLen);
 			}
 
-			lShipUserData.lastCollisionHandled = true;
-			lShipUserData.lastCollisionMagnitude2 = 0.f;
+			shipUserData.lastCollisionHandled = true;
+			shipUserData.lastCollisionMagnitude2 = 0.f;
+		}
+	}
+
+	private void updateShipStatusParticles(Ship ship) {
+		if (DEBUG_DISABLE_PARTICLES)
+			return;
+
+		final var unitsToPixels = ConstantsPhysics.UnitsToPixels();
+
+		final var lStep = ship.maxHealth / 10.f;
+		final var lLowSmokeLevel = ship.maxHealth - lStep;
+		final var lMidSmokeLevel = ship.maxHealth - lStep * 2;
+		final var lHighSmokeLevel = ship.maxHealth - lStep * 3;
+
+		var lWorldX = ship.rearEngine.x * unitsToPixels;
+		var lWorldY = ship.rearEngine.y * unitsToPixels;
+		if (RandomNumbers.getRandomChance(50)) {
+			lWorldX = ship.frontEngine.x * unitsToPixels;
+			lWorldY = ship.frontEngine.y * unitsToPixels;
 		}
 
+		if (ship.health < lHighSmokeLevel && RandomNumbers.getRandomChance(30.f)) {
+			mSmokeParticleSystem.spawnParticle(lWorldX, lWorldY, -.2f, 0, 0);
+			mFireParticleSystem.spawnParticle(lWorldX, lWorldY, -.2f, 0, 0);
+		}
+
+		else if (ship.health < lMidSmokeLevel && RandomNumbers.getRandomChance(20.f)) {
+			mSmokeParticleSystem.spawnParticle(lWorldX, lWorldY, -.2f, 0, 0);
+			mFireParticleSystem.spawnParticle(lWorldX, lWorldY, -.2f, 0, 0);
+		}
+
+		else if (ship.health < lLowSmokeLevel && RandomNumbers.getRandomChance(10.f)) {
+			mSmokeParticleSystem.spawnParticle(lWorldX, lWorldY, -.2f, 0, 0);
+		}
+	}
+
+	private void updateEngineParticles(float posX, float posY, float velX, float velY, float angle) {
+		if (DEBUG_DISABLE_PARTICLES)
+			return;
+
+		final float unitsToPixels = ConstantsPhysics.UnitsToPixels();
+
+		final float jetForce = 50.f;
+		final float sparkForce = 20.f;
+
+		final float adjustedVx = velX * unitsToPixels * .5f;
+		final float adjustedVy = velY * unitsToPixels * .5f;
+
+		final float adjustedAngle = angle + (float) Math.toRadians(90.f);
+		final float adjustedAngleX = (float) Math.cos(adjustedAngle);
+		final float adjustedAngleY = (float) Math.sin(adjustedAngle);
+
+		mJetParticleSystem.spawnParticle(posX, posY, -.2f, adjustedVx + adjustedAngleX * jetForce, adjustedVy + adjustedAngleY * jetForce);
+		mJetIntenseParticleSystem.spawnParticle(posX, posY, -.2f, adjustedVx + adjustedAngleX * jetForce, adjustedVy + adjustedAngleY * jetForce);
+
+		{
+			final float sparkChance = 32.8f;
+			if (RandomNumbers.getRandomChance(sparkChance)) {
+				final float maxAngle = 10.f;
+				final float angleOffset = RandomNumbers.random(-maxAngle, maxAngle);
+
+				final float sparkAngleX = (float) Math.cos(angle + angleOffset);
+				final float sparkAngleY = (float) Math.sin(angle + angleOffset);
+
+				mEngineSparkParticleSystem.spawnParticle(posX, posY, -.2f, (sparkAngleX) * sparkForce, (sparkAngleY) * sparkForce);
+			}
+
+		}
 	}
 
 	// DAMAGE ---------------------------------------------

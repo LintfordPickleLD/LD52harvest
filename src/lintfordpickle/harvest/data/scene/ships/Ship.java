@@ -289,7 +289,7 @@ public class Ship extends RigidBodyEntity {
 
 	public float rollingThrottle;
 	public float rollingThrottleMin = 0.f;
-	public float rollingThrottleMax = 100.f;
+	public float rollingThrottleMax = 50.f;
 
 	// ---------------------------------------------
 	// Properties
@@ -309,8 +309,9 @@ public class Ship extends RigidBodyEntity {
 		final var pixelsToUnits = ConstantsPhysics.PixelsToUnits();
 		final var density = 2.f;
 
-		final var width = 64.f * pixelsToUnits;
-		final var height = 32.f * pixelsToUnits;
+		// TODO: the size is probably best based on the texture
+		final var width = 32.f * pixelsToUnits;
+		final var height = 16.f * pixelsToUnits;
 
 		final var restitution = .1f;
 
@@ -332,6 +333,8 @@ public class Ship extends RigidBodyEntity {
 	// ---------------------------------------------
 
 	public void update(LintfordCore core) {
+
+		rollingThrottleMax = 10.f;
 
 		final var lPixelsToUnits = ConstantsPhysics.PixelsToUnits();
 

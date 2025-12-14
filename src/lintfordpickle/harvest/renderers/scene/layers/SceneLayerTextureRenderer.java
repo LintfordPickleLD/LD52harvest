@@ -73,13 +73,23 @@ public class SceneLayerTextureRenderer {
 		final var cameraPositionY = aabb_c.centerY();
 
 		if (layer.texture != null) {
-			final var lCamOffsetX = -layer.centerX - cameraPositionX * layer.translationSpeedModX;
-			final var lCamOffsetY = -layer.centerY - cameraPositionY * layer.translationSpeedModY;
+			final var camOffsetX = -layer.centerX - cameraPositionX * layer.translationSpeedModX;
+			final var camOffsetY = -layer.centerY - cameraPositionY * layer.translationSpeedModY;
 
-			final var lSrcX = lCamOffsetX;
-			final var lSrcY = lCamOffsetY;
-			final var lSrcW = layer.texture.getTextureWidth();
-			final var lSrcH = layer.texture.getTextureHeight();
+			final var srcX = camOffsetX;
+			final var srcY = camOffsetY;
+
+			final var srcTexW = layer.texture.getTextureWidth();
+			final var srcTexH = layer.texture.getTextureHeight();
+
+			final var srcRatioX = layer.width / srcTexW * srcTexW;
+			final var srcRatioY = layer.height / srcTexH * srcTexH;
+
+			final var scaleX = layer.contentScaleX <= 0.f ? 1.f : layer.contentScaleX;
+			final var scaleY = layer.contentScaleY <= 0.f ? 1.f : layer.contentScaleY;
+
+			final var srcW = srcRatioX / scaleX;
+			final var srcH = srcRatioY / scaleY;
 
 			final var lDstX = layer.centerX - layer.width * .5f;
 			final var lDstY = layer.centerY - layer.height * .5f;
@@ -88,7 +98,7 @@ public class SceneLayerTextureRenderer {
 
 			spriteBatch.setColorWhite();
 			spriteBatch.begin(core.gameCamera());
-			spriteBatch.draw(layer.texture, lSrcX, lSrcY, lSrcW, lSrcH, lDstX, lDstY, lDstWidth, lDstHeight, 9 - layer.zDepth);
+			spriteBatch.draw(layer.texture, srcX, srcY, srcW, srcH, lDstX, lDstY, lDstWidth, lDstHeight, 9 - layer.zDepth);
 			spriteBatch.end();
 			return;
 		}

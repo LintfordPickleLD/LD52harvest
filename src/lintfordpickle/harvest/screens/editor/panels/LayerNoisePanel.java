@@ -102,12 +102,12 @@ public class LayerNoisePanel extends LayerPanel<SceneNoiseLayer> implements IUiI
 		mWidth = new UiInputFloat();
 		mWidth.setUiWidgetListener(this, SLIDER_SCALE_X);
 		mWidth.label("Width");
-		mWidth.setMinMax(0.f, 10.f);
+		mWidth.setMinMax(0.f, 10000.f);
 		mWidth.stepSize(.1f);
 		mHeight = new UiInputFloat();
 		mHeight.setUiWidgetListener(this, SLIDER_SCALE_Y);
 		mHeight.label("Height");
-		mHeight.setMinMax(0.f, 10.f);
+		mHeight.setMinMax(0.f, 10000.f);
 		mHeight.stepSize(.1f);
 
 		final var lHorizontalGroup0 = new UiHorizontalEntryGroup();
