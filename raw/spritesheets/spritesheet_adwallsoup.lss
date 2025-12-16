@@ -2,7 +2,7 @@
   "outputDataFilename": "D:\\dev\\java\\ludumdare\\52 - Harvest\\projects\\LD52_Harvest\\res\\spritesheets\\spritesheetAdWallSoup.json",
   "outputNameDataFilename": "D:\\dev\\java\\ludumdare\\52 - Harvest\\projects\\LD52_Harvest\\src\\lintfordpickle\\razor\\data\\textures\\CoreTextureNames.java",
   "outputImageFilename": "D:\\dev\\java\\ludumdare\\52 - Harvest\\projects\\LD52_Harvest\\res\\textures\\textureAdWallSoup.png",
-  "workingDirectory": "D:\\dev\\java\\ludumdare\\52 - Harvest\\projects\\LD52_Harvest\\raw\\spritesheets\\AdWallSoup",
+  "workingDirectory": "adwallsoup",
   "spriteSheetName": "SPRITESHEET_ADWALLSOUP",
   "textureName": "TEXTURE_ADWALLSOUP",
   "dataPackageName": "net.lintford.library.core.graphics.textures",
@@ -23,7 +23,7 @@
   "forcePoTTextures": true,
   "autoSizeTexture": false,
   "itemFilenames": [
-    "D:\\dev\\java\\ludumdare\\52 - Harvest\\projects\\LD52_Harvest\\raw\\spritesheets\\AdWallSoup\\*.*"
+    "adwallsoup\\*.*"
   ],
   "animationItems": {
     "play": {

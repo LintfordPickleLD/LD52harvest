@@ -1,0 +1,42 @@
+{
+  "outputDataFilename": "..\\..\\res\\spritesheets\\spritesheetspritesmenu.json",
+  "outputNameDataFilename": null,
+  "outputImageFilename": "..\\..\\res\\textures\\texturespritesmenu.png",
+  "workingDirectory": "spritesmenu",
+  "spriteSheetName": "SPRITESHEET_SPRITESMENU",
+  "textureName": "TEXTURE_SPRITESMENU",
+  "textureFilePath": "res/textures/texturespritesmenu.png",
+  "dataPackageName": "",
+  "exportDataFile": true,
+  "exportTextureFile": true,
+  "exportNamesFile": false,
+  "sortMode": "Area",
+  "borderPadding": 0,
+  "shapeOutlines": false,
+  "crop": false,
+  "trim": false,
+  "allowRotations": false,
+  "spritePadding": 2,
+  "textureWidthMax": 512,
+  "textureWidthActual": 512,
+  "textureHeightMax": 512,
+  "textureHeightActual": 512,
+  "forcePoTTextures": true,
+  "autoSizeTexture": false,
+  "itemFilenames": [
+    "spritesmenu\\*.*"
+  ],
+  "animationItems": {
+    "aircond": {
+      "loopAnimation": true,
+      "frameDuration": 100,
+      "animationSprites": [
+        "AIRCOND_00",
+        "AIRCOND_01",
+        "AIRCOND_02",
+        "AIRCOND_03",
+        "AIRCOND_04"
+      ]
+    }
+  }
+}
