@@ -56,7 +56,7 @@ public abstract class SceneBaseLayer {
 
 	public abstract BaseSceneLayerSaveDefinition getSaveDefinition();
 
-	protected void fillBaseSceneLayerInfo(BaseSceneLayerSaveDefinition saveDefinition) {
+	protected void fillBaseSceneLayerSaveDefinition(BaseSceneLayerSaveDefinition saveDefinition) {
 		saveDefinition.layerZDepth = zDepth;
 		saveDefinition.layerUid = layerUid;
 		saveDefinition.layerName = name;
@@ -69,6 +69,9 @@ public abstract class SceneBaseLayer {
 
 		saveDefinition.contentScaleX = contentScaleX;
 		saveDefinition.contentScaleY = contentScaleY;
+
+		saveDefinition.translationSpeedModX = translationSpeedModX;
+		saveDefinition.translationSpeedModY = translationSpeedModY;
 	}
 
 }

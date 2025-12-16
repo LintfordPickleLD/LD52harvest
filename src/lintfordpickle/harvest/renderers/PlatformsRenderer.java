@@ -58,7 +58,7 @@ public class PlatformsRenderer extends BaseRenderer {
 	public void loadResources(ResourceManager resourceManager) {
 		super.loadResources(resourceManager);
 
-		mPlatformsSpritesheet = resourceManager.spriteSheetManager().getSpriteSheet("SPRITESHEET_PROPS", ConstantsGame.GAME_RESOURCE_GROUP_ID);
+		mPlatformsSpritesheet = resourceManager.spriteSheetManager().getSpriteSheet("SPRITESHEET_SPRITESGAME", ConstantsGame.GAME_RESOURCE_GROUP_ID);
 
 	}
 

@@ -36,7 +36,7 @@ public class SceneNoiseLayer extends SceneBaseLayer {
 	public BaseSceneLayerSaveDefinition getSaveDefinition() {
 		final var lSaveDefinition = new SceneNoiseLayerSaveDefinition();
 
-		fillBaseSceneLayerInfo(lSaveDefinition);
+		fillBaseSceneLayerSaveDefinition(lSaveDefinition);
 
 		// TODO: noise input parameters
 

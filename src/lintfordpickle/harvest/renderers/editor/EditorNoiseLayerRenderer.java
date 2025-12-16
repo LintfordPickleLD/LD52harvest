@@ -196,6 +196,10 @@ public class EditorNoiseLayerRenderer implements IInputProcessor {
 
 		} else if (leftMouseDown) {
 			// mEditorLayerController.selectedLayer(null);
+			
+			
+			
+			
 		}
 
 		// ----

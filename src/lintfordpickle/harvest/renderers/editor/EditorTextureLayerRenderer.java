@@ -211,6 +211,9 @@ public class EditorTextureLayerRenderer implements IInputProcessor {
 		final var cameraPositionX = aabb_c.centerX();
 		final var cameraPositionY = aabb_c.centerY();
 
+		final var camOffsetX = -layer.centerX - cameraPositionX * layer.translationSpeedModX;
+		final var camOffsetY = -layer.centerY - cameraPositionY * layer.translationSpeedModY;
+
 		if (layer.textureStatus == SceneTextureLayer.TEXTURE_UNLOADED) {
 			layer.texture = mResourceManager.textureManager().loadTexture(layer.textureName(), layer.textureFilepath(), mEntityGroupUid);
 			layer.textureStatus = SceneTextureLayer.TEXTURE_LOADED;
@@ -227,8 +230,6 @@ public class EditorTextureLayerRenderer implements IInputProcessor {
 		}
 
 		if (layer.texture != null) {
-			final var camOffsetX = -layer.centerX - cameraPositionX * layer.translationSpeedModX;
-			final var camOffsetY = -layer.centerY - cameraPositionY * layer.translationSpeedModY;
 
 			final var srcX = camOffsetX;
 			final var srcY = camOffsetY;
@@ -253,7 +254,7 @@ public class EditorTextureLayerRenderer implements IInputProcessor {
 			spriteBatch.setColorWhite();
 			spriteBatch.begin(core.gameCamera());
 
-			final var zDepth = 9.9f - (layer.zDepth * 0.01f);
+			final var zDepth = 9.f - layer.zDepth;
 			spriteBatch.draw(layer.texture, srcX, srcY, srcW, srcH, dstX, dstY, dstWidth, dstHeight, zDepth);
 			spriteBatch.end();
 			return;

@@ -56,7 +56,7 @@ public class SceneSpriteLayer extends SceneBaseLayer {
 	public BaseSceneLayerSaveDefinition getSaveDefinition() {
 		final var saveDefinition = new SceneSpritesLayerSaveDefinition();
 
-		fillBaseSceneLayerInfo(saveDefinition);
+		fillBaseSceneLayerSaveDefinition(saveDefinition);
 
 		final int numSprites = mSprites.size();
 		for (int i = 0; i < numSprites; i++) {

@@ -1,12 +1,12 @@
 {
-  "spriteSheetName": "SPRITESHEET_PROPS",
-  "textureName": "TEXTURE_PROPS",
-  "textureFileName": "res/textures/textureProps.png",
+  "spriteSheetName": "SPRITESHEET_SPRITESGAME",
+  "textureName": "TEXTURE_SPRITESGAME",
+  "textureFileName": "res/textures/texturespritesgame.png",
   "spriteFrames": [
     {
       "name": "CARS_BACKGROUND1",
       "x": 0,
-      "y": 34,
+      "y": 0,
       "w": 128,
       "h": 48,
       "pivotX": 0,
@@ -19,7 +19,7 @@
     {
       "name": "CARS_BACKGROUND2",
       "x": 130,
-      "y": 34,
+      "y": 0,
       "w": 128,
       "h": 48,
       "pivotX": 0,
@@ -32,7 +32,7 @@
     {
       "name": "CARS_BACKGROUND3",
       "x": 260,
-      "y": 34,
+      "y": 0,
       "w": 128,
       "h": 48,
       "pivotX": 0,
@@ -45,7 +45,7 @@
     {
       "name": "CARS_BACKGROUND4",
       "x": 0,
-      "y": 84,
+      "y": 50,
       "w": 128,
       "h": 48,
       "pivotX": 0,
@@ -58,7 +58,7 @@
     {
       "name": "CARS_BACKGROUND5",
       "x": 130,
-      "y": 84,
+      "y": 50,
       "w": 128,
       "h": 48,
       "pivotX": 0,
@@ -71,7 +71,7 @@
     {
       "name": "CARS_BACKGROUND6",
       "x": 260,
-      "y": 84,
+      "y": 50,
       "w": 128,
       "h": 48,
       "pivotX": 0,
@@ -84,7 +84,7 @@
     {
       "name": "CARS_BACKGROUND7",
       "x": 0,
-      "y": 134,
+      "y": 100,
       "w": 128,
       "h": 48,
       "pivotX": 0,
@@ -97,7 +97,7 @@
     {
       "name": "CARS_BACKGROUND8",
       "x": 130,
-      "y": 134,
+      "y": 100,
       "w": 128,
       "h": 48,
       "pivotX": 0,
@@ -109,8 +109,8 @@
     },
     {
       "name": "TEXTUREPUMPSTATION00",
-      "x": 72,
-      "y": 184,
+      "x": 260,
+      "y": 100,
       "w": 80,
       "h": 48,
       "pivotX": 0,
@@ -122,8 +122,8 @@
     },
     {
       "name": "TEXTUREPUMPSTATION01",
-      "x": 154,
-      "y": 184,
+      "x": 342,
+      "y": 100,
       "w": 80,
       "h": 48,
       "pivotX": 0,
@@ -135,8 +135,8 @@
     },
     {
       "name": "TEXTUREPUMPSTATION02",
-      "x": 236,
-      "y": 184,
+      "x": 424,
+      "y": 100,
       "w": 80,
       "h": 48,
       "pivotX": 0,
@@ -148,8 +148,8 @@
     },
     {
       "name": "TEXTUREPUMPSTATION03",
-      "x": 318,
-      "y": 184,
+      "x": 0,
+      "y": 150,
       "w": 80,
       "h": 48,
       "pivotX": 0,
@@ -160,48 +160,9 @@
       "anchorPoints": []
     },
     {
-      "name": "TEXTURE_UPPER_RED_00_GLASS",
-      "x": 260,
-      "y": 134,
-      "w": 83,
-      "h": 43,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "TEXTURE_UPPER_RED_00",
-      "x": 345,
-      "y": 134,
-      "w": 83,
-      "h": 43,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "SOCCER",
-      "x": 244,
-      "y": 0,
-      "w": 128,
-      "h": 16,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
       "name": "TEXTUREWAREHOUSE",
-      "x": 400,
-      "y": 184,
+      "x": 82,
+      "y": 150,
       "w": 80,
       "h": 24,
       "pivotX": 0,
@@ -213,8 +174,8 @@
     },
     {
       "name": "TEXTUREWHEATEMPTY",
-      "x": 0,
-      "y": 234,
+      "x": 164,
+      "y": 150,
       "w": 80,
       "h": 24,
       "pivotX": 0,
@@ -226,8 +187,8 @@
     },
     {
       "name": "TEXTUREWHEATFULL1",
-      "x": 82,
-      "y": 234,
+      "x": 246,
+      "y": 150,
       "w": 80,
       "h": 24,
       "pivotX": 0,
@@ -239,8 +200,8 @@
     },
     {
       "name": "TEXTUREWHEATFULL2",
-      "x": 164,
-      "y": 234,
+      "x": 328,
+      "y": 150,
       "w": 80,
       "h": 24,
       "pivotX": 0,
@@ -252,8 +213,8 @@
     },
     {
       "name": "TEXTUREWHEATFULL3",
-      "x": 246,
-      "y": 234,
+      "x": 410,
+      "y": 150,
       "w": 80,
       "h": 24,
       "pivotX": 0,
@@ -265,8 +226,8 @@
     },
     {
       "name": "TEXTUREWHEATHALF",
-      "x": 328,
-      "y": 234,
+      "x": 0,
+      "y": 200,
       "w": 80,
       "h": 24,
       "pivotX": 0,
@@ -277,152 +238,9 @@
       "anchorPoints": []
     },
     {
-      "name": "TEXTURE_UPPER_GREEN_00_GLASS",
-      "x": 390,
-      "y": 84,
-      "w": 54,
-      "h": 28,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "TEXTURE_UPPER_GREEN_00",
-      "x": 446,
-      "y": 84,
-      "w": 54,
-      "h": 28,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "AIRCOND_00",
-      "x": 0,
-      "y": 0,
-      "w": 40,
-      "h": 32,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "AIRCOND_01",
-      "x": 42,
-      "y": 0,
-      "w": 40,
-      "h": 32,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "AIRCOND_02",
-      "x": 84,
-      "y": 0,
-      "w": 40,
-      "h": 32,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "AIRCOND_03",
-      "x": 126,
-      "y": 0,
-      "w": 40,
-      "h": 32,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "AIRCOND_04",
-      "x": 168,
-      "y": 0,
-      "w": 40,
-      "h": 32,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "TEXTURE_LOWER_RED_00_GLASS",
-      "x": 390,
-      "y": 34,
-      "w": 48,
-      "h": 25,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "TEXTURE_LOWER_RED_00",
-      "x": 440,
-      "y": 34,
-      "w": 48,
-      "h": 25,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "TEXTURE_UPPER_RED_02_GLASS",
-      "x": 430,
-      "y": 134,
-      "w": 54,
-      "h": 19,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "TEXTURE_UPPER_RED_02",
-      "x": 430,
-      "y": 155,
-      "w": 54,
-      "h": 19,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
       "name": "TEXTURECONTAINERWATER00",
-      "x": 0,
-      "y": 184,
+      "x": 390,
+      "y": 50,
       "w": 16,
       "h": 48,
       "pivotX": 0,
@@ -434,8 +252,8 @@
     },
     {
       "name": "TEXTURECONTAINERWATER01",
-      "x": 18,
-      "y": 184,
+      "x": 408,
+      "y": 50,
       "w": 16,
       "h": 48,
       "pivotX": 0,
@@ -447,8 +265,8 @@
     },
     {
       "name": "TEXTURECONTAINERWATER02",
-      "x": 36,
-      "y": 184,
+      "x": 426,
+      "y": 50,
       "w": 16,
       "h": 48,
       "pivotX": 0,
@@ -460,8 +278,8 @@
     },
     {
       "name": "TEXTURECONTAINERWATER03",
-      "x": 54,
-      "y": 184,
+      "x": 444,
+      "y": 50,
       "w": 16,
       "h": 48,
       "pivotX": 0,
@@ -472,86 +290,8 @@
       "anchorPoints": []
     },
     {
-      "name": "TEXTURE_UPPER_RED_01_GLASS",
-      "x": 464,
-      "y": 61,
-      "w": 39,
-      "h": 17,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "TEXTURE_UPPER_RED_01",
-      "x": 390,
-      "y": 114,
-      "w": 39,
-      "h": 17,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "TEXTURE_LOWER_GREEN_00_GLASS",
-      "x": 374,
-      "y": 0,
-      "w": 46,
-      "h": 14,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "TEXTURE_LOWER_GREEN_00",
-      "x": 422,
-      "y": 0,
-      "w": 46,
-      "h": 14,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "TEXTURE_UPPER_GREEN_01_GLASS",
-      "x": 390,
-      "y": 61,
-      "w": 35,
-      "h": 17,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "TEXTURE_UPPER_GREEN_01",
-      "x": 427,
-      "y": 61,
-      "w": 35,
-      "h": 17,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
       "name": "HARVESTER",
-      "x": 210,
+      "x": 390,
       "y": 0,
       "w": 32,
       "h": 16,
@@ -563,9 +303,9 @@
       "anchorPoints": []
     },
     {
-      "name": "TEXTUREENGINEFLARE",
-      "x": 490,
-      "y": 34,
+      "name": "SOCCER_00",
+      "x": 424,
+      "y": 0,
       "w": 16,
       "h": 16,
       "pivotX": 0,
@@ -576,9 +316,9 @@
       "anchorPoints": []
     },
     {
-      "name": "TEXTURELIGHTGLOW",
-      "x": 431,
-      "y": 114,
+      "name": "SOCCER_01",
+      "x": 442,
+      "y": 0,
       "w": 16,
       "h": 16,
       "pivotX": 0,
@@ -589,9 +329,9 @@
       "anchorPoints": []
     },
     {
-      "name": "VEHICLE_GREEN_LOWER_00",
-      "x": 449,
-      "y": 114,
+      "name": "SOCCER_02",
+      "x": 460,
+      "y": 0,
       "w": 16,
       "h": 16,
       "pivotX": 0,
@@ -602,9 +342,9 @@
       "anchorPoints": []
     },
     {
-      "name": "VEHICLE_GREEN_UPPER_00",
-      "x": 467,
-      "y": 114,
+      "name": "SOCCER_03",
+      "x": 478,
+      "y": 0,
       "w": 16,
       "h": 16,
       "pivotX": 0,
@@ -615,9 +355,9 @@
       "anchorPoints": []
     },
     {
-      "name": "VEHICLE_RED_LOWER_00",
-      "x": 485,
-      "y": 114,
+      "name": "SOCCER_04",
+      "x": 496,
+      "y": 0,
       "w": 16,
       "h": 16,
       "pivotX": 0,
@@ -628,9 +368,35 @@
       "anchorPoints": []
     },
     {
-      "name": "VEHICLE_RED_UPPER_00",
-      "x": 486,
-      "y": 134,
+      "name": "SOCCER_05",
+      "x": 390,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "pivotX": 0,
+      "pivotY": 0,
+      "scaleX": 1.0,
+      "scaleY": 1.0,
+      "anchorToPointName": null,
+      "anchorPoints": []
+    },
+    {
+      "name": "SOCCER_06",
+      "x": 408,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "pivotX": 0,
+      "pivotY": 0,
+      "scaleX": 1.0,
+      "scaleY": 1.0,
+      "anchorToPointName": null,
+      "anchorPoints": []
+    },
+    {
+      "name": "SOCCER_07",
+      "x": 426,
+      "y": 18,
       "w": 16,
       "h": 16,
       "pivotX": 0,
@@ -642,8 +408,8 @@
     },
     {
       "name": "WHITE",
-      "x": 486,
-      "y": 155,
+      "x": 462,
+      "y": 50,
       "w": 16,
       "h": 16,
       "pivotX": 0,
@@ -654,37 +420,11 @@
       "anchorPoints": []
     },
     {
-      "name": "TEXTURECARGOWATER",
-      "x": 470,
-      "y": 0,
-      "w": 5,
-      "h": 7,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
       "name": "TEXTURECARGOWHEAT",
-      "x": 477,
-      "y": 0,
+      "x": 444,
+      "y": 18,
       "w": 5,
       "h": 7,
-      "pivotX": 0,
-      "pivotY": 0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "anchorToPointName": null,
-      "anchorPoints": []
-    },
-    {
-      "name": "TEXTUREENGINEGLOW",
-      "x": 484,
-      "y": 0,
-      "w": 4,
-      "h": 2,
       "pivotX": 0,
       "pivotY": 0,
       "scaleX": 1.0,
@@ -700,22 +440,9 @@
       "frameDuration": 120,
       "minimumViableRuntime": 0,
       "animationSpriteIndices": [
-        17,
-        18,
-        19
-      ]
-    },
-    "aircond": {
-      "animationName": "aircond",
-      "loopAnimation": true,
-      "frameDuration": 100,
-      "minimumViableRuntime": 0,
-      "animationSpriteIndices": [
-        23,
-        24,
-        25,
-        26,
-        27
+        14,
+        15,
+        16
       ]
     },
     "waterstation": {
@@ -736,10 +463,10 @@
       "frameDuration": 150,
       "minimumViableRuntime": 0,
       "animationSpriteIndices": [
-        32,
-        33,
-        34,
-        35
+        18,
+        19,
+        20,
+        21
       ]
     },
     "carstream": {
@@ -756,6 +483,22 @@
         5,
         6,
         7
+      ]
+    },
+    "soccer": {
+      "animationName": "soccer",
+      "loopAnimation": true,
+      "frameDuration": 150,
+      "minimumViableRuntime": 0,
+      "animationSpriteIndices": [
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
       ]
     }
   }

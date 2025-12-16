@@ -69,7 +69,7 @@ public class ShipRenderer extends BaseRenderer {
 	public void loadResources(ResourceManager resourceManager) {
 		super.loadResources(resourceManager);
 
-		mShipSpritesheet = resourceManager.spriteSheetManager().getSpriteSheet("SPRITESHEET_PROPS", ConstantsGame.GAME_RESOURCE_GROUP_ID);
+		mShipSpritesheet = resourceManager.spriteSheetManager().getSpriteSheet("SPRITESHEET_SPRITESGAME", ConstantsGame.GAME_RESOURCE_GROUP_ID);
 
 		mTrailRenderer.loadResources(resourceManager);
 	}

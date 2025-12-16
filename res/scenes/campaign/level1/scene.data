@@ -74,26 +74,12 @@
     ],
     "spriteLayers": [
       {
-        "spriteInstances": [],
-        "layerUid": 4,
-        "layerZDepth": 4,
-        "layerName": "Anim Layer 0",
-        "translationSpeedModX": 0.0,
-        "translationSpeedModY": 0.0,
-        "centerX": 0.0,
-        "centerY": 0.0,
-        "width": 64.0,
-        "height": 64.0,
-        "contentScaleX": 1.0,
-        "contentScaleY": 1.0
-      },
-      {
         "spriteInstances": [
           {
             "assetDefinitionName": "ASSET_AIRCOND",
             "destinationRectangle": {
-              "x": -25.052078,
-              "y": -30.573547,
+              "x": 66.94795,
+              "y": 35.426437,
               "w": 14.6666565,
               "h": 12.666672,
               "scaleX": 1.0,
@@ -108,8 +94,8 @@
           {
             "assetDefinitionName": "ASSET_FLYINGCARS",
             "destinationRectangle": {
-              "x": -202.00006,
-              "y": 8.833351,
+              "x": -206.33339,
+              "y": 16.500023,
               "w": 45.33333,
               "h": 32.0,
               "scaleX": 1.0,
@@ -124,10 +110,10 @@
           {
             "assetDefinitionName": "ASSET_SOCCER",
             "destinationRectangle": {
-              "x": 0.33328247,
-              "y": 74.16664,
-              "w": 32.0,
-              "h": 32.0,
+              "x": 71.72092,
+              "y": 92.84874,
+              "w": 13.333298,
+              "h": 12.6666565,
               "scaleX": 1.0,
               "scaleY": 1.0,
               "pivotX": 0.0,
@@ -140,9 +126,9 @@
           {
             "assetDefinitionName": "ASSET_FLYINGCARS",
             "destinationRectangle": {
-              "x": 53.781372,
-              "y": 53.024216,
-              "w": 32.0,
+              "x": 137.44804,
+              "y": 48.024216,
+              "w": 54.333313,
               "h": 32.0,
               "scaleX": 1.0,
               "scaleY": 1.0,
@@ -156,9 +142,9 @@
           {
             "assetDefinitionName": "ASSET_SOCCER",
             "destinationRectangle": {
-              "x": 89.114685,
-              "y": 64.024216,
-              "w": 32.0,
+              "x": 396.11472,
+              "y": -51.975815,
+              "w": 62.0,
               "h": 32.0,
               "scaleX": 1.0,
               "scaleY": 1.0,
@@ -170,11 +156,11 @@
             "entityUid": 0
           }
         ],
-        "layerUid": 5,
-        "layerZDepth": 5,
-        "layerName": "Anim Layer 1",
-        "translationSpeedModX": 0.0,
-        "translationSpeedModY": 0.0,
+        "layerUid": 4,
+        "layerZDepth": 4,
+        "layerName": "Anim Layer 1 Mid",
+        "translationSpeedModX": 0.1,
+        "translationSpeedModY": 0.02,
         "centerX": 0.0,
         "centerY": 0.0,
         "width": 64.0,
@@ -185,28 +171,15 @@
     ],
     "noiseLayers": [
       {
-        "layerUid": 6,
-        "layerZDepth": 6,
-        "layerName": "Noise Layer 10",
-        "translationSpeedModX": 0.0,
-        "translationSpeedModY": 0.0,
-        "centerX": 297.90945,
-        "centerY": -42.51082,
-        "width": 214.22595,
-        "height": 167.55493,
-        "contentScaleX": 1.0,
-        "contentScaleY": 1.0
-      },
-      {
-        "layerUid": 7,
-        "layerZDepth": 7,
+        "layerUid": 5,
+        "layerZDepth": 5,
         "layerName": "Sewer Clouds",
         "translationSpeedModX": 0.0,
         "translationSpeedModY": 0.0,
-        "centerX": -4.4979553,
-        "centerY": 741.77185,
-        "width": 2122.9817,
-        "height": 604.30676,
+        "centerX": 1.8973083,
+        "centerY": 369.09735,
+        "width": 1024.7263,
+        "height": 290.93466,
         "contentScaleX": 1.0,
         "contentScaleY": 1.0
       }

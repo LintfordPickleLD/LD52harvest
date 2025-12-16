@@ -11,6 +11,7 @@ import net.lintfordlib.assets.ResourceManager;
 import net.lintfordlib.controllers.editor.EditorBrushController;
 import net.lintfordlib.core.LintfordCore;
 import net.lintfordlib.core.debug.Debug;
+import net.lintfordlib.core.geometry.Rectangle;
 import net.lintfordlib.core.input.mouse.IInputProcessor;
 import net.lintfordlib.data.editor.EditorLayerBrush;
 
@@ -31,6 +32,7 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 
 	private ResourceManager mResourceManager;
 	private SceneSpriteInstance mSelectedSceneSpriteInstance;
+	private final Rectangle mSelectedRectangle = new Rectangle();
 
 	private float mMouseX;
 	private float mMouseY;
@@ -192,15 +194,21 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 
 			mSelectedSceneSpriteInstance = null;
 
+			// selection needs to happen in the translated layer space (relative to the camera)
+
+			final var aabb_c = core.gameCamera().boundingRectangle();
+			final var cameraPositionX = aabb_c.centerX();
+			final var cameraPositionY = aabb_c.centerY();
+
+			final var camOffsetX = -layer.centerX + cameraPositionX * layer.translationSpeedModX;
+			final var camOffsetY = -layer.centerY - cameraPositionY * layer.translationSpeedModY;
+
 			final var lLayerAnimations = layer.spriteAssets();
 			final var lNumAnimations = lLayerAnimations.size();
 			for (int j = 0; j < lNumAnimations; j++) {
 				final var assetInstance = lLayerAnimations.get(j);
 
-				if (assetInstance.spriteInstance == null)
-					continue;
-
-				if (assetInstance.destRect.intersectsAA(mMouseX, mMouseY)) {
+				if (assetInstance.destRect.intersectsAA(mMouseX - camOffsetX, mMouseY - camOffsetY)) {
 					mSelectedSceneSpriteInstance = assetInstance;
 					break;
 				}
@@ -247,6 +255,13 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 		if (!layer.visible)
 			return;
 
+		final var aabb_c = core.gameCamera().boundingRectangle();
+		final var cameraPositionX = aabb_c.centerX();
+		final var cameraPositionY = aabb_c.centerY();
+
+		final var camOffsetX = -layer.centerX + cameraPositionX * layer.translationSpeedModX;
+		final var camOffsetY = -layer.centerY - cameraPositionY * layer.translationSpeedModY;
+
 		final var spriteBatch = core.sharedResources().uiSpriteBatch();
 
 		spriteBatch.begin(core.gameCamera());
@@ -256,18 +271,29 @@ public class EditorSpriteLayerRenderer implements IInputProcessor {
 		for (int i = 0; i < numAnimations; i++) {
 			final var assetInstance = layerAnimations.get(i);
 
+			final var destX = assetInstance.destRect.x();
+			final var destY = assetInstance.destRect.y();
+			final var destW = assetInstance.destRect.width();
+			final var destH = assetInstance.destRect.height();
+
+			if (layer.visible) {
+				// Draw soemthing that can be used independently of the spriteInstance (which may fil to load).
+				// TODO: Don't use the fucking debug drawers for this, they're not always available.
+				if (mSelectedSceneSpriteInstance != null && mSelectedSceneSpriteInstance == assetInstance) {
+					Debug.debugManager().drawers().drawRectImmediate(core.gameCamera(), camOffsetX + destX, camOffsetY + destY, destW, destH, 1, 0, 0);
+				} else {
+					Debug.debugManager().drawers().drawRectImmediate(core.gameCamera(), camOffsetX + destX, camOffsetY + destY, destW, destH);
+				}
+			}
+
 			if (!validateSpriteSheetDefinition(assetInstance))
 				continue;
 
 			if (!validateSpriteInstance(assetInstance))
 				continue;
 
-			spriteBatch.draw(assetInstance.spriteSheetDefinition, assetInstance.spriteInstance, assetInstance.destRect, .01f);
+			spriteBatch.draw(assetInstance.spriteSheetDefinition, assetInstance.spriteInstance, camOffsetX + destX, camOffsetY + destY, destW, destH, 9 - layer.zDepth);
 
-			// TODO: Don't use the fucking debug drawers for this, they're not always available.
-			if (mSelectedSceneSpriteInstance == assetInstance) {
-				Debug.debugManager().drawers().drawRectImmediate(core.gameCamera(), assetInstance.destRect);
-			}
 		}
 
 		spriteBatch.end();

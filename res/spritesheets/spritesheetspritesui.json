@@ -1,0 +1,47 @@
+{
+  "spriteSheetName": "SPRITESHEET_SPRITESUI",
+  "textureName": "TEXTURE_SPRITESUI",
+  "textureFileName": "res/textures/texturespritesui.png",
+  "spriteFrames": [
+    {
+      "name": "ICON_AIRCON",
+      "x": 0,
+      "y": 0,
+      "w": 32,
+      "h": 32,
+      "pivotX": 0,
+      "pivotY": 0,
+      "scaleX": 1.0,
+      "scaleY": 1.0,
+      "anchorToPointName": null,
+      "anchorPoints": []
+    },
+    {
+      "name": "ICON_FLYINGCARS",
+      "x": 34,
+      "y": 0,
+      "w": 32,
+      "h": 32,
+      "pivotX": 0,
+      "pivotY": 0,
+      "scaleX": 1.0,
+      "scaleY": 1.0,
+      "anchorToPointName": null,
+      "anchorPoints": []
+    },
+    {
+      "name": "ICON_SOCCER",
+      "x": 68,
+      "y": 0,
+      "w": 32,
+      "h": 32,
+      "pivotX": 0,
+      "pivotY": 0,
+      "scaleX": 1.0,
+      "scaleY": 1.0,
+      "anchorToPointName": null,
+      "anchorPoints": []
+    }
+  ],
+  "animationFramesMap": {}
+}

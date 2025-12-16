@@ -1,5 +1,7 @@
 package lintfordpickle.harvest.renderers.editor;
 
+import org.lwjgl.opengl.GL11;
+
 import lintfordpickle.harvest.controllers.editor.EditorLayerController;
 import lintfordpickle.harvest.controllers.editor.EditorSceneController;
 import lintfordpickle.harvest.controllers.editor.ILayerSelectionListener;
@@ -173,6 +175,8 @@ public class EditorLayersRenderer extends BaseRenderer implements ILayerSelectio
 
 	@Override
 	public void draw(LintfordCore core, RenderPass renderPass) {
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+
 		final var layers = mEditorLayerController.layersManager().layers();
 		final var numLayers = layers.size();
 		for (int i = 0; i < numLayers; i++) {
@@ -190,6 +194,8 @@ public class EditorLayersRenderer extends BaseRenderer implements ILayerSelectio
 
 			}
 		}
+
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
 	}
 
 	// ---------------------------------------------

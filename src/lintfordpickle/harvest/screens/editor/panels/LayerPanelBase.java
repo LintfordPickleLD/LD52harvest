@@ -7,7 +7,7 @@ import net.lintfordlib.core.input.InputManager;
 import net.lintfordlib.renderers.editor.panels.UiPanel;
 import net.lintfordlib.renderers.windows.UiWindow;
 
-public abstract class LayerPanel<T extends SceneBaseLayer> extends UiPanel {
+public abstract class LayerPanelBase<T extends SceneBaseLayer> extends UiPanel {
 
 	// --------------------------------------
 	// Variables
@@ -29,7 +29,7 @@ public abstract class LayerPanel<T extends SceneBaseLayer> extends UiPanel {
 	// Constructor
 	// --------------------------------------
 
-	public LayerPanel(UiWindow parentWindow, String panelName, int entityGroupUid) {
+	public LayerPanelBase(UiWindow parentWindow, String panelName, int entityGroupUid) {
 		super(parentWindow, panelName, entityGroupUid);
 
 		mRenderPanelTitle = true;

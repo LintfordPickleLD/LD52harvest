@@ -36,20 +36,6 @@
 			"wrapTIndex":1
 		},
 		{
-			"textureName":"TEXTURE_ASSETS",
-			"filepath":"res/textures/textureAssets.png",
-			"filterIndex":1,
-			"wrapSIndex":1,
-			"wrapTIndex":1
-		},
-		{
-			"textureName":"TEXTURE_PROPS",
-			"filepath":"res/textures/textureProps.png",
-			"filterIndex":1,
-			"wrapSIndex":1,
-			"wrapTIndex":1
-		},
-		{
 			"textureName":"TEXTURE_SCENE_SKY",
 			"filepath":"res/textures/scene/textureSceneSky.png",
 			"filterIndex":1,

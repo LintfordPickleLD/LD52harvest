@@ -2,7 +2,9 @@
 	"spriteSheetLocations" : [
 		"res/spritesheets/spritesheetCore.json",
 		"res/spritesheets/spritesheetHud.json",
-		"res/spritesheets/spritesheetProps.json",
+		"res/spritesheets/spritesheetspritesui.json",
+		"res/spritesheets/spritesheetspritesmenu.json",
+		"res/spritesheets/spritesheetspritesgame.json",
 		"res/spritesheets/spritesheetParticles.json",
 		"res/spritesheets/spritesheetAdWallSoup.json"
 	]

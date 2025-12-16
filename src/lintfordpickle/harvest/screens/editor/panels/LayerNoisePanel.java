@@ -15,7 +15,7 @@ import net.lintfordlib.renderers.windows.components.UiInputInteger;
 import net.lintfordlib.renderers.windows.components.UiInputText;
 import net.lintfordlib.renderers.windows.components.UiLabel;
 
-public class LayerNoisePanel extends LayerPanel<SceneNoiseLayer> implements IUiInputKeyPressCallback {
+public class LayerNoisePanel extends LayerPanelBase<SceneNoiseLayer> implements IUiInputKeyPressCallback {
 
 	// --------------------------------------
 	// Constants

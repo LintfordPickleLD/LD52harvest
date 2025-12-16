@@ -38,6 +38,15 @@ public class SceneSpritesLayerSaveDefinition extends BaseSceneLayerSaveDefinitio
 		spriteLayer.zDepth = layerZDepth;
 		spriteLayer.name = layerName;
 
+		spriteLayer.translationSpeedModX = translationSpeedModX;
+		spriteLayer.translationSpeedModY = translationSpeedModY;
+
+		spriteLayer.centerX = centerX;
+		spriteLayer.centerY = centerY;
+
+		spriteLayer.width = width;
+		spriteLayer.height = height;
+
 		final var numSprites = spriteInstances.size();
 		for (int i = 0; i < numSprites; i++) {
 			final var spriteToLoad = spriteInstances.get(i);

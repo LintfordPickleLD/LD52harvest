@@ -64,19 +64,32 @@ public class SceneLayerSpriteRenderer {
 	public void draw(LintfordCore core, SceneSpriteLayer layer) {
 		final var spriteBatch = mRendererManager.sharedResources().uiSpriteBatch();
 
+		final var aabb_c = core.gameCamera().boundingRectangle();
+		final var cameraPositionX = aabb_c.centerX();
+		final var cameraPositionY = aabb_c.centerY();
+
+		final var camOffsetX = -layer.centerX + cameraPositionX * layer.translationSpeedModX;
+		final var camOffsetY = -layer.centerY - cameraPositionY * layer.translationSpeedModY;
+
 		spriteBatch.setColorWhite();
 		spriteBatch.begin(core.gameCamera());
 
 		final var layerAnimations = layer.spriteAssets();
 		final var numAnimations = layerAnimations.size();
 		for (int i = 0; i < numAnimations; i++) {
-			final var lSpriteInstance = layerAnimations.get(i);
+			final var spriteInstance = layerAnimations.get(i);
 
 			// basically, if we couldn't resolve the sprite during loading, then we can' do it now either
-			if (lSpriteInstance.spriteInstStatus != SceneSpriteInstance.STATUS_LOADED)
+			if (spriteInstance.spriteInstStatus != SceneSpriteInstance.STATUS_LOADED)
 				continue;
 
-			spriteBatch.draw(lSpriteInstance.spriteSheetDefinition, lSpriteInstance.spriteInstance, lSpriteInstance.destRect, .01f);
+			final var destX = spriteInstance.destRect.x();
+			final var destY = spriteInstance.destRect.y();
+			final var destW = spriteInstance.destRect.width();
+			final var destH = spriteInstance.destRect.height();
+
+			spriteBatch.draw(spriteInstance.spriteSheetDefinition, spriteInstance.spriteInstance, camOffsetX + destX, camOffsetY + destY, destW, destH, 9 - layer.zDepth);
+
 		}
 
 		spriteBatch.end();

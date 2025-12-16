@@ -3,13 +3,14 @@
     "displayName": "Aircon",
     
     "sceneSpriteContainer": {
-	    "spritesheetDefinitionName": "SPRITESHEET_PROPS",
-	    "spritesheetDefinitionFilename": "res/spritesheets/spritesheetProps.json",
+	    "spritesheetDefinitionName": "SPRITESHEET_SPRITESMENU",
+	    "spritesheetDefinitionFilename": "res/spritesheets/spritesheetspritesmenu.json",
 	    "spriteName": "aircond"
     },
+	
 	"iconSpriteContainer" : {
-	    "spritesheetDefinitionName": "SPRITESHEET_ASSETS",
-	    "spritesheetDefinitionFilename": "res/spritesheets/spritesheetAssets.json",
+	    "spritesheetDefinitionName": "SPRITESHEET_SPRITESUI",
+	    "spritesheetDefinitionFilename": "res/spritesheets/spritesheetspritesui.json",
 	    "spriteName": "ICON_AIRCON"
     } 
 }

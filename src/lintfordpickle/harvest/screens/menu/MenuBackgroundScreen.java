@@ -240,7 +240,7 @@ public class MenuBackgroundScreen extends Screen {
 		mForegroundRightTexture = resourceManager.textureManager().loadTexture("TEXTURE_MENU_FOREGROUND_RIGHT", "res/textures/textureMenuForegroundRight.png", entityGroupUid());
 
 		mCoreSpritesheet = resourceManager.spriteSheetManager().coreSpritesheet();
-		mPropsSpritesheet = resourceManager.spriteSheetManager().getSpriteSheet("SPRITESHEET_PROPS", ConstantsGame.GAME_RESOURCE_GROUP_ID);
+		mPropsSpritesheet = resourceManager.spriteSheetManager().getSpriteSheet("SPRITESHEET_SPRITESMENU", ConstantsGame.GAME_RESOURCE_GROUP_ID);
 		mAdWallSpritesheet = resourceManager.spriteSheetManager().getSpriteSheet("SPRITESHEET_ADWALLSOUP", ConstantsGame.GAME_RESOURCE_GROUP_ID);
 
 		mAdWallSoup = mAdWallSpritesheet.getSpriteInstance("play");

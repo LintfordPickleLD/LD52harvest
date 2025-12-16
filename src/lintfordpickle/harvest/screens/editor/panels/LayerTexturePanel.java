@@ -16,7 +16,7 @@ import net.lintfordlib.renderers.windows.components.UiInputInteger;
 import net.lintfordlib.renderers.windows.components.UiInputText;
 import net.lintfordlib.renderers.windows.components.UiLabel;
 
-public class LayerTexturePanel extends LayerPanel<SceneTextureLayer> implements IUiInputKeyPressCallback {
+public class LayerTexturePanel extends LayerPanelBase<SceneTextureLayer> implements IUiInputKeyPressCallback {
 
 	// --------------------------------------
 	// Constants

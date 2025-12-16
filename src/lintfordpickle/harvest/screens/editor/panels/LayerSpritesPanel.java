@@ -20,7 +20,7 @@ import net.lintfordlib.renderers.windows.components.UiInputText;
 import net.lintfordlib.renderers.windows.components.UiLabel;
 import net.lintfordlib.renderers.windows.components.UiListBoxImageItem;
 
-public class LayerSpritesPanel extends LayerPanel<SceneSpriteLayer> implements IUiInputKeyPressCallback {
+public class LayerSpritesPanel extends LayerPanelBase<SceneSpriteLayer> implements IUiInputKeyPressCallback {
 
 	// --------------------------------------
 	// Constants
