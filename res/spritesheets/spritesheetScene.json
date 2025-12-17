@@ -1,6 +1,7 @@
 {
   "spriteSheetName": "SPRITESHEET_SCENE",
   "textureName": "TEXTURE_SCENE",
+  "textureFileName": null,
   "spriteFrames": [],
   "animationFramesMap": {}
 }

@@ -24,7 +24,7 @@
   "forcePoTTextures": true,
   "autoSizeTexture": false,
   "itemFilenames": [
-    "spritesgame\\*.*"
+    "D:\\dev\\java\\ludumdare\\52 - Harvest\\projects\\LD52_Harvest\\raw\\spritesheets\\spritesgame\\*.*"
   ],
   "animationItems": {
     "textureWheatFull": {
@@ -82,6 +82,15 @@
         "SOCCER_05",
         "SOCCER_06",
         "SOCCER_07"
+      ]
+    },
+    "aircond_brown": {
+      "loopAnimation": true,
+      "frameDuration": 150,
+      "animationSprites": [
+        "AIRCOND_00",
+        "AIRCOND_01",
+        "AIRCOND_02"
       ]
     }
   }

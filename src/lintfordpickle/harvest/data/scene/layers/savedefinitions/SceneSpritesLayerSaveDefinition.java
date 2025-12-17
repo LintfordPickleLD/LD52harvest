@@ -35,7 +35,7 @@ public class SceneSpritesLayerSaveDefinition extends BaseSceneLayerSaveDefinitio
 	@Override
 	public SceneBaseLayer getSceneLayer() {
 		final var spriteLayer = new SceneSpriteLayer(layerUid);
-		spriteLayer.zDepth = layerZDepth;
+		spriteLayer.zInvDepth = layerZInvDepth;
 		spriteLayer.name = layerName;
 
 		spriteLayer.translationSpeedModX = translationSpeedModX;

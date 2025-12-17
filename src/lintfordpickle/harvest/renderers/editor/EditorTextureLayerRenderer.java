@@ -254,7 +254,8 @@ public class EditorTextureLayerRenderer implements IInputProcessor {
 			spriteBatch.setColorWhite();
 			spriteBatch.begin(core.gameCamera());
 
-			final var zDepth = 9.f - layer.zDepth;
+			final var zDepth = 9.f - layer.zInvDepth;
+			System.out.println("texture: " + zDepth);
 			spriteBatch.draw(layer.texture, srcX, srcY, srcW, srcH, dstX, dstY, dstWidth, dstHeight, zDepth);
 			spriteBatch.end();
 			return;

@@ -15,7 +15,7 @@
         "textureName": "TEXTURE_SKY",
         "texturePath": "res/textures/scene/textureSceneSky.png",
         "layerUid": 0,
-        "layerZDepth": 0,
+        "layerZInvDepth": 0.0,
         "layerName": "Sky",
         "translationSpeedModX": 0.3,
         "translationSpeedModY": 0.004,
@@ -30,7 +30,7 @@
         "textureName": "TEXTURE_FARGROUND",
         "texturePath": "res/textures/scene/textureSceneBackgroundfar.png",
         "layerUid": 1,
-        "layerZDepth": 1,
+        "layerZInvDepth": 0.05,
         "layerName": "Background Far",
         "translationSpeedModX": 0.2,
         "translationSpeedModY": 0.004,
@@ -45,7 +45,7 @@
         "textureName": "TEXTURE_MIDGROUND",
         "texturePath": "res/textures/scene/textureSceneBackgroundMid.png",
         "layerUid": 2,
-        "layerZDepth": 2,
+        "layerZInvDepth": 0.1,
         "layerName": "Background Mid",
         "translationSpeedModX": 0.1,
         "translationSpeedModY": 0.02,
@@ -60,7 +60,7 @@
         "textureName": "TEXTURE_COLLIDABLES",
         "texturePath": "res/textures/scene/textureSceneCollidables.png",
         "layerUid": 3,
-        "layerZDepth": 3,
+        "layerZInvDepth": 0.15,
         "layerName": "Foreground",
         "translationSpeedModX": 0.0,
         "translationSpeedModY": 0.0,
@@ -76,22 +76,6 @@
       {
         "spriteInstances": [
           {
-            "assetDefinitionName": "ASSET_AIRCOND",
-            "destinationRectangle": {
-              "x": 66.94795,
-              "y": 35.426437,
-              "w": 14.6666565,
-              "h": 12.666672,
-              "scaleX": 1.0,
-              "scaleY": 1.0,
-              "pivotX": 0.0,
-              "pivotY": 0.0,
-              "mFlipHorizontal": false,
-              "mFlipVertical": false
-            },
-            "entityUid": 0
-          },
-          {
             "assetDefinitionName": "ASSET_FLYINGCARS",
             "destinationRectangle": {
               "x": -206.33339,
@@ -106,14 +90,29 @@
               "mFlipVertical": false
             },
             "entityUid": 0
-          },
+          }
+        ],
+        "layerUid": 4,
+        "layerZInvDepth": 0.2,
+        "layerName": "Anim Layer 1 Mid",
+        "translationSpeedModX": 0.1,
+        "translationSpeedModY": 0.02,
+        "centerX": 0.0,
+        "centerY": 0.0,
+        "width": 64.0,
+        "height": 64.0,
+        "contentScaleX": 1.0,
+        "contentScaleY": 1.0
+      },
+      {
+        "spriteInstances": [
           {
-            "assetDefinitionName": "ASSET_SOCCER",
+            "assetDefinitionName": "ASSET_AIRCOND_BROWN_0",
             "destinationRectangle": {
-              "x": 71.72092,
-              "y": 92.84874,
-              "w": 13.333298,
-              "h": 12.6666565,
+              "x": -25.220612,
+              "y": -16.168137,
+              "w": 16.0,
+              "h": 16.0,
               "scaleX": 1.0,
               "scaleY": 1.0,
               "pivotX": 0.0,
@@ -124,11 +123,27 @@
             "entityUid": 0
           },
           {
-            "assetDefinitionName": "ASSET_FLYINGCARS",
+            "assetDefinitionName": "ASSET_AIRCOND_BROWN_0",
             "destinationRectangle": {
-              "x": 137.44804,
-              "y": 48.024216,
-              "w": 54.333313,
+              "x": -24.735474,
+              "y": -62.682373,
+              "w": 16.0,
+              "h": 16.0,
+              "scaleX": 1.0,
+              "scaleY": 1.0,
+              "pivotX": 0.0,
+              "pivotY": 0.0,
+              "mFlipHorizontal": false,
+              "mFlipVertical": false
+            },
+            "entityUid": 0
+          },
+          {
+            "assetDefinitionName": "ASSET_SOCCER",
+            "destinationRectangle": {
+              "x": 63.318146,
+              "y": 73.02574,
+              "w": 32.0,
               "h": 32.0,
               "scaleX": 1.0,
               "scaleY": 1.0,
@@ -140,12 +155,60 @@
             "entityUid": 0
           },
           {
-            "assetDefinitionName": "ASSET_SOCCER",
+            "assetDefinitionName": "ASSET_AIRCOND_BROWN_0",
             "destinationRectangle": {
-              "x": 396.11472,
-              "y": -51.975815,
-              "w": 62.0,
-              "h": 32.0,
+              "x": -18.90628,
+              "y": -240.69733,
+              "w": 16.0,
+              "h": 16.0,
+              "scaleX": 1.0,
+              "scaleY": 1.0,
+              "pivotX": 0.0,
+              "pivotY": 0.0,
+              "mFlipHorizontal": false,
+              "mFlipVertical": false
+            },
+            "entityUid": 0
+          },
+          {
+            "assetDefinitionName": "ASSET_AIRCOND_BROWN_0",
+            "destinationRectangle": {
+              "x": -18.717255,
+              "y": -258.67746,
+              "w": 16.0,
+              "h": 16.0,
+              "scaleX": 1.0,
+              "scaleY": 1.0,
+              "pivotX": 0.0,
+              "pivotY": 0.0,
+              "mFlipHorizontal": false,
+              "mFlipVertical": false
+            },
+            "entityUid": 0
+          },
+          {
+            "assetDefinitionName": "ASSET_AIRCOND_BROWN_0",
+            "destinationRectangle": {
+              "x": -460.32413,
+              "y": 128.05713,
+              "w": 16.0,
+              "h": 16.0,
+              "scaleX": 1.0,
+              "scaleY": 1.0,
+              "pivotX": 0.0,
+              "pivotY": 0.0,
+              "mFlipHorizontal": false,
+              "mFlipVertical": false
+            },
+            "entityUid": 0
+          },
+          {
+            "assetDefinitionName": "ASSET_AIRCOND_BROWN_0",
+            "destinationRectangle": {
+              "x": 244.11966,
+              "y": 226.62703,
+              "w": 16.0,
+              "h": 16.0,
               "scaleX": 1.0,
               "scaleY": 1.0,
               "pivotX": 0.0,
@@ -156,23 +219,23 @@
             "entityUid": 0
           }
         ],
-        "layerUid": 4,
-        "layerZDepth": 4,
-        "layerName": "Anim Layer 1 Mid",
-        "translationSpeedModX": 0.1,
-        "translationSpeedModY": 0.02,
+        "layerUid": 5,
+        "layerZInvDepth": 0.25,
+        "layerName": "Anim LaYER 2 Fore",
+        "translationSpeedModX": 0.0,
+        "translationSpeedModY": 0.0,
         "centerX": 0.0,
         "centerY": 0.0,
-        "width": 64.0,
-        "height": 64.0,
+        "width": 16.5,
+        "height": 16.2,
         "contentScaleX": 1.0,
         "contentScaleY": 1.0
       }
     ],
     "noiseLayers": [
       {
-        "layerUid": 5,
-        "layerZDepth": 5,
+        "layerUid": 6,
+        "layerZInvDepth": 0.3,
         "layerName": "Sewer Clouds",
         "translationSpeedModX": 0.0,
         "translationSpeedModY": 0.0,

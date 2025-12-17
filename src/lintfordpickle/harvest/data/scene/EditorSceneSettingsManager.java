@@ -56,7 +56,7 @@ public class EditorSceneSettingsManager extends BaseEditorInstanceManager {
 	// --------------------------------------
 
 	@Override
-	public void storeInTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void storeInTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		final var lSceneSettingsSaveDefinition = sceneSaveDefinition.sceneSettingsSaveDefinition();
 		lSceneSettingsSaveDefinition.sceneWidth = mSceneWidthInPx;
 		lSceneSettingsSaveDefinition.sceneHeight = mSceneHeightInPx;
@@ -64,7 +64,7 @@ public class EditorSceneSettingsManager extends BaseEditorInstanceManager {
 	}
 
 	@Override
-	public void loadFromTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void loadFromTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		final var lSceneSettingsSaveDefinition = sceneSaveDefinition.sceneSettingsSaveDefinition();
 		mSceneWidthInPx = lSceneSettingsSaveDefinition.sceneWidth;
 		mSceneHeightInPx = lSceneSettingsSaveDefinition.sceneHeight;

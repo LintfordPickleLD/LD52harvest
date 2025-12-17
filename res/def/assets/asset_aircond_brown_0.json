@@ -1,0 +1,21 @@
+{
+    "name": "ASSET_AIRCOND_BROWN_0",
+    "displayName": "Aircon",
+    
+    "sceneSpriteContainer": {
+	    "spritesheetDefinitionName": "SPRITESHEET_SPRITESGAME",
+	    "spritesheetDefinitionFilename": "res/spritesheets/spritesheetspritesgame.json",
+	    "spriteName": "aircond_brown"
+    },
+	
+	"iconSpriteContainer" : {
+	    "spritesheetDefinitionName": "SPRITESHEET_SPRITESUI",
+	    "spritesheetDefinitionFilename": "res/spritesheets/spritesheetspritesui.json",
+	    "spriteName": "ICON_AIRCOND_BROWN_0"
+    },
+	
+	"propDefaultRadius": 16,
+	"propDefaultWidth": 16,
+	"propDefaultHeight": 16
+	
+}

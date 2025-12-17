@@ -63,7 +63,7 @@ public class EditorPhysicsSettingsManager extends BaseEditorInstanceManager {
 	// --------------------------------------
 
 	@Override
-	public void storeInTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void storeInTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		final var sceneSettingsSaveDefinition = sceneSaveDefinition.physicsSettings();
 		sceneSettingsSaveDefinition.gravity.set(mPhysicsSettings.gravityX, mPhysicsSettings.gravityY);
 		sceneSettingsSaveDefinition.hashGridWidthInUnits = mPhysicsSettings.hashGridWidthInUnits;
@@ -73,7 +73,7 @@ public class EditorPhysicsSettingsManager extends BaseEditorInstanceManager {
 	}
 
 	@Override
-	public void loadFromTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void loadFromTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		final var sceneSettingsSaveDefinition = sceneSaveDefinition.physicsSettings();
 		mPhysicsSettings.gravityX = sceneSettingsSaveDefinition.gravity.x;
 		mPhysicsSettings.gravityY = sceneSettingsSaveDefinition.gravity.y;

@@ -17,7 +17,7 @@ public abstract class BaseSceneLayerSaveDefinition implements Serializable {
 	// --------------------------------------
 
 	public int layerUid;
-	public int layerZDepth;
+	public float layerZInvDepth;
 	public String layerName;
 	public float translationSpeedModX;
 	public float translationSpeedModY;

@@ -26,7 +26,7 @@ public class SceneNoiseLayerSaveDefinition extends BaseSceneLayerSaveDefinition 
 	public SceneBaseLayer getSceneLayer() {
 		final var lNoiseLayer = new SceneNoiseLayer(layerUid);
 
-		lNoiseLayer.zDepth = layerZDepth;
+		lNoiseLayer.zInvDepth = layerZInvDepth;
 		lNoiseLayer.name = layerName;
 
 		lNoiseLayer.translationSpeedModX = translationSpeedModX;

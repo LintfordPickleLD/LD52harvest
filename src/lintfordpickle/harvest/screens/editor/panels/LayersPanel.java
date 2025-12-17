@@ -49,7 +49,7 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 
 	private EditorLayerController mEditorLayerController;
 
-	private UiVerticalTextListBox mLayerListWidget;
+	private UiVerticalTextListBox<LayerListBoxItem> mLayerListWidget;
 
 	// --------------------------------------
 	// Properties
@@ -154,18 +154,24 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 		case BUTTON_ADD_TEX_LAYER: {
 			final var lNewLayer = mEditorLayerController.addNewTextureLayer();
 			addLayerToUiList(lNewLayer);
+
+			updateLayerZDepthBasedOnOrder();
 			break;
 		}
 
 		case BUTTON_ADD_ANIM_LAYER: {
 			final var lNewLayer = mEditorLayerController.addNewAnimationLayer();
 			addLayerToUiList(lNewLayer);
+
+			updateLayerZDepthBasedOnOrder();
 			break;
 		}
 
 		case BUTTON_ADD_NOISE_LAYER: {
 			final var lNewLayer = mEditorLayerController.addNewNoiseLayer();
 			addLayerToUiList(lNewLayer);
+
+			updateLayerZDepthBasedOnOrder();
 			break;
 		}
 
@@ -189,6 +195,8 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 
 			recreateUiListFromlayersManager();
 			mLayerListWidget.selectedItemIndex(selectedLayerIndex - 1);
+
+			updateLayerZDepthBasedOnOrder();
 			break;
 		}
 
@@ -206,6 +214,8 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 
 			recreateUiListFromlayersManager();
 			mLayerListWidget.selectedItemIndex(selectedLayerIndex + 1);
+
+			updateLayerZDepthBasedOnOrder();
 			break;
 		}
 
@@ -226,6 +236,20 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 		}
 	}
 
+	private void updateLayerZDepthBasedOnOrder() {
+		final var stepSize = 0.05f;
+
+		final var items = mLayerListWidget.items();
+		final var numItems = items.size();
+		for (int i = 0; i < numItems; i++) {
+			final var uiListBoxItem = items.get(i);
+			final var sceneLayer = uiListBoxItem.layer();
+
+			sceneLayer.zInvDepth = (i * stepSize);
+
+		}
+	}
+
 	private void addLayerToUiList(SceneBaseLayer layer) {
 		if (layer == null) {
 			Debug.debugManager().logger().e(getClass().getSimpleName(), "Cannot add null SceneBaseLayer to UiVerticalListBox.");
@@ -237,7 +261,6 @@ public class LayersPanel extends UiPanel implements IUiListBoxListener {
 
 		newListItemBox.displayName = layer.name;
 		newListItemBox.listOrderIndex = mLayerListWidget.items().size();
-		layer.zDepth = newListItemBox.listOrderIndex;
 
 		mLayerListWidget.addItem(newListItemBox);
 

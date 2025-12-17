@@ -83,25 +83,25 @@ public class EditorSceneData {
 	public SceneSaveDefinition getSceneDefinitionToSave() {
 		final var lSceneSaveDefinition = new SceneSaveDefinition();
 
-		mSceneSettingsManager.storeInTrackDefinition(lSceneSaveDefinition);
-		mHashGridManager.storeInTrackDefinition(lSceneSaveDefinition);
-		mLayersManager.storeInTrackDefinition(lSceneSaveDefinition);
-		mPlatformManager.storeInTrackDefinition(lSceneSaveDefinition);
-		mShipManager.storeInTrackDefinition(lSceneSaveDefinition);
-		mPhysicsSettingsManager.storeInTrackDefinition(lSceneSaveDefinition);
-		mPhysicsManager.storeInTrackDefinition(lSceneSaveDefinition);
+		mSceneSettingsManager.storeInTrackSaveDefinition(lSceneSaveDefinition);
+		mHashGridManager.storeInTrackSaveDefinition(lSceneSaveDefinition);
+		mLayersManager.storeInTrackSaveDefinition(lSceneSaveDefinition);
+		mPlatformManager.storeInTrackSaveDefinition(lSceneSaveDefinition);
+		mShipManager.storeInTrackSaveDefinition(lSceneSaveDefinition);
+		mPhysicsSettingsManager.storeInTrackSaveDefinition(lSceneSaveDefinition);
+		mPhysicsManager.storeInTrackSaveDefinition(lSceneSaveDefinition);
 
 		return lSceneSaveDefinition;
 	}
 
 	public void createSceneFromSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
-		mSceneSettingsManager.loadFromTrackDefinition(sceneSaveDefinition);
-		mHashGridManager.loadFromTrackDefinition(sceneSaveDefinition);
-		mLayersManager.loadFromTrackDefinition(sceneSaveDefinition);
-		mPlatformManager.loadFromTrackDefinition(sceneSaveDefinition);
-		mShipManager.loadFromTrackDefinition(sceneSaveDefinition);
-		mPhysicsSettingsManager.loadFromTrackDefinition(sceneSaveDefinition);
-		mPhysicsManager.loadFromTrackDefinition(sceneSaveDefinition);
+		mSceneSettingsManager.loadFromTrackSaveDefinition(sceneSaveDefinition);
+		mHashGridManager.loadFromTrackSaveDefinition(sceneSaveDefinition);
+		mLayersManager.loadFromTrackSaveDefinition(sceneSaveDefinition);
+		mPlatformManager.loadFromTrackSaveDefinition(sceneSaveDefinition);
+		mShipManager.loadFromTrackSaveDefinition(sceneSaveDefinition);
+		mPhysicsSettingsManager.loadFromTrackSaveDefinition(sceneSaveDefinition);
+		mPhysicsManager.loadFromTrackSaveDefinition(sceneSaveDefinition);
 	}
 
 	public void finalizeAfterLoading() {

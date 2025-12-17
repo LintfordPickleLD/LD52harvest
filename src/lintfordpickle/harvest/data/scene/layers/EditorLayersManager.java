@@ -76,7 +76,7 @@ public class EditorLayersManager extends BaseEditorInstanceManager {
 	}
 
 	@Override
-	public void storeInTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void storeInTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 
 		final int numLayers = mLayers.size();
 		for (int i = 0; i < numLayers; i++) {
@@ -97,7 +97,7 @@ public class EditorLayersManager extends BaseEditorInstanceManager {
 	}
 
 	@Override
-	public void loadFromTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void loadFromTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		final var layerSaveManager = sceneSaveDefinition.layers();
 
 		final var textureLayers = layerSaveManager.textureLayers;

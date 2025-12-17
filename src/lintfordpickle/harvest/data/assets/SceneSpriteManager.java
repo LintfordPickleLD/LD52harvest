@@ -22,8 +22,11 @@ public class SceneSpriteManager {
 		// --------------------------------------
 
 		public SpriteDefinitionManager() {
-			final var lMetaDataFile = new File(META_FILENAME);
-			loadDefinitionsFromMetaFile(lMetaDataFile);
+			final var metaDataFile = new File(META_FILENAME);
+			loadDefinitionsFromMetaFile(metaDataFile);
+
+			// for each sprite defintion, populate them with meta data (width/height) about the sprites ...
+
 		}
 
 		// --------------------------------------
@@ -32,20 +35,20 @@ public class SceneSpriteManager {
 
 		@Override
 		public void loadDefinitionsFromFolderWatcher(EntityLocationProvider entityLocationProvider) {
-			final var lGson = new GsonBuilder().create();
-			loadDefinitionsFromFolderWatcherItems(entityLocationProvider, lGson, SceneSpriteDefinition.class);
+			final var gson = new GsonBuilder().create();
+			loadDefinitionsFromFolderWatcherItems(entityLocationProvider, gson, SceneSpriteDefinition.class);
 		}
 
 		@Override
 		public void loadDefinitionsFromMetaFile(File file) {
-			final var lGson = new GsonBuilder().create();
-			loadDefinitionsFromMetaFileItems(file, lGson, SceneSpriteDefinition.class);
+			final var gson = new GsonBuilder().create();
+			loadDefinitionsFromMetaFileItems(file, gson, SceneSpriteDefinition.class);
 		}
 
 		@Override
 		public SceneSpriteDefinition loadDefinitionFromFile(File file) {
-			final var lGson = new GsonBuilder().create();
-			return loadDefinitionFromFile(file, lGson, SceneSpriteDefinition.class);
+			final var gson = new GsonBuilder().create();
+			return loadDefinitionFromFile(file, gson, SceneSpriteDefinition.class);
 		}
 
 	}

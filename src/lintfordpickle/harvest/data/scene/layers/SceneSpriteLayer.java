@@ -37,12 +37,12 @@ public class SceneSpriteLayer extends SceneBaseLayer {
 	// Methods
 	// --------------------------------------
 
-	public void addAssetToLayer(SceneSpriteInstance assetInstance) {
-		if (assetInstance == null)
+	public void addAssetToLayer(SceneSpriteInstance sceneSpriteInstance) {
+		if (sceneSpriteInstance == null)
 			return;
 
-		if (!mSprites.contains(assetInstance))
-			mSprites.add(assetInstance);
+		if (!mSprites.contains(sceneSpriteInstance))
+			mSprites.add(sceneSpriteInstance);
 
 	}
 

@@ -238,7 +238,7 @@ public class EditorNoiseLayerRenderer implements IInputProcessor {
 
 		layer.worldMatrix.setIdentity();
 		layer.worldMatrix.translate(lDstX, lDstY, .0f);
-		layer.worldMatrix.scale(lDstWidth, lDstHeight, 1.f);
+		layer.worldMatrix.scale(lDstWidth, lDstHeight, 9.f - layer.zInvDepth);
 
 		mNoiseLayerShader.modelMatrix(layer.worldMatrix);
 		mNoiseLayerShader.viewMatrix(core.gameCamera().view());

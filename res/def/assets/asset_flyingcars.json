@@ -12,5 +12,9 @@
 	    "spritesheetDefinitionName": "SPRITESHEET_SPRITESUI",
 	    "spritesheetDefinitionFilename": "res/spritesheets/spritesheetspritesui.json",
 	    "spriteName": "ICON_FLYINGCARS" 
-    }
+	},
+	
+	"propDefaultWidth": 128,
+	"propDefaultHeight": 48
+	
 }

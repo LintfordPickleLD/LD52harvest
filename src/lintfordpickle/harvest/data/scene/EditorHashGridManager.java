@@ -48,7 +48,7 @@ public class EditorHashGridManager extends BaseEditorInstanceManager {
 	}
 
 	@Override
-	public void storeInTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void storeInTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		final var lHashGridSettings = sceneSaveDefinition.gridSettings();
 
 		lHashGridSettings.hashGridWidth = mHashGrid.boundaryWidth();
@@ -59,7 +59,7 @@ public class EditorHashGridManager extends BaseEditorInstanceManager {
 	}
 
 	@Override
-	public void loadFromTrackDefinition(SceneSaveDefinition sceneSaveDefinition) {
+	public void loadFromTrackSaveDefinition(SceneSaveDefinition sceneSaveDefinition) {
 		final var lGridSettings = sceneSaveDefinition.gridSettings();
 
 		if (lGridSettings.isInitialized() == false) {

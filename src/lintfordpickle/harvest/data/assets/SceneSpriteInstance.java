@@ -32,6 +32,9 @@ public class SceneSpriteInstance extends GridEntity {
 
 	public final Rectangle destRect = new Rectangle();
 
+	public float spriteModX;
+	public float spriteModY;
+
 	// TODO: This is used in a few places, make a texturestatus enum and cache object (loaded, unloaded, failed)
 	public transient int spriteSheetStatus;
 	public transient SpriteSheetDefinition spriteSheetDefinition;
@@ -44,6 +47,9 @@ public class SceneSpriteInstance extends GridEntity {
 
 	public SceneSpriteInstance(int entityUid) {
 		super(entityUid, GridCollisionTypes.COLLISION_TYPE_NONE);
+
+		spriteModX = 1f;
+		spriteModY = 1f;
 	}
 
 	// --------------------------------------

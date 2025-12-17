@@ -98,7 +98,7 @@ public class SceneLayerTextureRenderer {
 
 			spriteBatch.setColorWhite();
 			spriteBatch.begin(core.gameCamera());
-			spriteBatch.draw(layer.texture, srcX, srcY, srcW, srcH, lDstX, lDstY, lDstWidth, lDstHeight, 9 - layer.zDepth);
+			spriteBatch.draw(layer.texture, srcX, srcY, srcW, srcH, lDstX, lDstY, lDstWidth, lDstHeight, 9 - layer.zInvDepth);
 			spriteBatch.end();
 			return;
 		}

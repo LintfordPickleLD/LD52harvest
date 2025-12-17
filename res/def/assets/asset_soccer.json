@@ -12,5 +12,9 @@
 		"spritesheetDefinitionName": "SPRITESHEET_spritesui",
     	"spritesheetDefinitionFilename": "res/spritesheets/spritesheetspritesui.json",
     	"spriteName": "ICON_SOCCER" 
-     }
+     },
+	 
+	 "propDefaultWidth": 16,
+	 "propDefaultHeight": 16
+	 
  }

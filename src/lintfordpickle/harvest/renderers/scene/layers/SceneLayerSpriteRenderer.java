@@ -88,7 +88,7 @@ public class SceneLayerSpriteRenderer {
 			final var destW = spriteInstance.destRect.width();
 			final var destH = spriteInstance.destRect.height();
 
-			spriteBatch.draw(spriteInstance.spriteSheetDefinition, spriteInstance.spriteInstance, camOffsetX + destX, camOffsetY + destY, destW, destH, 9 - layer.zDepth);
+			spriteBatch.draw(spriteInstance.spriteSheetDefinition, spriteInstance.spriteInstance, camOffsetX + destX, camOffsetY + destY, destW, destH, 9 - layer.zInvDepth);
 
 		}
 

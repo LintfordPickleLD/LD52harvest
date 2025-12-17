@@ -11,7 +11,10 @@ public abstract class SceneBaseLayer {
 
 	public transient int layerUid;
 
-	public int zDepth;
+	/**
+	 * This is the inverse depth. i.e. Z_FAR - zInvDepth;
+	 */
+	public float zInvDepth;
 	public String name;
 	public float translationSpeedModX;
 	public float translationSpeedModY;
@@ -57,7 +60,7 @@ public abstract class SceneBaseLayer {
 	public abstract BaseSceneLayerSaveDefinition getSaveDefinition();
 
 	protected void fillBaseSceneLayerSaveDefinition(BaseSceneLayerSaveDefinition saveDefinition) {
-		saveDefinition.layerZDepth = zDepth;
+		saveDefinition.layerZInvDepth = zInvDepth;
 		saveDefinition.layerUid = layerUid;
 		saveDefinition.layerName = name;
 

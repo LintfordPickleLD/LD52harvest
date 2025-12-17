@@ -1,6 +1,7 @@
 package lintfordpickle.harvest.screens.editor.panels;
 
 import lintfordpickle.harvest.controllers.editor.EditorAssetsController;
+import lintfordpickle.harvest.data.assets.SceneSpriteInstance;
 import lintfordpickle.harvest.data.editor.EditorLayersData;
 import lintfordpickle.harvest.data.scene.layers.SceneBaseLayer;
 import lintfordpickle.harvest.data.scene.layers.SceneSpriteLayer;
@@ -19,6 +20,7 @@ import net.lintfordlib.renderers.windows.components.UiInputInteger;
 import net.lintfordlib.renderers.windows.components.UiInputText;
 import net.lintfordlib.renderers.windows.components.UiLabel;
 import net.lintfordlib.renderers.windows.components.UiListBoxImageItem;
+import net.lintfordlib.renderers.windows.components.UiSeparator;
 
 public class LayerSpritesPanel extends LayerPanelBase<SceneSpriteLayer> implements IUiInputKeyPressCallback {
 
@@ -31,14 +33,19 @@ public class LayerSpritesPanel extends LayerPanelBase<SceneSpriteLayer> implemen
 	private static final int BUTTON_ADD_SPRITE = 150;
 	private static final int BUTTON_DEL_SPRITE = 151;
 
+	// layer options
 	private final static int SLIDER_TRANSLATION_SPEED_X = 15;
 	private final static int SLIDER_TRANSLATION_SPEED_Y = 16;
 
 	private final static int SLIDER_CENTER_X = 17;
 	private final static int SLIDER_CENTER_Y = 18;
 
-	private final static int SLIDER_SCALE_X = 19;
-	private final static int SLIDER_SCALE_Y = 20;
+	// selected sprite options
+	private final static int SPRITE_WIDTH = 30;
+	private final static int SPRITE_HEIGHT = 31;
+	private final static int SPRITE_TRANSLATION_MOD_X = 32;
+	private final static int SPRITE_TRANSLATION_MOD_Y = 33;
+	private static final int SPRITE_RESET_SIZE = 34;
 
 	// --------------------------------------
 	// Variables
@@ -60,10 +67,15 @@ public class LayerSpritesPanel extends LayerPanelBase<SceneSpriteLayer> implemen
 	private UiInputFloat mTranslationSpeedModX;
 	private UiInputFloat mTranslationSpeedModY;
 
-	private UiInputFloat mWidth;
-	private UiInputFloat mHeight;
+	// selected sprite options
+	private UiInputFloat mSpriteWidth;
+	private UiInputFloat mSpriteHeight;
+	private UiInputFloat mSpriteTranslationSpeedModX;
+	private UiInputFloat mSpriteTranslationSpeedModY;
+	private UiButton mResetSpriteDimensions;
 
 	private EditorSpriteLayerRenderer mEditorAnimationLayerRenderer;
+	private SceneSpriteInstance mTrackedSelectedSprite;
 
 	// --------------------------------------
 	// Properties
@@ -124,40 +136,64 @@ public class LayerSpritesPanel extends LayerPanelBase<SceneSpriteLayer> implemen
 		mTranslationSpeedModY.setMinMax(0.f, 10.f);
 		mTranslationSpeedModY.stepSize(.1f);
 
-		mWidth = new UiInputFloat();
-		mWidth.setUiWidgetListener(this, SLIDER_SCALE_X);
-		mWidth.label("Width");
-		mWidth.setMinMax(0.f, 10.f);
-		mWidth.stepSize(.1f);
-		mHeight = new UiInputFloat();
-		mHeight.setUiWidgetListener(this, SLIDER_SCALE_Y);
-		mHeight.label("Height");
-		mHeight.setMinMax(0.f, 10.f);
-		mHeight.stepSize(.1f);
+		mSpriteWidth = new UiInputFloat();
+		mSpriteWidth.setUiWidgetListener(this, SPRITE_WIDTH);
+		mSpriteWidth.label("Width");
+		mSpriteWidth.setMinMax(0, 0);
+		mSpriteWidth.stepSize(.1f);
+		mSpriteHeight = new UiInputFloat();
+		mSpriteHeight.setUiWidgetListener(this, SPRITE_HEIGHT);
+		mSpriteHeight.label("Height");
+		mSpriteHeight.setMinMax(0, 0);
+		mSpriteHeight.stepSize(.1f);
 
-		final var lHorizontalGroup0 = new UiHorizontalEntryGroup();
-		lHorizontalGroup0.widgets().add(mAddAnimationButton);
-		lHorizontalGroup0.widgets().add(mRemoveAnimationButton);
+		mSpriteTranslationSpeedModX = new UiInputFloat();
+		mSpriteTranslationSpeedModX.setUiWidgetListener(this, SPRITE_TRANSLATION_MOD_X);
+		mSpriteTranslationSpeedModX.label("Mod X");
+		mSpriteTranslationSpeedModX.setMinMax(0.f, 10.f);
+		mSpriteTranslationSpeedModX.stepSize(.1f);
+		mSpriteTranslationSpeedModY = new UiInputFloat();
+		mSpriteTranslationSpeedModY.setUiWidgetListener(this, SPRITE_TRANSLATION_MOD_Y);
+		mSpriteTranslationSpeedModY.label("Mod Y");
+		mSpriteTranslationSpeedModY.setMinMax(0.f, 10.f);
+		mSpriteTranslationSpeedModY.stepSize(.1f);
 
-		final var lHorizontalGroup1 = new UiHorizontalEntryGroup();
-		lHorizontalGroup1.widgets().add(mCenterXInput);
-		lHorizontalGroup1.widgets().add(mCenterYInput);
+		mResetSpriteDimensions = new UiButton("Reset Size");
+		mResetSpriteDimensions.setUiWidgetListener(this, SPRITE_RESET_SIZE);
 
-		final var lHorizontalGroup2 = new UiHorizontalEntryGroup();
-		lHorizontalGroup2.widgets().add(mTranslationSpeedModX);
-		lHorizontalGroup2.widgets().add(mTranslationSpeedModY);
+		final var horizontalGroup0 = new UiHorizontalEntryGroup();
+		horizontalGroup0.widgets().add(mAddAnimationButton);
+		horizontalGroup0.widgets().add(mRemoveAnimationButton);
 
-		final var lHorizontalGroup3 = new UiHorizontalEntryGroup();
-		lHorizontalGroup3.widgets().add(mWidth);
-		lHorizontalGroup3.widgets().add(mHeight);
+		final var horizontalGroup1 = new UiHorizontalEntryGroup();
+		horizontalGroup1.widgets().add(mCenterXInput);
+		horizontalGroup1.widgets().add(mCenterYInput);
+
+		final var horizontalGroup2 = new UiHorizontalEntryGroup();
+		horizontalGroup2.widgets().add(mTranslationSpeedModX);
+		horizontalGroup2.widgets().add(mTranslationSpeedModY);
+
+		final var horizontalGroup3 = new UiHorizontalEntryGroup();
+		horizontalGroup3.widgets().add(mSpriteWidth);
+		horizontalGroup3.widgets().add(mSpriteHeight);
+
+		final var horizontalGroup4 = new UiHorizontalEntryGroup();
+		horizontalGroup4.widgets().add(mSpriteTranslationSpeedModX);
+		horizontalGroup4.widgets().add(mSpriteTranslationSpeedModY);
 
 		addWidget(mNameLabel);
 		addWidget(mLayerName);
 		addWidget(mAnimationAssetList);
-		addWidget(lHorizontalGroup0);
-		addWidget(lHorizontalGroup1);
-		addWidget(lHorizontalGroup2);
-		addWidget(lHorizontalGroup3);
+		addWidget(horizontalGroup0);
+		addWidget(new UiSeparator());
+		addWidget(new UiLabel("Layer"));
+		addWidget(horizontalGroup1);
+		addWidget(horizontalGroup2);
+		addWidget(new UiSeparator());
+		addWidget(new UiLabel("Sprite"));
+		addWidget(horizontalGroup3);
+		addWidget(horizontalGroup4);
+		addWidget(mResetSpriteDimensions);
 	}
 
 	// --------------------------------------
@@ -185,21 +221,69 @@ public class LayerSpritesPanel extends LayerPanelBase<SceneSpriteLayer> implemen
 	private void loadAssets(LintfordCore core) {
 		final var assetDefinitionManager = mEditorAssetsController.sceneAssetsManager().definitionManager();
 		final var assetDefinitionList = assetDefinitionManager.definitions();
-		final var lListCollectionIterator = assetDefinitionList.iterator();
+		final var listCollectionIterator = assetDefinitionList.iterator();
 
-		while (lListCollectionIterator.hasNext()) {
-			final var lAssetDefinition = lListCollectionIterator.next();
+		while (listCollectionIterator.hasNext()) {
+			final var assetDefinition = listCollectionIterator.next();
 
-			if (lAssetDefinition == null)
+			if (assetDefinition == null)
 				continue;
 
-			final var lNewItem = new UiListBoxImageItem((int) lAssetDefinition.definitionUid());
-			lNewItem.setAsset(lAssetDefinition.definitionName(), lAssetDefinition.displayName);
-			lNewItem.setIconFrom(lAssetDefinition.iconSpriteContainer);
+			final var newItem = new UiListBoxImageItem((int) assetDefinition.definitionUid());
+			newItem.setAsset(assetDefinition.definitionName(), assetDefinition.displayName);
+			newItem.setIconFrom(assetDefinition.iconSpriteContainer);
 
-			lNewItem.iconContainer.loadResources(core.resources(), mEntityGroupUid);
+			newItem.iconContainer.loadResources(core.resources(), mEntityGroupUid);
 
-			mAnimationAssetList.addItem(lNewItem);
+			mAnimationAssetList.addItem(newItem);
+		}
+	}
+
+	@Override
+	public void update(LintfordCore core) {
+		super.update(core);
+
+		// Here sync selected sprite in controller with the panel, check for changes
+		final var controllerSelected = mEditorAssetsController.selectedAssetinstance();
+		final var spriteChange = controllerSelected != mTrackedSelectedSprite;
+
+		if (spriteChange) {
+			updateUiOnSpriteChange();
+		}
+
+	}
+
+	private void updateUiOnSpriteChange() {
+		final var controllerSelected = mEditorAssetsController.selectedAssetinstance();
+		if (controllerSelected == null) {
+
+			// controller is unset
+
+			if (mTrackedSelectedSprite != null) {
+				// update Ui
+				mSpriteWidth.currentValue(0);
+				mSpriteHeight.currentValue(0);
+
+				// deselected
+				mTrackedSelectedSprite = null;
+
+			} else {
+				// ignore
+			}
+		} else {
+
+			// controller is set
+
+			if (mTrackedSelectedSprite != null) {
+				// should be ignored (same already set?)
+			} else {
+				// update Ui
+				mTrackedSelectedSprite = controllerSelected;
+
+				mSpriteWidth.currentValue(mTrackedSelectedSprite.destRect.width());
+				mSpriteHeight.currentValue(mTrackedSelectedSprite.destRect.height());
+
+			}
 		}
 	}
 
@@ -223,19 +307,35 @@ public class LayerSpritesPanel extends LayerPanelBase<SceneSpriteLayer> implemen
 
 	@Override
 	public void widgetOnClick(InputManager inputManager, int entryUid) {
+		if (!mEditorBrushController.isLayerActive(EditorLayersData.Layer_Animation))
+			return;
+
 		switch (entryUid) {
-		case BUTTON_SHOW_LAYER:
+		case SPRITE_RESET_SIZE: {
+			final var selectedSpriteInstance = mEditorAssetsController.selectedAssetinstance();
+			if (selectedSpriteInstance != null) {
+				final var assetDefinition = selectedSpriteInstance.definition;
+				selectedSpriteInstance.destRect.width(assetDefinition.propDefaultWidth);
+				selectedSpriteInstance.destRect.height(assetDefinition.propDefaultHeight);
+			}
+
+			break;
+		}
+
+		case BUTTON_SHOW_LAYER: {
 			if (mEditorAnimationLayerRenderer != null) {
 				final var curentVisibility = mEditorAnimationLayerRenderer.renderSpritesLayer();
 				mEditorAnimationLayerRenderer.renderSpritesLayer(!curentVisibility);
 			}
 			break;
+		}
 
-		case BUTTON_SET_LAYER:
+		case BUTTON_SET_LAYER: {
 			if (mSelectedLayer != null) {
 				mSelectedLayer.editMode = isLayerActive();
 			}
 			break;
+		}
 
 		// Add from asset list
 		case BUTTON_ADD_SPRITE: {
@@ -263,12 +363,13 @@ public class LayerSpritesPanel extends LayerPanelBase<SceneSpriteLayer> implemen
 			if (mSelectedLayer == null)
 				return;
 
-			final var selectedAssetInstance = mEditorAssetsController.selectedAssetinstance();
-			if (selectedAssetInstance != null) {
-				mSelectedLayer.removeAssetInstance(selectedAssetInstance);
+			final var selectedSpriteInstance = mEditorAssetsController.selectedAssetinstance();
+			if (selectedSpriteInstance != null) {
+				mSelectedLayer.removeAssetInstance(selectedSpriteInstance);
 				mEditorAssetsController.selectedAssetinstance(null);
 			}
 		}
+
 		}
 	}
 
@@ -280,20 +381,6 @@ public class LayerSpritesPanel extends LayerPanelBase<SceneSpriteLayer> implemen
 				return;
 
 			mSelectedLayer.name = mLayerName.inputString().toString();
-			break;
-
-		case SLIDER_SCALE_X:
-			if (mSelectedLayer == null)
-				return;
-
-			mSelectedLayer.width = mWidth.currentValue();
-			break;
-
-		case SLIDER_SCALE_Y:
-			if (mSelectedLayer == null)
-				return;
-
-			mSelectedLayer.height = mHeight.currentValue();
 			break;
 
 		case SLIDER_CENTER_X:
@@ -324,6 +411,22 @@ public class LayerSpritesPanel extends LayerPanelBase<SceneSpriteLayer> implemen
 			mSelectedLayer.translationSpeedModY = mTranslationSpeedModY.currentValue();
 
 			break;
+			
+		case SPRITE_WIDTH: {
+			final var selectedSpriteInstance = mEditorAssetsController.selectedAssetinstance();
+			if (selectedSpriteInstance != null) {
+				selectedSpriteInstance.destRect.width(mSpriteWidth.currentValue());
+			}
+			break;
+		}
+
+		case SPRITE_HEIGHT: {
+			final var selectedSpriteInstance = mEditorAssetsController.selectedAssetinstance();
+			if (selectedSpriteInstance != null) {
+				selectedSpriteInstance.destRect.height(mSpriteHeight.currentValue());
+			}
+			break;
+		}
 		}
 	}
 

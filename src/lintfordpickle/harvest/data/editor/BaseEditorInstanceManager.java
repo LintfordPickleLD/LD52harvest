@@ -18,9 +18,9 @@ public abstract class BaseEditorInstanceManager {
 
 	public abstract void initializeManager();
 
-	public abstract void storeInTrackDefinition(SceneSaveDefinition sceneDefinition);
+	public abstract void storeInTrackSaveDefinition(SceneSaveDefinition sceneDefinition);
 
-	public abstract void loadFromTrackDefinition(SceneSaveDefinition sceneDefinition);
+	public abstract void loadFromTrackSaveDefinition(SceneSaveDefinition sceneDefinition);
 
 	public abstract void finalizeAfterLoading(EditorSceneData sceneData);
 

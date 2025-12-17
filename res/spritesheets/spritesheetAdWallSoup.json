@@ -1,6 +1,7 @@
 {
   "spriteSheetName": "SPRITESHEET_ADWALLSOUP",
   "textureName": "TEXTURE_ADWALLSOUP",
+  "textureFileName": null,
   "spriteFrames": [
     {
       "name": "LAYER_3_00",

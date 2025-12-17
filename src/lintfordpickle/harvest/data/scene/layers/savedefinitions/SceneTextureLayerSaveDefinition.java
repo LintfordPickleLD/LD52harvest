@@ -34,7 +34,7 @@ public class SceneTextureLayerSaveDefinition extends BaseSceneLayerSaveDefinitio
 	@Override
 	public SceneBaseLayer getSceneLayer() {
 		final var textureLayer = new SceneTextureLayer(layerUid);
-		textureLayer.zDepth = layerZDepth;
+		textureLayer.zInvDepth = layerZInvDepth;
 		textureLayer.name = layerName;
 
 		textureLayer.setTextureName(textureName);

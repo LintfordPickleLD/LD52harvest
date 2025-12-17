@@ -1,6 +1,7 @@
 {
   "spriteSheetName": "SPRITESHEET_CORE",
   "textureName": "TEXTURE_CORE",
+  "textureFileName": null,
   "spriteFrames": [
     {
       "name": "TEXTURE_ICON_INFO",

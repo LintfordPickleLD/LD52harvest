@@ -6,7 +6,7 @@
     {
       "name": "CARS_BACKGROUND1",
       "x": 0,
-      "y": 0,
+      "y": 18,
       "w": 128,
       "h": 48,
       "pivotX": 0,
@@ -19,7 +19,7 @@
     {
       "name": "CARS_BACKGROUND2",
       "x": 130,
-      "y": 0,
+      "y": 18,
       "w": 128,
       "h": 48,
       "pivotX": 0,
@@ -32,7 +32,7 @@
     {
       "name": "CARS_BACKGROUND3",
       "x": 260,
-      "y": 0,
+      "y": 18,
       "w": 128,
       "h": 48,
       "pivotX": 0,
@@ -45,7 +45,7 @@
     {
       "name": "CARS_BACKGROUND4",
       "x": 0,
-      "y": 50,
+      "y": 68,
       "w": 128,
       "h": 48,
       "pivotX": 0,
@@ -58,7 +58,7 @@
     {
       "name": "CARS_BACKGROUND5",
       "x": 130,
-      "y": 50,
+      "y": 68,
       "w": 128,
       "h": 48,
       "pivotX": 0,
@@ -71,7 +71,7 @@
     {
       "name": "CARS_BACKGROUND6",
       "x": 260,
-      "y": 50,
+      "y": 68,
       "w": 128,
       "h": 48,
       "pivotX": 0,
@@ -84,7 +84,7 @@
     {
       "name": "CARS_BACKGROUND7",
       "x": 0,
-      "y": 100,
+      "y": 118,
       "w": 128,
       "h": 48,
       "pivotX": 0,
@@ -97,7 +97,7 @@
     {
       "name": "CARS_BACKGROUND8",
       "x": 130,
-      "y": 100,
+      "y": 118,
       "w": 128,
       "h": 48,
       "pivotX": 0,
@@ -109,8 +109,8 @@
     },
     {
       "name": "TEXTUREPUMPSTATION00",
-      "x": 260,
-      "y": 100,
+      "x": 390,
+      "y": 68,
       "w": 80,
       "h": 48,
       "pivotX": 0,
@@ -122,8 +122,8 @@
     },
     {
       "name": "TEXTUREPUMPSTATION01",
-      "x": 342,
-      "y": 100,
+      "x": 260,
+      "y": 118,
       "w": 80,
       "h": 48,
       "pivotX": 0,
@@ -135,8 +135,8 @@
     },
     {
       "name": "TEXTUREPUMPSTATION02",
-      "x": 424,
-      "y": 100,
+      "x": 342,
+      "y": 118,
       "w": 80,
       "h": 48,
       "pivotX": 0,
@@ -148,8 +148,8 @@
     },
     {
       "name": "TEXTUREPUMPSTATION03",
-      "x": 0,
-      "y": 150,
+      "x": 424,
+      "y": 118,
       "w": 80,
       "h": 48,
       "pivotX": 0,
@@ -161,8 +161,8 @@
     },
     {
       "name": "TEXTUREWAREHOUSE",
-      "x": 82,
-      "y": 150,
+      "x": 0,
+      "y": 168,
       "w": 80,
       "h": 24,
       "pivotX": 0,
@@ -174,8 +174,8 @@
     },
     {
       "name": "TEXTUREWHEATEMPTY",
-      "x": 164,
-      "y": 150,
+      "x": 82,
+      "y": 168,
       "w": 80,
       "h": 24,
       "pivotX": 0,
@@ -187,8 +187,8 @@
     },
     {
       "name": "TEXTUREWHEATFULL1",
-      "x": 246,
-      "y": 150,
+      "x": 164,
+      "y": 168,
       "w": 80,
       "h": 24,
       "pivotX": 0,
@@ -200,8 +200,8 @@
     },
     {
       "name": "TEXTUREWHEATFULL2",
-      "x": 328,
-      "y": 150,
+      "x": 246,
+      "y": 168,
       "w": 80,
       "h": 24,
       "pivotX": 0,
@@ -213,8 +213,8 @@
     },
     {
       "name": "TEXTUREWHEATFULL3",
-      "x": 410,
-      "y": 150,
+      "x": 328,
+      "y": 168,
       "w": 80,
       "h": 24,
       "pivotX": 0,
@@ -226,8 +226,8 @@
     },
     {
       "name": "TEXTUREWHEATHALF",
-      "x": 0,
-      "y": 200,
+      "x": 410,
+      "y": 168,
       "w": 80,
       "h": 24,
       "pivotX": 0,
@@ -240,7 +240,7 @@
     {
       "name": "TEXTURECONTAINERWATER00",
       "x": 390,
-      "y": 50,
+      "y": 18,
       "w": 16,
       "h": 48,
       "pivotX": 0,
@@ -253,7 +253,7 @@
     {
       "name": "TEXTURECONTAINERWATER01",
       "x": 408,
-      "y": 50,
+      "y": 18,
       "w": 16,
       "h": 48,
       "pivotX": 0,
@@ -266,7 +266,7 @@
     {
       "name": "TEXTURECONTAINERWATER02",
       "x": 426,
-      "y": 50,
+      "y": 18,
       "w": 16,
       "h": 48,
       "pivotX": 0,
@@ -279,7 +279,7 @@
     {
       "name": "TEXTURECONTAINERWATER03",
       "x": 444,
-      "y": 50,
+      "y": 18,
       "w": 16,
       "h": 48,
       "pivotX": 0,
@@ -291,7 +291,7 @@
     },
     {
       "name": "HARVESTER",
-      "x": 390,
+      "x": 54,
       "y": 0,
       "w": 32,
       "h": 16,
@@ -303,8 +303,47 @@
       "anchorPoints": []
     },
     {
+      "name": "AIRCOND_00",
+      "x": 0,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "pivotX": 0,
+      "pivotY": 0,
+      "scaleX": 1.0,
+      "scaleY": 1.0,
+      "anchorToPointName": null,
+      "anchorPoints": []
+    },
+    {
+      "name": "AIRCOND_01",
+      "x": 18,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "pivotX": 0,
+      "pivotY": 0,
+      "scaleX": 1.0,
+      "scaleY": 1.0,
+      "anchorToPointName": null,
+      "anchorPoints": []
+    },
+    {
+      "name": "AIRCOND_02",
+      "x": 36,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "pivotX": 0,
+      "pivotY": 0,
+      "scaleX": 1.0,
+      "scaleY": 1.0,
+      "anchorToPointName": null,
+      "anchorPoints": []
+    },
+    {
       "name": "SOCCER_00",
-      "x": 424,
+      "x": 88,
       "y": 0,
       "w": 16,
       "h": 16,
@@ -317,7 +356,7 @@
     },
     {
       "name": "SOCCER_01",
-      "x": 442,
+      "x": 106,
       "y": 0,
       "w": 16,
       "h": 16,
@@ -330,7 +369,7 @@
     },
     {
       "name": "SOCCER_02",
-      "x": 460,
+      "x": 124,
       "y": 0,
       "w": 16,
       "h": 16,
@@ -343,7 +382,7 @@
     },
     {
       "name": "SOCCER_03",
-      "x": 478,
+      "x": 142,
       "y": 0,
       "w": 16,
       "h": 16,
@@ -356,7 +395,7 @@
     },
     {
       "name": "SOCCER_04",
-      "x": 496,
+      "x": 160,
       "y": 0,
       "w": 16,
       "h": 16,
@@ -369,8 +408,8 @@
     },
     {
       "name": "SOCCER_05",
-      "x": 390,
-      "y": 18,
+      "x": 178,
+      "y": 0,
       "w": 16,
       "h": 16,
       "pivotX": 0,
@@ -382,8 +421,8 @@
     },
     {
       "name": "SOCCER_06",
-      "x": 408,
-      "y": 18,
+      "x": 196,
+      "y": 0,
       "w": 16,
       "h": 16,
       "pivotX": 0,
@@ -395,8 +434,8 @@
     },
     {
       "name": "SOCCER_07",
-      "x": 426,
-      "y": 18,
+      "x": 214,
+      "y": 0,
       "w": 16,
       "h": 16,
       "pivotX": 0,
@@ -409,7 +448,7 @@
     {
       "name": "WHITE",
       "x": 462,
-      "y": 50,
+      "y": 18,
       "w": 16,
       "h": 16,
       "pivotX": 0,
@@ -421,8 +460,8 @@
     },
     {
       "name": "TEXTURECARGOWHEAT",
-      "x": 444,
-      "y": 18,
+      "x": 232,
+      "y": 0,
       "w": 5,
       "h": 7,
       "pivotX": 0,
@@ -491,14 +530,25 @@
       "frameDuration": 150,
       "minimumViableRuntime": 0,
       "animationSpriteIndices": [
-        23,
-        24,
-        25,
         26,
         27,
         28,
         29,
-        30
+        30,
+        31,
+        32,
+        33
+      ]
+    },
+    "aircond_brown": {
+      "animationName": "aircond_brown",
+      "loopAnimation": true,
+      "frameDuration": 150,
+      "minimumViableRuntime": 0,
+      "animationSpriteIndices": [
+        23,
+        24,
+        25
       ]
     }
   }

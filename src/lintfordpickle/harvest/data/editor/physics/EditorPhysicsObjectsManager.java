@@ -61,7 +61,7 @@ public class EditorPhysicsObjectsManager extends BaseEditorInstanceManager {
 	}
 
 	@Override
-	public void storeInTrackDefinition(SceneSaveDefinition sceneDefinition) {
+	public void storeInTrackSaveDefinition(SceneSaveDefinition sceneDefinition) {
 		final var physicsObjectsToSave = sceneDefinition.physicsObjects().physicsObjects;
 		physicsObjectsToSave.clear();
 
@@ -85,7 +85,7 @@ public class EditorPhysicsObjectsManager extends BaseEditorInstanceManager {
 	}
 
 	@Override
-	public void loadFromTrackDefinition(SceneSaveDefinition sceneDefinition) {
+	public void loadFromTrackSaveDefinition(SceneSaveDefinition sceneDefinition) {
 		final var floorDefinitions = sceneDefinition.physicsObjects().physicsObjects;
 		final var numFloorDefinitions = floorDefinitions.size();
 		for (int i = 0; i < numFloorDefinitions; i++) {

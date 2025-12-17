@@ -2,7 +2,7 @@
 	"AssetRootDirectory" : "res/def/assets/",
 	"ItemFilepaths" : [
 	
-		"asset_aircond.json",
+		"asset_aircond_brown_0.json",
 		"asset_flyingcars.json",
 		"asset_soccer.json"
 		

@@ -1,6 +1,7 @@
 {
   "spriteSheetName": "SPRITESHEET_HUD",
   "textureName": "TEXTURE_HUD",
+  "textureFileName": null,
   "spriteFrames": [
     {
       "name": "TEXTURE_HIDE_LAYER",
